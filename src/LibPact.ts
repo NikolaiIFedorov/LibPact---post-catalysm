@@ -1,4 +1,4 @@
-import * as Build from "./src/Setup/Build.ts";
+import * as Build from "./Setup/Build.ts";
 
 const Raiden: Build.Build = new Build.Build(
   "Raiden shogun",
