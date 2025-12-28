@@ -21,29 +21,32 @@ export function GetDesc(character: string) {
   const normal = talents.combat1; // Currently trying to calculate normal attacks
   const normalDesc = Parse(normal);
 
-  return normalDesc;
+  const talentDesc = { normal: normalDesc };
+
+  return talentDesc;
 }
 
 function Parse(talent: any) {
-  if (!talent) throw `Talent not found`;
-  const talentDescs = talent.attributes;
+  if (!talent) throw `Talent does not exist`;
+  const attributes = talent.attributes;
 
-  let talentValues = [];
-  const talentParameters = talentDescs.parameters;
-  const talentAttrib = talentDescs.labels;
-  for (const desc of talentAttrib) {
-    const talentValue = AttribToValue(desc, talentParameters);
-    talentValues.push(talentValue);
+  let values = [];
+  const parameters = attributes.parameters;
+  const labels = attributes.labels;
+  for (const label of labels) {
+    const value = AttribToValue(label, parameters);
+    values.push(value);
   }
-  const talentName = talent.name;
-  const talentDescrption = talent.description;
-  const talentDesc = {
-    name: talentName,
-    description: talentDescrption,
-    values: talentValues,
+
+  const name = talent.name;
+  const description = talent.description;
+  const parsed = {
+    name: name,
+    description: description,
+    values: values,
   };
 
-  return talentDesc;
+  return parsed;
 }
 
 function AttribToValue(desc: string, talentParameters: any) {
