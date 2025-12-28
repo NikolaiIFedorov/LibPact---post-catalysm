@@ -1,5 +1,5 @@
-import * as Character from "../../GenshinDB/Character.ts";
-import * as Weapon from "../../GenshinDB/Weapon.ts";
+import * as Character from "../GenshinDB/Character.ts";
+import * as Weapon from "../GenshinDB/Weapon.ts";
 
 import * as Damage from "./Damage/Damage.ts";
 
@@ -22,6 +22,9 @@ export let INVESTMENT_LEVEL: InvestmentLevel = {
 };
 
 export class Stats {
+  // TLDR: The stat names have to be renmaed according to the genshin-db library to make calculations easier
+  // For example, each character has a specialized stat. For Raiden, it is Energy recharge, for Lauma it is Elemental mastery, etc.
+  // When the character
   atk: number = 0;
   cr: number = 5;
   cd: number = 50;
