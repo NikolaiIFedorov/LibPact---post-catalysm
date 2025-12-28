@@ -4,7 +4,7 @@ import { Stats } from "../Build.ts";
 
 import * as Talent from "../../GenshinDB/Talent.ts";
 
-export function Get(stats: Stats, character: any, investment: any) {
+export function Get(stats: Stats, character: any) {
   const atkBase: number = Calc.Atk.GetBase(stats);
   const atkAdd: number = Calc.Atk.GetAdd();
   const crit: number = Calc.Crit.Get();

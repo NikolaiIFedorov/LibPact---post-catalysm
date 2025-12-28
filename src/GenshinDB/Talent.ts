@@ -13,10 +13,12 @@ export function Get(name: string) {
 }
 
 export function GetDesc(character: string) {
+  // Returns talents in an organized object
   const talents = Get(character);
   if (!talents) throw `Talents not found for ${character}`;
 
-  const normal = talents.combat1;
+  //TODO: Return all talents
+  const normal = talents.combat1; // Currently trying to calculate normal attacks
   const normalDesc = Parse(normal);
 
   return normalDesc;
@@ -30,33 +32,8 @@ function Parse(talent: any) {
   const talentParameters = talentDescs.parameters;
   const talentAttrib = talentDescs.labels;
   for (const desc of talentAttrib) {
-    let attribValues = [];
-    let cacheAttrib = desc;
-    let sequence = 0;
-    while (true) {
-      sequence++;
-      const parameterStart = cacheAttrib.indexOf("param");
-      const parameterEnd = cacheAttrib.indexOf(":");
-      if (parameterStart == -1 || parameterEnd == -1) break;
-
-      const parameter = cacheAttrib.slice(parameterStart, parameterEnd);
-      cacheAttrib = cacheAttrib.replace("param", "");
-      cacheAttrib = cacheAttrib.replace(":", "");
-
-      const attribValue = talentParameters[parameter];
-      let type;
-      if (attribValue[0] == attribValue[1]) type = TALENT_TYPES.Attrib;
-      else type = TALENT_TYPES.Dmg;
-      attribValues.push({
-        type: type,
-        sequence: sequence,
-        values: attribValue,
-      });
-    }
-    const nameEnd = desc.indexOf("|");
-    const nameEnding = desc.slice(nameEnd);
-    const name = desc.replace(nameEnding, "");
-    talentValues.push({ name: name, values: attribValues });
+    const talentValue = AttribToValue(desc, talentParameters);
+    talentValues.push(talentValue);
   }
   const talentName = talent.name;
   const talentDescrption = talent.description;
@@ -67,4 +44,36 @@ function Parse(talent: any) {
   };
 
   return talentDesc;
+}
+
+function AttribToValue(desc: string, talentParameters: any) {
+  let attribValues = [];
+  let cacheAttrib = desc;
+  let sequence = 0;
+  while (true) {
+    sequence++;
+    const parameterStart = cacheAttrib.indexOf("param");
+    const parameterEnd = cacheAttrib.indexOf(":");
+    if (parameterStart == -1 || parameterEnd == -1) break;
+
+    const parameter: string = cacheAttrib.slice(parameterStart, parameterEnd);
+    cacheAttrib = cacheAttrib.replace("param", "");
+    cacheAttrib = cacheAttrib.replace(":", "");
+
+    let type;
+    const attribValue = talentParameters[parameter];
+    if (attribValue[0] == attribValue[1]) type = TALENT_TYPES.Attrib;
+    else type = TALENT_TYPES.Dmg;
+    attribValues.push({
+      type: type,
+      sequence: sequence,
+      values: attribValue,
+    });
+  }
+
+  const nameEnd = desc.indexOf("|");
+  const nameEnding = desc.slice(nameEnd);
+  const name = desc.replace(nameEnding, "");
+
+  return { name: name, values: attribValues };
 }

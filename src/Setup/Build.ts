@@ -3,7 +3,7 @@ import * as Weapon from "../GenshinDB/Weapon.ts";
 
 import * as Damage from "./Damage/Damage.ts";
 
-type Investment = {
+export type Investment = {
   characterLvl: number;
   talentLvl: number;
   weaponLvl: number;
@@ -22,9 +22,7 @@ export let INVESTMENT_LEVEL: InvestmentLevel = {
 };
 
 export class Stats {
-  // TLDR: The stat names have to be renmaed according to the genshin-db library to make calculations easier
-  // For example, each character has a specialized stat. For Raiden, it is Energy recharge, for Lauma it is Elemental mastery, etc.
-  // When the character
+  // TODO: The stat names have to be renamed according to the genshin-db library to make weapon and specialized stat calculations easier/cleaner.
   atk: number = 0;
   cr: number = 5;
   cd: number = 50;
@@ -82,7 +80,7 @@ export class Stats {
 export class Build {
   character: any;
   weapon: any;
-  investment: Investment | undefined;
+  investment: Investment;
   stats: Stats;
 
   constructor(character: string, weapon: string, investment: Investment) {
@@ -93,6 +91,6 @@ export class Build {
   }
 
   GetDamage() {
-    return Damage.Get(this.stats, this.character, this.investment);
+    return Damage.Get(this.stats, this.character); // An object specifying damage for each talent hits, as well as talent description and name
   }
 }
