@@ -1,34 +1,40 @@
-import { useState } from "react";
-import reactLogo from "./assets/react.svg";
-import viteLogo from "/vite.svg";
 import "./App.css";
 
-function App() {
-  const [count, setCount] = useState(0);
+interface LayerProps {
+  width: React.CSSProperties["width"];
+  height: React.CSSProperties["height"];
+  x?: number;
+  y?: number;
+  layer: number;
+}
+
+const Layer = ({ width, height, x = 0, y = 0, layer }: LayerProps) => {
+  const shade = layer * 10 + 10;
+  const radius = 40 - 10 * layer;
 
   return (
+    <div
+      style={{
+        width: width,
+        height: height,
+        backgroundColor: `hsl(0, 0%, ${shade}%)`,
+        position: `fixed`,
+        top: y,
+        left: x,
+        borderRadius: `${radius}px`,
+      }}
+    />
+  );
+};
+
+function App() {
+  return (
     <>
-      <div>
-        <a href="https://vite.dev" target="_blank">
-          <img src={viteLogo} className="logo" alt="Vite logo" />
-        </a>
-        <a href="https://react.dev" target="_blank">
-          <img src={reactLogo} className="logo react" alt="React logo" />
-        </a>
-      </div>
-      <h1>Vite + React</h1>
-      <div className="card">
-        <button onClick={() => setCount((count) => count + 1)}>
-          count is {count}
-        </button>
-        <textarea></textarea>
-        <p>
-          Edit <code>src/App.tsx</code> and save to test HMR
-        </p>
-      </div>
-      <p className="read-the-docs">
-        Click on the Vite and React logos to learn more
-      </p>
+      <Layer width={60} height={680} x={20} y={20} layer={1}></Layer>
+      <Layer width={300} height={680} x={100} y={20} layer={1}></Layer>
+      <Layer width={700} height={100} x={420} y={600} layer={1}></Layer>
+      <Layer width={700} height={200} x={420} y={380} layer={1}></Layer>
+      <Layer width={700} height={340} x={420} y={20} layer={1}></Layer>
     </>
   );
 }
