@@ -1,4 +1,4 @@
-import type { Talents, Stats } from ".";
+import type { Talents, Stats, Element, WeaponType } from ".";
 
 export type Character = {
   name: string;
@@ -6,5 +6,10 @@ export type Character = {
   constellation: number;
   talents: Talents[];
   stats: Stats;
-  weaponType: "sword" | "polearm" | "catalyst" | "bow" | "claymore";
+  types: CharacterTypes;
+};
+
+export type CharacterTypes = {
+  weaponType: WeaponType;
+  element: Element;
 };

@@ -1,4 +1,4 @@
-export type { Effect } from "./effect.ts";
+export type { Effect, TeamEffects } from "./effect.ts";
 export type { Element } from "./elements.ts";
 export type { Resonance } from "./resonance.ts";
 export type { Team } from "./team.ts";
@@ -6,3 +6,7 @@ export type { Stats } from "./stats.ts";
 export type { Build } from "./build.ts";
 export type { Character } from "./characters.ts";
 export type { Talents } from "./talents.ts";
+export type { Weapon } from "./weapon.ts";
+export type { Artifact } from "./artifact.ts";
+export type { Hit } from "./hit.ts";
+export type { WeaponType } from "./weapon.ts";
