@@ -16,7 +16,6 @@ export type Stats = {
   dendro: 0;
   anemo: 0;
   geo: 0;
-  //TODO: Add Lunar support
 
   normal: 0;
   skill: 0;

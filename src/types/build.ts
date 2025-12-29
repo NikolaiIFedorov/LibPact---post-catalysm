@@ -2,8 +2,8 @@ import type { Character, Weapon, Artifact, Stats } from ".";
 
 export type Build = {
   name: string;
-  character: Character;
-  weapon: Weapon;
-  artifacts: Artifact[];
-  stats: Stats;
+  character?: Character;
+  weapon?: Weapon;
+  artifacts?: Artifact[];
+  stats?: Stats;
 };
