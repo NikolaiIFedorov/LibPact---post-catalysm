@@ -1,0 +1,21 @@
+export type Stats = {
+  atk: number = 0;
+  cr: number = 5;
+  cd: number = 50;
+  em: number = 0;
+  hp: number = 0;
+  def: number = 0;
+  Energy_Recharge: number = 0;
+  physical: number = 0;
+  pyro: number = 0;
+  hydro: number = 0;
+  cryo: number = 0;
+  electro: number = 0;
+  dendro: number = 0;
+  anemo: number = 0;
+  geo: number = 0;
+  normal: number = 0;
+  skill: number = 0;
+  burst: number = 0;
+  DMG: number = 0;
+};

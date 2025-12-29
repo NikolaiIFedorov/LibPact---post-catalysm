@@ -1,8 +1,8 @@
-import * as Calc from "./Calculate/All.ts";
+import * as Calc from "./calculate/all.ts";
 
-import { Stats } from "../Build.ts";
+import { Stats } from "../build.ts";
 
-import * as Talent from "../../GenshinDB/Talent.ts";
+import * as Talent from "../../genshindb/Talent.ts";
 
 export function Get(stats: Stats, character: any) {
   const atkBase: number = Calc.Atk.GetBase(stats);

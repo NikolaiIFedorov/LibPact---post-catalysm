@@ -9,6 +9,7 @@ type TalentTypes = {
 
 export function Get(name: string) {
   const talent = genshindb.talents(name);
+  console.log(talent?.combat2);
   return talent;
 }
 

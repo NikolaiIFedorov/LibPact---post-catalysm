@@ -1,7 +1,7 @@
-import * as Character from "../GenshinDB/Character.ts";
-import * as Weapon from "../GenshinDB/Weapon.ts";
+import * as Character from "../genshindb/Character.ts";
+import * as Weapon from "../genshindb/Weapon.ts";
 
-import * as Damage from "./Damage/Damage.ts";
+import * as Damage from "./damage/damage.ts";
 
 export type Investment = {
   characterLvl: number;

@@ -1,4 +1,4 @@
-import * as Build from "./Setup/Build.ts";
+import * as Build from "./setup/build.ts";
 
 const customInvestment: Build.Investment = {
   characterLvl: 90,
@@ -8,12 +8,10 @@ const customInvestment: Build.Investment = {
 
 // Defining a build
 let Raiden: Build.Build = new Build.Build(
-  "Raiden shogun",
+  "Lauma",
   "Engulfing lightning",
   customInvestment
 );
 
 // Getting damate
 const damage = Raiden.GetDamage();
-
-console.log(damage);

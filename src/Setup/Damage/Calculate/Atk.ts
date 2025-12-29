@@ -1,4 +1,4 @@
-import { Stats } from "../../Build.ts";
+import { Stats } from "../../build.ts";
 
 export function GetBase(stats: Stats) {
   const base = stats.atk;

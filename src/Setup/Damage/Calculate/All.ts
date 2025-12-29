@@ -1,5 +1,5 @@
-import * as Amp from "./Amp.ts";
-import * as Atk from "./Atk.ts";
-import * as Crit from "./Crit.ts";
+import * as Amp from "./amp.ts";
+import * as Atk from "./atk.ts";
+import * as Crit from "./crit.ts";
 
 export { Amp, Atk, Crit };
