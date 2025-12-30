@@ -1,4 +1,4 @@
-import type { Stats, Effect } from "./index";
+import type { Stats, Effect } from "./index/index.ts";
 
 export type Weapon = {
   weaponName: string;
