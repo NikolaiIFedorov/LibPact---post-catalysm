@@ -1,4 +1,4 @@
-import type { Build, Parameters, Effect } from "./team/";
+import type { Build, Parameters, Effect } from ".";
 
 export type Team = {
   name: string;

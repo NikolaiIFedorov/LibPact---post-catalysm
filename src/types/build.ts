@@ -1,5 +1,4 @@
-import type { Stats } from "./index/";
-import type { Character, Weapon, Artifact } from ".";
+import type { Stats, Character, Weapon, Artifact } from ".";
 
 export type Build = {
   name: string;
