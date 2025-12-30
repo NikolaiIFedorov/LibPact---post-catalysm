@@ -1,4 +1,5 @@
-import type { Talent, Stats, Element, WeaponType } from "./character/";
+import type { Stats } from "./index/";
+import type { Talent, Element, WeaponType } from "./character/";
 
 export type Character = {
   name: string;

@@ -1,4 +1,4 @@
-import type { Element, Effect } from ".";
+import type { Element, Effect } from "../index/";
 
 export type Hit = {
   multipliers: number[];

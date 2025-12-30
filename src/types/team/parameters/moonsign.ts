@@ -1,3 +1,3 @@
-import type { Effect } from "./team";
+import type { Effect } from "../../index/";
 
 export type Moonsign = Effect[];

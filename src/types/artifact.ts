@@ -1,4 +1,4 @@
-import type { Effect } from "..";
+import type { Effect } from "./index/";
 
 export type Artifact = {
   set: string;
