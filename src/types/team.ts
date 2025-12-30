@@ -1,7 +1,8 @@
-import type { TeamEffects, Build } from ".";
+import type { Build, Parameters, Effect } from "./team/";
 
 export type Team = {
   name: string;
-  characters?: Build[];
-  effects?: TeamEffects;
+  builds?: Build[];
+  effects?: Effect[];
+  parameters?: Parameters;
 };

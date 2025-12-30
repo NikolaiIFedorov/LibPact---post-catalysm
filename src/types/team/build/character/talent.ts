@@ -1,6 +1,6 @@
-import type { Hit } from ".";
+import type { Hit } from "./talent/";
 
-export type Talents = {
+export type Talent = {
   slot: "normal" | "skill" | "burst" | "p1" | "p2" | "p3";
   Tap: Hit[];
   Hold?: Hit[];

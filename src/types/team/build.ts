@@ -1,4 +1,4 @@
-import type { Character, Weapon, Artifact, Stats } from ".";
+import type { Character, Weapon, Artifact, Stats } from "./build/";
 
 export type Build = {
   name: string;

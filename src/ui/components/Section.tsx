@@ -10,5 +10,5 @@ interface SectionProps {
 export const Section: React.FunctionComponent<SectionProps> = ({
   children,
 }) => {
-  return <Material.Card>{children}</Material.Card>;
+  return <Material.Box>{}</Material.Box>;
 };

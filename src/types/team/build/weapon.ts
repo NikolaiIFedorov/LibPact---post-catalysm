@@ -4,8 +4,8 @@ export type Weapon = {
   weaponName: string;
   level: number;
   refinement: number;
-  effect: Effect;
   stats: Stats;
+  effect: Effect;
 };
 
 export type WeaponType = {

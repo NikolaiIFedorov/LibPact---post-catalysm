@@ -1,9 +1,9 @@
-import type { Effect, Element } from ".";
+import type { Element, Effect } from ".";
 
 export type Hit = {
   multipliers: number[];
-  effects: Effect[];
+  element: Element;
   duration: number;
   frequency: number;
-  element: Element;
+  effects: Effect[];
 };

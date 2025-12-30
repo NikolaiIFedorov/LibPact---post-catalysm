@@ -1,4 +1,4 @@
-import type { Effect } from ".";
+import type { Effect } from "..";
 
 export type Artifact = {
   set: string;
@@ -7,5 +7,5 @@ export type Artifact = {
 
 export type ArtifactPiece = {
   pieces: 2 | 4;
-  effect: Effect;
+  effects: Effect[];
 };
