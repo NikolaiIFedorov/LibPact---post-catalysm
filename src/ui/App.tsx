@@ -1,11 +1,12 @@
 import "./App.css";
-import { Section } from "./components";
+import { Team } from "./components";
+import { Box } from "@mui/material";
 
 function App() {
   return (
-    <>
-      <Section></Section>
-    </>
+    <Box width="100vw" height="100vh">
+      <Team />
+    </Box>
   );
 }
 
