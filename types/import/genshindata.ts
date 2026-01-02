@@ -1,4 +1,5 @@
 import GenshinData from "genshin-data";
 
-export const db = new GenshinData();
-export const charactersDb = await db.characters();
+export const lib = new GenshinData();
+export const charactersLib = await lib.characters();
+export const weaponsLib = await lib.weapons();

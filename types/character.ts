@@ -1,11 +1,11 @@
-import type { Stats, Talent } from ".";
-import { charactersDb, getTalents } from "./index.ts";
+import type { Stats, Talents } from ".";
+import { charactersLib, getTalents, getStats } from "./index.ts";
 
 export type Character = {
   name: string;
-  level: number;
+  ascension: number;
   constellation: number;
-  talents: Talent[];
+  talents: Talents;
   stats: Stats;
   parameters: Parameters;
 };
@@ -17,34 +17,33 @@ type Parameters = {
 
 export async function getCharacter(
   name: string,
-  level: number,
+  ascension: number,
   constellation: number
 ) {
   let target: any;
-  for (const character of charactersDb) {
+  for (const character of charactersLib) {
     if (character.name.includes(name)) {
       target = character;
       break;
     }
   }
 
-  getTalents(target);
-
-  /*
-  const talents: Talent[] = getTalents(target);
-  const stats: Stats = getStats(target, talents, level, constellation);
+  const talents: Talents = getTalents(target);
+  const stats: Stats = getStats(target, ascension);
 
   const parameters: Parameters = {
-    element: target.element,
-    weapon: target.weapon,
+    element: target.element.id,
+    weapon: target.weapon_type.id,
   };
 
   const character: Character = {
     name: target.name,
-    level: level,
+    ascension: ascension,
     constellation: constellation,
     talents: talents,
     stats: stats,
     parameters: parameters,
-  };*/
+  };
+
+  return character;
 }

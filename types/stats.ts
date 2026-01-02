@@ -1,24 +1,82 @@
+import type { Talents } from "./index.ts";
+
 export type Stats = {
-  atk: 0;
-  cr: 5;
-  cd: 50;
-  em: 0;
-  Energy_Recharge: 0;
+  ATK: number;
+  baseATK: number;
 
-  hp: 0;
-  def: 0;
+  CRIT_Rate: number;
+  CRIT_DMG: number;
+  Elemental_Mastery: number;
+  Energy_Recharge: number;
 
-  physical: 0;
-  pyro: 0;
-  hydro: 0;
-  cryo: 0;
-  electro: 0;
-  dendro: 0;
-  anemo: 0;
-  geo: 0;
+  HP: number;
+  DEF: number;
 
-  normal: 0;
-  skill: 0;
-  burst: 0;
-  DMG: 0;
+  Physical_DMG_Bonus: number;
+  Pyro_DMG_Bonus: number;
+  Hydro_DMG_Bonus: number;
+  Cryo_DMG_Bonus: number;
+  Electro_DMG_Bonus: number;
+  Dendro_DMG_Bonus: number;
+  Anemo_DMG_Bonus: number;
+  Geo_DMG_Bonus: number;
+  Healing_Bonus: number;
 };
+
+const defaultStats: Stats = {
+  ATK: 0,
+  baseATK: 0,
+  CRIT_Rate: 50,
+  CRIT_DMG: 50,
+  Elemental_Mastery: 0,
+  Energy_Recharge: 0,
+
+  HP: 0,
+  DEF: 0,
+
+  Physical_DMG_Bonus: 0,
+  Pyro_DMG_Bonus: 0,
+  Hydro_DMG_Bonus: 0,
+  Cryo_DMG_Bonus: 0,
+  Electro_DMG_Bonus: 0,
+  Dendro_DMG_Bonus: 0,
+  Anemo_DMG_Bonus: 0,
+  Geo_DMG_Bonus: 0,
+  Healing_Bonus: 0,
+};
+
+export function getStats(character: any, ascension: number) {
+  let stats: Stats = defaultStats;
+
+  const characterStats = character.ascension[ascension - 1].stats;
+  for (const stat of characterStats) {
+    const name = stat.label;
+    switch (name) {
+      case "Ascend":
+        break;
+      case "Base ATK":
+        stats.baseATK += Number(stat.values[1]);
+        stats.ATK += Number(stat.values[1]);
+        break;
+      case "Base HP":
+        stats.HP += Number(stat.values[1]);
+        break;
+      case "Base DEF":
+        stats.DEF += Number(stat.values[1]);
+        break;
+      default:
+        stats = addToStat(name, Number(stat.values[1]), stats);
+        break;
+    }
+  }
+
+  return stats;
+}
+
+function addToStat(name: string, value: number, stats: Stats) {
+  name = name.replaceAll("%", "");
+  name = name.replaceAll(" ", "_");
+
+  stats[name as keyof Stats] += value;
+  return stats;
+}

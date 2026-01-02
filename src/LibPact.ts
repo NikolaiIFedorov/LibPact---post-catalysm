@@ -1,3 +1,5 @@
 import { getCharacter } from "../types/character.ts";
 
-getCharacter("Kazuha", 90, 0);
+const Kazuha = await getCharacter("Kazuha", 8, 0);
+
+console.log(Kazuha);

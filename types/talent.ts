@@ -1,24 +1,31 @@
 import type { Hit } from ".";
 import { getHits } from "./index.ts";
 
-export type Talent = {
-  slot: "normal" | "skill" | "burst" | "p1" | "p2" | "p3";
+type Talent = {
   tap: Hit[];
   hold?: Hit[];
 };
 
+export type Talents = {
+  normal: Talent;
+  skill: Talent;
+  burst: Talent;
+  passives: Talent[];
+};
+
 export function getTalents(character: any) {
-  const skills: Talent[] = talentsFromLibtalents(character.skills);
+  const libTalents = character.skills;
 
-  //const talents: Talent[] = [skills, passives];
-  //return talents;
-}
+  const normal: Talent = { tap: getHits(libTalents[0]) };
+  const skill: Talent = { tap: getHits(libTalents[1]) };
+  const burst: Talent = { tap: getHits(libTalents[2]) };
 
-function talentsFromLibtalents(libTalents: any) {
-  const normal: Talent = { slot: "normal", tap: getHits(libTalents[0]) };
-  const skill: Talent = { slot: "skill", tap: getHits(libTalents[1]) };
-  const burst: Talent = { slot: "burst", tap: getHits(libTalents[2]) };
+  const talents: Talents = {
+    normal: normal,
+    skill: skill,
+    burst: burst,
+    passives: [],
+  };
 
-  const talents: Talent[];
   return talents;
 }
