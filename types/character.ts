@@ -1,5 +1,5 @@
 import type { Stats, Talents } from ".";
-import { charactersLib, getTalents, getStats } from "./index.ts";
+import { charactersLib, getTalents, getCharacterStats } from "./index.ts";
 
 export type Character = {
   name: string;
@@ -29,7 +29,7 @@ export async function getCharacter(
   }
 
   const talents: Talents = getTalents(target);
-  const stats: Stats = getStats(target, ascension);
+  const stats: Stats = getCharacterStats(target, ascension);
 
   const parameters: Parameters = {
     element: target.element.id,

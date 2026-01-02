@@ -1,8 +1,8 @@
-import type { Talents } from "./index.ts";
+import type { CharacterLib, WeaponLib } from "./index.ts";
 
 export type Stats = {
   ATK: number;
-  baseATK: number;
+  Base_ATK: number;
 
   CRIT_Rate: number;
   CRIT_DMG: number;
@@ -25,7 +25,7 @@ export type Stats = {
 
 const defaultStats: Stats = {
   ATK: 0,
-  baseATK: 0,
+  Base_ATK: 0,
   CRIT_Rate: 50,
   CRIT_DMG: 50,
   Elemental_Mastery: 0,
@@ -45,7 +45,7 @@ const defaultStats: Stats = {
   Healing_Bonus: 0,
 };
 
-export function getStats(character: any, ascension: number) {
+export function getCharacterStats(character: CharacterLib, ascension: number) {
   let stats: Stats = defaultStats;
 
   const characterStats = character.ascension[ascension - 1].stats;
@@ -55,7 +55,7 @@ export function getStats(character: any, ascension: number) {
       case "Ascend":
         break;
       case "Base ATK":
-        stats.baseATK += Number(stat.values[1]);
+        stats.Base_ATK += Number(stat.values[1]);
         stats.ATK += Number(stat.values[1]);
         break;
       case "Base HP":
@@ -68,6 +68,37 @@ export function getStats(character: any, ascension: number) {
         stats = addToStat(name, Number(stat.values[1]), stats);
         break;
     }
+  }
+
+  return stats;
+}
+
+export function getWeaponStats(weapon: WeaponLib, level: number) {
+  let stats: Stats = defaultStats;
+
+  const weaponStats = weapon.stats;
+
+  let targetAscession;
+  for (const ascession of weaponStats.levels) {
+    const forLevel = ascession.level;
+    if (forLevel === level) {
+      targetAscession = ascession;
+      break;
+    }
+  }
+
+  if (!targetAscession) {
+    console.error(`Weapon level not found: ${level} for weapon ${weapon.name}`);
+    return stats;
+  }
+
+  const primaryStatValue = Number(targetAscession.primary);
+  stats = addToStat(weaponStats.primary, primaryStatValue, stats);
+
+  const secondaryStatValue = Number(targetAscession.secondary);
+  const secondaryStatName = weaponStats.secondary;
+  if (secondaryStatName && targetAscession.secondary) {
+    stats = addToStat(secondaryStatName, secondaryStatValue, stats);
   }
 
   return stats;
