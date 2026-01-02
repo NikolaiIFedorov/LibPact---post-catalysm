@@ -23,7 +23,7 @@ export function UploadData(table: string, data: string) {
 }
 
 export function RecallData(table: string) {
-  let data = [];
+  let data: any = [];
   db.serialize(() => {
     db.each(`SELECT rowid AS id, info FROM ${table}`, (err, row: any) => {
       data.push(row.id + ": " + row.info);

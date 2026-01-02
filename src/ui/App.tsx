@@ -1,5 +1,5 @@
 import "./App.css";
-import { Team } from "./components";
+import { Team } from "./components/";
 import { Box } from "@mui/material";
 
 function App() {
