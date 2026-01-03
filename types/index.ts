@@ -10,12 +10,19 @@ export type {
   ArtifactLib,
 } from "./import/genshindata.ts";
 
-export type { Build } from "./build.ts";
+export type { Build, Investment } from "./build.ts";
+export { getBuild } from "./build.ts";
+
 export type { Parameters } from "./parameters.ts";
 export type { Effect } from "./effect.ts";
 
 export type { Stats } from "./stats.ts";
-export { getCharacterStats, getWeaponStats } from "./stats.ts";
+export {
+  getCharacterStats,
+  getWeaponStats,
+  getArtifactStats,
+  getBuildStats,
+} from "./stats.ts";
 
 export type { Character } from "./character.ts";
 export { getCharacter } from "./character.ts";
@@ -23,8 +30,8 @@ export { getCharacter } from "./character.ts";
 export type { Weapon } from "./weapon.ts";
 export { getWeapon } from "./weapon.ts";
 
-export type { Artifact } from "./artifact.ts";
-export type { getArtifact } from "./artifact.ts";
+export type { Artifacts } from "./artifact.ts";
+export { getArtifacts } from "./artifact.ts";
 
 export type { Talents } from "./talent.ts";
 export { getTalents } from "./talent.ts";

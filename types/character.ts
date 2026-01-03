@@ -20,24 +20,22 @@ export async function getCharacter(
   ascension: number,
   constellation: number
 ) {
-  let target: any;
-  for (const character of charactersLib) {
-    if (character.name.includes(name)) {
-      target = character;
-      break;
-    }
+  let libCharacter = charactersLib.find((c) => c.name.includes(name) === true);
+  if (!libCharacter) {
+    console.warn(`Character not found: ${name}`);
+    return null;
   }
 
-  const talents: Talents = getTalents(target);
-  const stats: Stats = getCharacterStats(target, ascension);
+  const talents: Talents = getTalents(libCharacter);
+  const stats: Stats = getCharacterStats(libCharacter, ascension);
 
   const parameters: Parameters = {
-    element: target.element.id,
-    weapon: target.weapon_type.id,
+    element: libCharacter.element.id,
+    weapon: libCharacter.weapon_type.id,
   };
 
   const character: Character = {
-    name: target.name,
+    name: libCharacter.name,
     ascension: ascension,
     constellation: constellation,
     talents: talents,

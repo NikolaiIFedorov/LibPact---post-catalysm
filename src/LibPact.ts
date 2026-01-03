@@ -1,7 +1,17 @@
-import { getCharacter } from "../types/character.ts";
-import { getWeapon } from "../types/weapon.ts";
+import { getBuild, type Investment } from "../types/build.ts";
 
-const Kazuha = await getCharacter("Kazuha", 8, 0);
-const FreedomSworn = getWeapon("Freedom", 90, 1);
+const investment: Investment = {
+  characterAscession: 8,
+  weaponLevel: 90,
+  constellation: 0,
+  refinement: 1,
+};
+const KazuhaBuild = await getBuild(
+  "Kazuha",
+  "Kazuha",
+  "Freedom",
+  ["Viridescent"],
+  investment
+);
 
-console.log(FreedomSworn);
+console.log(KazuhaBuild);

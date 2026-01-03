@@ -1,4 +1,10 @@
-import type { CharacterLib, WeaponLib } from "./index.ts";
+import type {
+  CharacterLib,
+  WeaponLib,
+  Character,
+  Weapon,
+  Artifacts,
+} from "./index.ts";
 
 export type Stats = {
   ATK: number;
@@ -23,11 +29,11 @@ export type Stats = {
   Healing_Bonus: number;
 };
 
-const defaultStats: Stats = {
+const defaultCharacter: Stats = {
   ATK: 0,
   Base_ATK: 0,
-  CRIT_Rate: 50,
-  CRIT_DMG: 50,
+  CRIT_Rate: 0.05,
+  CRIT_DMG: 0.5,
   Elemental_Mastery: 0,
   Energy_Recharge: 0,
 
@@ -45,8 +51,51 @@ const defaultStats: Stats = {
   Healing_Bonus: 0,
 };
 
+const defaultEquipment: Stats = {
+  ATK: 0,
+  Base_ATK: 0,
+  CRIT_Rate: 0,
+  CRIT_DMG: 0,
+  Elemental_Mastery: 0,
+  Energy_Recharge: 0,
+
+  HP: 0,
+  DEF: 0,
+
+  Physical_DMG_Bonus: 0,
+  Pyro_DMG_Bonus: 0,
+  Hydro_DMG_Bonus: 0,
+  Cryo_DMG_Bonus: 0,
+  Electro_DMG_Bonus: 0,
+  Dendro_DMG_Bonus: 0,
+  Anemo_DMG_Bonus: 0,
+  Geo_DMG_Bonus: 0,
+  Healing_Bonus: 0,
+};
+
+const defaultBuild: Stats = {
+  ATK: 0,
+  Base_ATK: 0,
+  CRIT_Rate: 0,
+  CRIT_DMG: 0,
+  Elemental_Mastery: 0,
+  Energy_Recharge: 0,
+
+  HP: 0,
+  DEF: 0,
+
+  Physical_DMG_Bonus: 0,
+  Pyro_DMG_Bonus: 0,
+  Hydro_DMG_Bonus: 0,
+  Cryo_DMG_Bonus: 0,
+  Electro_DMG_Bonus: 0,
+  Dendro_DMG_Bonus: 0,
+  Anemo_DMG_Bonus: 0,
+  Geo_DMG_Bonus: 0,
+  Healing_Bonus: 0,
+};
 export function getCharacterStats(character: CharacterLib, ascension: number) {
-  let stats: Stats = defaultStats;
+  let stats: Stats = defaultCharacter;
 
   const characterStats = character.ascension[ascension - 1].stats;
   for (const stat of characterStats) {
@@ -65,7 +114,7 @@ export function getCharacterStats(character: CharacterLib, ascension: number) {
         stats.DEF += Number(stat.values[1]);
         break;
       default:
-        stats = addToStat(name, Number(stat.values[1]), stats);
+        stats = addToStat(name, Number(stat.values[1]), stats, "+");
         break;
     }
   }
@@ -74,7 +123,7 @@ export function getCharacterStats(character: CharacterLib, ascension: number) {
 }
 
 export function getWeaponStats(weapon: WeaponLib, level: number) {
-  let stats: Stats = defaultStats;
+  let stats: Stats = defaultEquipment;
 
   const weaponStats = weapon.stats;
 
@@ -88,26 +137,82 @@ export function getWeaponStats(weapon: WeaponLib, level: number) {
   }
 
   if (!targetAscession) {
-    console.error(`Weapon level not found: ${level} for weapon ${weapon.name}`);
+    console.warn(`Weapon level not found: ${level} for weapon ${weapon.name}`);
     return stats;
   }
 
   const primaryStatValue = Number(targetAscession.primary);
-  stats = addToStat(weaponStats.primary, primaryStatValue, stats);
+  stats = addToStat(weaponStats.primary, primaryStatValue, stats, "+");
 
   const secondaryStatValue = Number(targetAscession.secondary);
   const secondaryStatName = weaponStats.secondary;
   if (secondaryStatName && targetAscession.secondary) {
-    stats = addToStat(secondaryStatName, secondaryStatValue, stats);
+    stats = addToStat(secondaryStatName, secondaryStatValue, stats, "+");
   }
 
   return stats;
 }
 
-function addToStat(name: string, value: number, stats: Stats) {
+export function getArtifactStats(pieceStats: Stats[]) {
+  let stats: Stats = defaultEquipment;
+
+  for (const pieceStat of pieceStats) {
+    stats = mergeStats(stats, pieceStat, "+");
+  }
+
+  return stats;
+}
+
+export function getBuildStats(
+  character: Character | null,
+  weapon: Weapon | null,
+  artifacts: Artifacts | null
+) {
+  let stats: Stats = defaultBuild;
+
+  if (character) {
+    const characterStats = character.stats;
+    stats = mergeStats(stats, characterStats, "+");
+  }
+
+  if (weapon) {
+    const weaponStats = weapon.stats;
+    stats = mergeStats(stats, weaponStats, "+");
+  }
+
+  if (artifacts) {
+    const pieces = artifacts.pieces;
+    if (pieces) {
+      const artifactStats = pieces.stats;
+      stats = mergeStats(stats, artifactStats, "%");
+    }
+  }
+
+  return stats;
+}
+
+function addToStat(
+  name: string,
+  value: number,
+  stats: Stats,
+  operation: "+" | "%"
+) {
   name = name.replaceAll("%", "");
   name = name.replaceAll(" ", "_");
 
-  stats[name as keyof Stats] += value;
+  if (operation == "+") stats[name as keyof Stats] += value;
+  else stats[name as keyof Stats] *= 1 + value;
+
+  return stats;
+}
+
+function mergeStats(stats1: Stats, stats2: Stats, operation: "+" | "%") {
+  let stats = stats2;
+  for (const stat1 in stats1) {
+    const value1 = stats1[stat1 as keyof Stats];
+    if (typeof value1 !== "number") continue;
+
+    stats = addToStat(stat1, value1, stats, operation);
+  }
   return stats;
 }

@@ -1,3 +1,4 @@
+import { lib } from "./import/genshindata.ts";
 import type { Stats, Effect } from "./index.ts";
 import { weaponsLib, getWeaponStats } from "./index.ts";
 
@@ -17,7 +18,7 @@ export function getWeapon(name: string, level: number, refinement: number) {
   const libWeapon = weaponsLib.find((w) => w.name.includes(name) === true);
 
   if (!libWeapon) {
-    console.error(`Weapon not found: ${name}`);
+    console.warn(`Weapon not found: ${name}`);
     return null;
   }
 
@@ -25,7 +26,7 @@ export function getWeapon(name: string, level: number, refinement: number) {
   const effect = null;
 
   const weapon: Weapon = {
-    name: name,
+    name: libWeapon.name,
     level: level,
     refinement: refinement,
     stats: stats,
