@@ -142,7 +142,8 @@ export function getWeaponStats(weapon: WeaponLib, level: number) {
   }
 
   const primaryStatValue = Number(targetAscession.primary);
-  stats = addToStat(weaponStats.primary, primaryStatValue, stats, "+");
+  stats = addToStat("ATK", primaryStatValue, stats, "+");
+  stats = addToStat("Base_ATK", primaryStatValue, stats, "+");
 
   const secondaryStatValue = Number(targetAscession.secondary);
   const secondaryStatName = weaponStats.secondary;
@@ -177,7 +178,9 @@ export function getBuildStats(
 
   if (weapon) {
     const weaponStats = weapon.stats;
+
     stats = mergeStats(stats, weaponStats, "+");
+    console.log(stats);
   }
 
   if (artifacts) {

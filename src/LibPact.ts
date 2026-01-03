@@ -6,6 +6,7 @@ const investment: Investment = {
   constellation: 0,
   refinement: 1,
 };
+
 const KazuhaBuild = await getBuild(
   "Kazuha",
   "Kazuha",
