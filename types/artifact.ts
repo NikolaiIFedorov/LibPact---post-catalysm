@@ -1,11 +1,21 @@
-import { artifactsLib, getArtifactStats } from "./index.ts";
+import {
+  artifactsLib,
+  getArtifactFlatStats,
+  getArtifactPercentStats,
+} from "./index.ts";
 
-import type { Effect, Stats } from ".";
+import type { Effect, Stats, ArtifactPieces } from ".";
 
 export type Artifacts = {
   name?: string;
   sets: Set[];
-  pieces: Pieces | null;
+  pieces: ArtifactPieces;
+  stats: ArtifactStats;
+};
+
+type ArtifactStats = {
+  flat: Stats;
+  percent: Stats;
 };
 
 type Set = {
@@ -14,12 +24,7 @@ type Set = {
   _4pc: Effect[] | null;
 };
 
-type Pieces = {
-  stats: Stats;
-  pieceStats: Stats[];
-};
-
-export async function getArtifacts(sets: string[]) {
+export async function getArtifacts(sets: string[], pieces: ArtifactPieces) {
   let artifactSets: Set[] = [];
   for (const set of sets) {
     const libSet = artifactsLib.find((a) => a.name.includes(set) === true);
@@ -39,9 +44,15 @@ export async function getArtifacts(sets: string[]) {
     if (artifactSets.length == 2) break;
   }
 
+  const artifactStats = {
+    flat: await getArtifactFlatStats(pieces),
+    percent: await getArtifactPercentStats(pieces),
+  };
+
   const artifact: Artifacts = {
     sets: artifactSets,
-    pieces: null,
+    pieces: pieces,
+    stats: artifactStats,
   };
 
   return artifact;

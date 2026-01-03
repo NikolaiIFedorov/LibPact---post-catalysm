@@ -1,4 +1,10 @@
-import type { Stats, Character, Weapon, Artifacts } from "./index.ts";
+import type {
+  Stats,
+  Character,
+  Weapon,
+  Artifacts,
+  ArtifactPieces,
+} from "./index.ts";
 import {
   getCharacter,
   getWeapon,
@@ -26,7 +32,8 @@ export async function getBuild(
   name: string,
   character: string,
   weapon: string,
-  artifacts: string[],
+  artifactSets: string[],
+  artifactPieces: ArtifactPieces,
   investment: Investment
 ) {
   const ascession = investment.characterAscession;
@@ -41,7 +48,7 @@ export async function getBuild(
     constellation
   );
   const weaponBuild = await getWeapon(weapon, level, refinement);
-  const artifactsBuild = await getArtifacts(artifacts);
+  const artifactsBuild = await getArtifacts(artifactSets, artifactPieces);
 
   const build: Build = {
     name: name,

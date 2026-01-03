@@ -16,11 +16,12 @@ export { getBuild } from "./build.ts";
 export type { Parameters } from "./parameters.ts";
 export type { Effect } from "./effect.ts";
 
-export type { Stats } from "./stats.ts";
+export type { Stats, Stat } from "./stats.ts";
 export {
   getCharacterStats,
   getWeaponStats,
-  getArtifactStats,
+  getArtifactFlatStats,
+  getArtifactPercentStats,
   getBuildStats,
 } from "./stats.ts";
 
@@ -32,6 +33,8 @@ export { getWeapon } from "./weapon.ts";
 
 export type { Artifacts } from "./artifact.ts";
 export { getArtifacts } from "./artifact.ts";
+
+export type { ArtifactPieces, Substat } from "./artifactPieces.ts";
 
 export type { Talents } from "./talent.ts";
 export { getTalents } from "./talent.ts";

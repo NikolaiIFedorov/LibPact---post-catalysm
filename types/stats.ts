@@ -4,6 +4,8 @@ import type {
   Character,
   Weapon,
   Artifacts,
+  ArtifactPieces,
+  Substat,
 } from "./index.ts";
 
 export type Stats = {
@@ -27,6 +29,11 @@ export type Stats = {
   Anemo_DMG_Bonus: number;
   Geo_DMG_Bonus: number;
   Healing_Bonus: number;
+};
+
+export type Stat = {
+  name: keyof Stats;
+  value?: number;
 };
 
 const defaultCharacter: Stats = {
@@ -94,6 +101,7 @@ const defaultBuild: Stats = {
   Geo_DMG_Bonus: 0,
   Healing_Bonus: 0,
 };
+
 export async function getCharacterStats(
   character: CharacterLib,
   ascension: number
@@ -157,13 +165,42 @@ export async function getWeaponStats(weapon: WeaponLib, level: number) {
   return stats;
 }
 
-export async function getArtifactStats(pieceStats: Stats[]) {
+export async function getArtifactFlatStats(pieces: ArtifactPieces) {
   let stats: Stats = { ...defaultEquipment };
+  for (const pieceName in pieces) {
+    const piece = pieces[pieceName as keyof ArtifactPieces];
+    if (!piece) continue;
 
-  for (const pieceStat of pieceStats) {
-    stats = await mergeStats(stats, pieceStat, "+");
+    const subStats = piece.subStats;
+    for (const subStat of subStats) {
+      const value = getArtifactSubstatValue(subStat, "+");
+      stats = await addToStat(subStat.stat, value, stats, "+");
+    }
+
+    const main = piece.main;
+    const mainValue = getArtifactMainStatValue(main, "+");
+    stats = await addToStat(main, mainValue, stats, "+");
   }
 
+  return stats;
+}
+
+export async function getArtifactPercentStats(pieces: ArtifactPieces) {
+  let stats: Stats = { ...defaultEquipment };
+  for (const pieceName in pieces) {
+    const piece = pieces[pieceName as keyof ArtifactPieces];
+    if (!piece) continue;
+
+    const subStats = piece.subStats;
+    for (const subStat of subStats) {
+      const value = getArtifactSubstatValue(subStat, "%");
+      stats = await addToStat(subStat.stat, value, stats, "+");
+    }
+
+    const main = piece.main;
+    const mainValue = getArtifactMainStatValue(main, "%");
+    stats = await addToStat(main, mainValue, stats, "+");
+  }
   return stats;
 }
 
@@ -181,16 +218,15 @@ export async function getBuildStats(
 
   if (weapon) {
     const weaponStats = weapon.stats;
-
     stats = await mergeStats(stats, weaponStats, "+");
   }
 
   if (artifacts) {
-    const pieces = artifacts.pieces;
-    if (pieces) {
-      const artifactStats = pieces.stats;
-      stats = await mergeStats(stats, artifactStats, "%");
-    }
+    const artifactPercentStats = artifacts.stats.percent;
+    stats = await mergeStats(stats, artifactPercentStats, "%");
+
+    const artifactFlatStats = artifacts.stats.flat;
+    stats = await mergeStats(stats, artifactFlatStats, "+");
   }
 
   return stats;
@@ -205,19 +241,139 @@ async function addToStat(
   name = name.replaceAll("%", "");
   name = name.replaceAll(" ", "_");
 
-  if (operation == "+") stats[name as keyof Stats] += value;
-  else stats[name as keyof Stats] *= 1 + value;
+  if (operation == "+") {
+    stats[name as keyof Stats] += value;
+  } else {
+    const percentValue = 1 + value;
+    stats[name as keyof Stats] *= percentValue;
+  }
 
   return stats;
 }
 
 async function mergeStats(stats1: Stats, stats2: Stats, operation: "+" | "%") {
-  let stats = stats2;
-  for (const stat1 in stats1) {
-    const value1 = stats1[stat1 as keyof Stats];
-    if (typeof value1 !== "number") continue;
+  let targetStats;
+  let operationStats;
 
-    stats = await addToStat(stat1, value1, stats, operation);
+  if (operation === "+") {
+    targetStats = stats2;
+    operationStats = stats1;
+  } else {
+    targetStats = stats1;
+    operationStats = stats2;
   }
-  return stats;
+
+  for (const oStat in operationStats) {
+    const oValue = operationStats[oStat as keyof Stats];
+    if (typeof oValue !== "number") continue;
+
+    targetStats = await addToStat(oStat, oValue, targetStats, operation);
+  }
+  return targetStats;
+}
+
+function getArtifactSubstatValue(substat: Substat, operation: "+" | "%") {
+  const rolls = substat.rolls + 1;
+  let value = 0;
+  switch (substat.stat) {
+    case "CRIT_Rate":
+      if (operation === "+") value = 0.027;
+      break;
+    case "CRIT_DMG":
+      if (operation === "+") value = 0.054;
+      break;
+    case "ATK%":
+      if (operation === "%") value = 0.041;
+      break;
+    case "ATK":
+      if (operation === "+") value = 14;
+      break;
+    case "Elemental_Mastery":
+      if (operation === "+") value = 16;
+      break;
+    case "Energy_Recharge":
+      if (operation === "+") value = 0.045;
+      break;
+    case "HP%":
+      if (operation === "%") value = 0.041;
+      break;
+    case "HP":
+      if (operation === "+") value = 209;
+      break;
+    case "DEF%":
+      if (operation === "%") value = 0.041;
+      break;
+    case "DEF":
+      if (operation === "+") value = 16;
+      break;
+
+    default:
+      console.warn(`Unknown substat: ${substat.stat}`);
+  }
+
+  return value * rolls;
+}
+
+function getArtifactMainStatValue(stat: string, operation: "+" | "%") {
+  let value = 0;
+  switch (stat) {
+    case "HP":
+      if (operation === "+") value = 4662;
+      break;
+    case "ATK":
+      if (operation === "+") value = 311;
+      break;
+    case "ATK%":
+      if (operation === "%") value = 0.466;
+      break;
+    case "HP%":
+      if (operation === "%") value = 0.466;
+      break;
+    case "DEF%":
+      if (operation === "%") value = 0.583;
+      break;
+    case "Elemental_Mastery":
+      if (operation === "+") value = 187;
+      break;
+    case "Energy_Recharge":
+      if (operation === "+") value = 0.518;
+      break;
+    case "Physical_DMG_Bonus":
+      if (operation === "+") value = 0.583;
+      break;
+    case "Pyro_DMG_Bonus":
+      if (operation === "+") value = 0.466;
+      break;
+    case "Hydro_DMG_Bonus":
+      if (operation === "+") value = 0.466;
+      break;
+    case "Cryo_DMG_Bonus":
+      if (operation === "+") value = 0.466;
+      break;
+    case "Electro_DMG_Bonus":
+      if (operation === "+") value = 0.466;
+      break;
+    case "Dendro_DMG_Bonus":
+      if (operation === "+") value = 0.466;
+      break;
+    case "Anemo_DMG_Bonus":
+      if (operation === "+") value = 0.466;
+      break;
+    case "Geo_DMG_Bonus":
+      if (operation === "+") value = 0.466;
+      break;
+    case "Healing_Bonus":
+      if (operation === "+") value = 0.357;
+      break;
+    case "CRIT_Rate":
+      if (operation === "+") value = 0.311;
+      break;
+    case "CRIT_DMG":
+      if (operation === "+") value = 0.622;
+      break;
+
+    default:
+      console.warn(`Unknown main stat: ${stat}`);
+  }
+  return value;
 }

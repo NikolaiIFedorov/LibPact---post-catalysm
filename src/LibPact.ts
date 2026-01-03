@@ -1,4 +1,5 @@
 import { getBuild, type Investment } from "../types/build.ts";
+import { getArtifactPieces } from "../types/artifactPieces.ts";
 
 const investment: Investment = {
   characterAscession: 8,
@@ -8,10 +9,11 @@ const investment: Investment = {
 };
 
 const KazuhaBuild = await getBuild(
-  "Kazuha",
+  "Kazuha build name",
   "Kazuha",
   "Freedom",
   ["Viridescent"],
+  getArtifactPieces("Anemo"),
   investment
 );
 
