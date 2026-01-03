@@ -14,7 +14,11 @@ export type WeaponType = {
   weaponType: "sword" | "polearm" | "catalyst" | "bow" | "claymore";
 };
 
-export function getWeapon(name: string, level: number, refinement: number) {
+export async function getWeapon(
+  name: string,
+  level: number,
+  refinement: number
+) {
   const libWeapon = weaponsLib.find((w) => w.name.includes(name) === true);
 
   if (!libWeapon) {
@@ -22,7 +26,7 @@ export function getWeapon(name: string, level: number, refinement: number) {
     return null;
   }
 
-  const stats = getWeaponStats(libWeapon, level);
+  const stats = await getWeaponStats(libWeapon, level);
   const effect = null;
 
   const weapon: Weapon = {
@@ -32,5 +36,6 @@ export function getWeapon(name: string, level: number, refinement: number) {
     stats: stats,
     effect: effect,
   };
+
   return weapon;
 }

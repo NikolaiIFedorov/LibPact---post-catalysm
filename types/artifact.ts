@@ -39,7 +39,7 @@ export async function getArtifacts(sets: string[]) {
     if (artifactSets.length == 2) break;
   }
 
-  const artifact: ArtifactSet = {
+  const artifact: Artifacts = {
     sets: artifactSets,
     pieces: null,
   };

@@ -27,7 +27,7 @@ export async function getCharacter(
   }
 
   const talents: Talents = getTalents(libCharacter);
-  const stats: Stats = getCharacterStats(libCharacter, ascension);
+  const stats: Stats = await getCharacterStats(libCharacter, ascension);
 
   const parameters: Parameters = {
     element: libCharacter.element.id,

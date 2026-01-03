@@ -94,8 +94,11 @@ const defaultBuild: Stats = {
   Geo_DMG_Bonus: 0,
   Healing_Bonus: 0,
 };
-export function getCharacterStats(character: CharacterLib, ascension: number) {
-  let stats: Stats = defaultCharacter;
+export async function getCharacterStats(
+  character: CharacterLib,
+  ascension: number
+) {
+  let stats: Stats = { ...defaultCharacter };
 
   const characterStats = character.ascension[ascension - 1].stats;
   for (const stat of characterStats) {
@@ -114,7 +117,7 @@ export function getCharacterStats(character: CharacterLib, ascension: number) {
         stats.DEF += Number(stat.values[1]);
         break;
       default:
-        stats = addToStat(name, Number(stat.values[1]), stats, "+");
+        stats = await addToStat(name, Number(stat.values[1]), stats, "+");
         break;
     }
   }
@@ -122,8 +125,8 @@ export function getCharacterStats(character: CharacterLib, ascension: number) {
   return stats;
 }
 
-export function getWeaponStats(weapon: WeaponLib, level: number) {
-  let stats: Stats = defaultEquipment;
+export async function getWeaponStats(weapon: WeaponLib, level: number) {
+  let stats: Stats = { ...defaultEquipment };
 
   const weaponStats = weapon.stats;
 
@@ -142,58 +145,58 @@ export function getWeaponStats(weapon: WeaponLib, level: number) {
   }
 
   const primaryStatValue = Number(targetAscession.primary);
-  stats = addToStat("ATK", primaryStatValue, stats, "+");
-  stats = addToStat("Base_ATK", primaryStatValue, stats, "+");
+
+  stats = await addToStat("ATK", primaryStatValue, stats, "+");
+  stats = await addToStat("Base_ATK", primaryStatValue, stats, "+");
 
   const secondaryStatValue = Number(targetAscession.secondary);
   const secondaryStatName = weaponStats.secondary;
   if (secondaryStatName && targetAscession.secondary) {
-    stats = addToStat(secondaryStatName, secondaryStatValue, stats, "+");
+    stats = await addToStat(secondaryStatName, secondaryStatValue, stats, "+");
   }
-
   return stats;
 }
 
-export function getArtifactStats(pieceStats: Stats[]) {
-  let stats: Stats = defaultEquipment;
+export async function getArtifactStats(pieceStats: Stats[]) {
+  let stats: Stats = { ...defaultEquipment };
 
   for (const pieceStat of pieceStats) {
-    stats = mergeStats(stats, pieceStat, "+");
+    stats = await mergeStats(stats, pieceStat, "+");
   }
 
   return stats;
 }
 
-export function getBuildStats(
+export async function getBuildStats(
   character: Character | null,
   weapon: Weapon | null,
   artifacts: Artifacts | null
 ) {
-  let stats: Stats = defaultBuild;
+  let stats: Stats = { ...defaultBuild };
 
   if (character) {
     const characterStats = character.stats;
-    stats = mergeStats(stats, characterStats, "+");
+    stats = await mergeStats(stats, characterStats, "+");
   }
 
   if (weapon) {
     const weaponStats = weapon.stats;
 
-    stats = mergeStats(stats, weaponStats, "+");
+    stats = await mergeStats(stats, weaponStats, "+");
   }
 
   if (artifacts) {
     const pieces = artifacts.pieces;
     if (pieces) {
       const artifactStats = pieces.stats;
-      stats = mergeStats(stats, artifactStats, "%");
+      stats = await mergeStats(stats, artifactStats, "%");
     }
   }
 
   return stats;
 }
 
-function addToStat(
+async function addToStat(
   name: string,
   value: number,
   stats: Stats,
@@ -208,13 +211,13 @@ function addToStat(
   return stats;
 }
 
-function mergeStats(stats1: Stats, stats2: Stats, operation: "+" | "%") {
+async function mergeStats(stats1: Stats, stats2: Stats, operation: "+" | "%") {
   let stats = stats2;
   for (const stat1 in stats1) {
     const value1 = stats1[stat1 as keyof Stats];
     if (typeof value1 !== "number") continue;
 
-    stats = addToStat(stat1, value1, stats, operation);
+    stats = await addToStat(stat1, value1, stats, operation);
   }
   return stats;
 }

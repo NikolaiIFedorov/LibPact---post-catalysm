@@ -1,4 +1,4 @@
-import type { Element } from ".";
+import { Element } from ".";
 
 export type Parameters = {
   hexerei: boolean;

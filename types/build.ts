@@ -40,7 +40,7 @@ export async function getBuild(
     ascession,
     constellation
   );
-  const weaponBuild = getWeapon(weapon, level, refinement);
+  const weaponBuild = await getWeapon(weapon, level, refinement);
   const artifactsBuild = await getArtifacts(artifacts);
 
   const build: Build = {
@@ -48,7 +48,7 @@ export async function getBuild(
     character: characterBuild,
     weapon: weaponBuild,
     artifacts: artifactsBuild,
-    stats: getBuildStats(characterBuild, weaponBuild, artifactsBuild),
+    stats: await getBuildStats(characterBuild, weaponBuild, artifactsBuild),
   };
 
   return build;
