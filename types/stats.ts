@@ -180,7 +180,6 @@ export function getBuildStats(
     const weaponStats = weapon.stats;
 
     stats = mergeStats(stats, weaponStats, "+");
-    console.log(stats);
   }
 
   if (artifacts) {
