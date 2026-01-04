@@ -108,7 +108,7 @@ function splitName(name: string) {
 function instancesFromValues(values: string[]) {
   let instances = [];
   for (const value of values) {
-    let levelInstance = [];
+    let levelInstances = [];
     if (value.includes("+")) {
       const index = value.indexOf("+");
 
@@ -117,8 +117,8 @@ function instancesFromValues(values: string[]) {
       const instance1 = instanceFromSubvalue(strInstance1);
       const instance2 = instanceFromSubvalue(strInstance2);
 
-      levelInstance.push(instance1);
-      levelInstance.push(instance2);
+      levelInstances.push(instance1);
+      levelInstances.push(instance2);
     } else if (value.includes("×")) {
       const index = value.indexOf("×");
       const instanceCount = Number(value[index + 1]);
@@ -126,12 +126,13 @@ function instancesFromValues(values: string[]) {
       const instanceStr = value.substring(0, index);
       const instance = instanceFromSubvalue(instanceStr);
 
-      for (let i = 0; i < instanceCount; i++) levelInstance.push(instance);
+      for (let i = 0; i < instanceCount; i++) levelInstances.push(instance);
     } else {
       const instance = instanceFromSubvalue(value);
-      levelInstance.push(instance);
+      levelInstances.push(instance);
     }
-    instances.push(levelInstance);
+
+    instances.push(levelInstances);
   }
   return instances;
 }

@@ -23,21 +23,37 @@ export async function downloadData(table: Table) {
   return new Promise<string[]>((resolve, reject) => {
     const tableData: string[] = [];
     db.serialize(() => {
-      db.each(
-        `SELECT rowid AS id, info FROM ${table}`,
-        (err: Error, row: { id: number; info: string }) => {
-          if (err) {
-            console.error(err);
-          } else {
-            tableData.push(row.info);
-          }
-        },
-        (err: Error | null) => {
+      db.get(
+        `SELECT name FROM sqlite_master WHERE type='table' AND name=?`,
+        [table],
+        (err: Error | null, row: { name: string } | undefined) => {
           if (err) {
             reject(err);
-          } else {
-            resolve(tableData);
+            return;
           }
+
+          if (!row) {
+            resolve([]);
+            return;
+          }
+
+          db.each(
+            `SELECT rowid AS id, info FROM ${table}`,
+            (err: Error, row: { id: number; info: string }) => {
+              if (err) {
+                console.error(err);
+              } else {
+                tableData.push(row.info);
+              }
+            },
+            (err: Error | null) => {
+              if (err) {
+                reject(err);
+              } else {
+                resolve(tableData);
+              }
+            }
+          );
         }
       );
     });

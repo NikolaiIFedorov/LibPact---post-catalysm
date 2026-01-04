@@ -24,5 +24,5 @@
     "noFallthroughCasesInSwitch": true,
     "noUncheckedSideEffectImports": true
   },
-  "include": ["src", "frontend/ui", "backend/sql", "backend/db.ts", "types"]
+  "include": ["src", "frontend/ui", "src/backend/sql", "db/db.ts", "types"]
 }
