@@ -41,3 +41,5 @@ export { getTalents } from "./talent.ts";
 
 export type { Hit } from "./hit.ts";
 export { getHits } from "./hit.ts";
+
+export { uploadData } from "../backend/db.ts";

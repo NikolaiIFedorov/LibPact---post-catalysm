@@ -3,10 +3,8 @@ import type { Effect } from ".";
 export type Hit = {
   name: string;
   instances: Array<Number[]>;
-  element?: string;
-  time?: HitTime;
-  stamina?: number;
-  effects?: Effect[];
+  type: "dmg" | "parameter";
+  effecst?: Effect[];
 };
 
 export type HitTime = {
@@ -24,10 +22,14 @@ export function getHits(talents: any) {
       continue;
     }
 
+    const instances = instancesFromValues(attribute.values);
+
     const hit: Hit = {
       name: attribute.label,
-      instances: instancesFromValues(attribute.values),
+      instances: instances,
+      type: typeFromInstances(instances),
     };
+
     hits.push(hit);
   }
 
@@ -57,10 +59,18 @@ function hitsFromAttribute(attribute: any) {
   const names = splitName(attribute.label);
 
   const instance1 = instancesFromValues(value1);
-  const hit1: Hit = { name: names[0], instances: instance1 };
+  const hit1: Hit = {
+    name: names[0],
+    instances: instance1,
+    type: typeFromInstances(instance1),
+  };
 
   const instance2 = instancesFromValues(value2);
-  const hit2: Hit = { name: names[1], instances: instance1 };
+  const hit2: Hit = {
+    name: names[1],
+    instances: instance2,
+    type: typeFromInstances(instance2),
+  };
 
   const hits = [hit1, hit2];
 
@@ -132,4 +142,13 @@ function instanceFromSubvalue(subValue: string) {
 
   const instance = Number(cleanedValue) / 100;
   return instance;
+}
+
+function typeFromInstances(instances: Array<number[]>) {
+  const instance1 = instances[0][0];
+  const instance2 = instances[1][0];
+
+  if (instance1 == instance2 || (isNaN(instance1) && isNaN(instance2)))
+    return "parameter";
+  else return "dmg";
 }

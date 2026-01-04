@@ -10,11 +10,9 @@ const investment: Investment = {
 
 const KazuhaBuild = await getBuild(
   "Kazuha build name",
+  investment,
   "Kazuha",
   "Freedom",
   ["Viridescent"],
-  getArtifactPieces("Anemo"),
-  investment
+  getArtifactPieces("Anemo")
 );
-
-console.log(KazuhaBuild);

@@ -4,13 +4,18 @@ import {
   getArtifactPercentStats,
 } from "./index.ts";
 
-import type { Effect, Stats, ArtifactPieces } from ".";
+import {
+  type Effect,
+  type Stats,
+  type ArtifactPieces,
+  uploadData,
+} from "./index.ts";
 
 export type Artifacts = {
   name?: string;
   sets: Set[];
   pieces: ArtifactPieces;
-  stats: ArtifactStats;
+  stats?: ArtifactStats;
 };
 
 type ArtifactStats = {
@@ -54,6 +59,13 @@ export async function getArtifacts(sets: string[], pieces: ArtifactPieces) {
     pieces: pieces,
     stats: artifactStats,
   };
+
+  const sqlArtifacts = {
+    sets: sets,
+    pieces: pieces,
+  };
+
+  uploadData("artifacts", JSON.stringify(sqlArtifacts));
 
   return artifact;
 }

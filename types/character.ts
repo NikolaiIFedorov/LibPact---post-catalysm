@@ -1,5 +1,10 @@
 import type { Stats, Talents } from ".";
-import { charactersLib, getTalents, getCharacterStats } from "./index.ts";
+import {
+  charactersLib,
+  getTalents,
+  getCharacterStats,
+  uploadData,
+} from "./index.ts";
 
 export type Character = {
   name: string;
@@ -42,6 +47,14 @@ export async function getCharacter(
     stats: stats,
     parameters: parameters,
   };
+
+  const sqlCharacter = {
+    name: character.name,
+    ascension: character.ascension,
+    constellation: character.constellation,
+  };
+
+  uploadData("characters", JSON.stringify(sqlCharacter));
 
   return character;
 }

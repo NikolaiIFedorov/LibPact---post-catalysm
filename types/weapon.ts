@@ -1,6 +1,5 @@
-import { lib } from "./import/genshindata.ts";
 import type { Stats, Effect } from "./index.ts";
-import { weaponsLib, getWeaponStats } from "./index.ts";
+import { weaponsLib, getWeaponStats, uploadData } from "./index.ts";
 
 export type Weapon = {
   name: string;
@@ -36,6 +35,14 @@ export async function getWeapon(
     stats: stats,
     effect: effect,
   };
+
+  const sqlWeapon = {
+    name: weapon.name,
+    level: weapon.level,
+    refinement: weapon.refinement,
+  };
+
+  uploadData("weapons", JSON.stringify(sqlWeapon));
 
   return weapon;
 }

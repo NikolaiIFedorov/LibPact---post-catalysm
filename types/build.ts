@@ -10,6 +10,7 @@ import {
   getWeapon,
   getArtifacts,
   getBuildStats,
+  uploadData,
 } from "./index.ts";
 
 export type Build = {
@@ -30,11 +31,11 @@ export type Investment = {
 
 export async function getBuild(
   name: string,
-  character: string,
-  weapon: string,
-  artifactSets: string[],
-  artifactPieces: ArtifactPieces,
-  investment: Investment
+  investment: Investment,
+  character: string | null,
+  weapon: string | null,
+  artifactSets: string[] | null,
+  artifactPieces: ArtifactPieces | null
 ) {
   const ascession = investment.characterAscession;
   const constellation = investment.constellation;
@@ -42,13 +43,16 @@ export async function getBuild(
   const level = investment.weaponLevel;
   const refinement = investment.refinement;
 
-  const characterBuild = await getCharacter(
-    character,
-    ascession,
-    constellation
-  );
-  const weaponBuild = await getWeapon(weapon, level, refinement);
-  const artifactsBuild = await getArtifacts(artifactSets, artifactPieces);
+  let characterBuild: Character | null = null;
+  if (character)
+    characterBuild = await getCharacter(character, ascession, constellation);
+
+  let weaponBuild: Weapon | null = null;
+  if (weapon) weaponBuild = await getWeapon(weapon, level, refinement);
+  let artifactsBuild: Artifacts | null = null;
+
+  if (artifactSets && artifactPieces)
+    artifactsBuild = await getArtifacts(artifactSets, artifactPieces);
 
   const build: Build = {
     name: name,
@@ -58,5 +62,15 @@ export async function getBuild(
     stats: await getBuildStats(characterBuild, weaponBuild, artifactsBuild),
   };
 
+  const sqlBuild = {
+    name: name,
+    character: characterBuild?.name || "null",
+    weapon: weaponBuild?.name || "null",
+    sets: artifactsBuild?.sets,
+    pieces: artifactsBuild?.pieces,
+    investment: investment,
+  };
+
+  await uploadData("builds", JSON.stringify(sqlBuild));
   return build;
 }
