@@ -23,12 +23,8 @@ export default function RootLayout({
   children: React.ReactNode;
 }>) {
   return (
-    <html lang="en">
-      <body
-        className={`${geistSans.variable} ${geistMono.variable} antialiased`}
-      >
-        {children}
-      </body>
+    <html lang="en" color="hsla(0, 0%, 20%, 1)">
+      <body color="hsla(0, 0%, 20%, 1)">{children}</body>
     </html>
   );
 }

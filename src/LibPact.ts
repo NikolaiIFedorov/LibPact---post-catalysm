@@ -1,6 +1,5 @@
 import { getBuild, type Investment } from "../types/build.ts";
 import { getArtifactPieces } from "../types/artifactPieces.ts";
-import { downloadData } from "../db/db.ts";
 
 const investment: Investment = {
   characterAscession: 8,
