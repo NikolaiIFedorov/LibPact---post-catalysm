@@ -1,7 +1,7 @@
-import { downloadData, deleteData } from "../../../db/db";
-
 interface SectionProps {
   minWidth?: number;
+  minWidthMobile?: number;
+  minWidthDesktop?: number;
 
   color?: boolean;
   weight?: number;
@@ -12,6 +12,8 @@ interface SectionProps {
 
 export function Container({
   minWidth = 0,
+  minWidthMobile,
+  minWidthDesktop,
 
   color = false,
   weight,
@@ -19,10 +21,17 @@ export function Container({
   direction = "row",
   children,
 }: SectionProps) {
+  // Use specific mobile/desktop values if provided, otherwise fall back to minWidth
+  const mobileMin = minWidthMobile ?? minWidth;
+  const desktopMin = minWidthDesktop ?? minWidth;
+
   return (
     <div
+      className={`
+        ${mobileMin > 0 ? `min-w-[${mobileMin}px]` : ""}
+        ${desktopMin > 0 ? `md:min-w-[${desktopMin}px]` : ""}
+      `}
       style={{
-        minWidth: `${minWidth}px`,
         borderRadius: "var(--spacing)",
         backgroundColor: color ? "red" : "transparent",
 

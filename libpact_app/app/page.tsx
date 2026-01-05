@@ -13,7 +13,12 @@ export default function Home() {
           Builds
         </Section>
       </Container>
-      <Container weight={4} direction="column" minWidth={900}>
+      <Container
+        weight={4}
+        direction="column"
+        minWidthMobile={300}
+        minWidthDesktop={600}
+      >
         <Container weight={1.5} direction="column">
           <Section weight={2} layer={1}>
             Damage
