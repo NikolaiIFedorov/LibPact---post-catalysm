@@ -1,26 +1,32 @@
-interface SectionProps {
+interface Props {
   minWidth?: number;
   minWidthMobile?: number;
   minWidthDesktop?: number;
-
-  color?: boolean;
+  maxHeight?: number | null;
   weight?: number;
 
   direction?: "row" | "column";
   children?: React.ReactNode;
+  layer?: number;
+  fit?: boolean;
+
+  color?: boolean;
 }
 
 export function Container({
   minWidth = 0,
   minWidthMobile,
   minWidthDesktop,
-
-  color = false,
+  maxHeight = null,
   weight,
 
   direction = "row",
+  layer = 1,
   children,
-}: SectionProps) {
+  fit = false,
+
+  color = false,
+}: Props) {
   // Use specific mobile/desktop values if provided, otherwise fall back to minWidth
   const mobileMin = minWidthMobile ?? minWidth;
   const desktopMin = minWidthDesktop ?? minWidth;
@@ -36,10 +42,12 @@ export function Container({
         backgroundColor: color ? "red" : "transparent",
 
         display: "flex",
-        flex: `${weight}`,
+        flex: fit ? `0 1 ${weight}` : `${weight}`,
         flexDirection: direction,
+        maxHeight: maxHeight ? `${maxHeight}px` : undefined,
 
-        gap: "var(--spacing)",
+        gap: `calc(var(--spacing)/${layer})`,
+        height: fit ? "fit-content" : undefined,
       }}
     >
       {children}

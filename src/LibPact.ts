@@ -1,5 +1,8 @@
+import fs from "fs";
+
 import { getBuild, type Investment } from "../types/build.ts";
 import { getArtifactPieces } from "../types/artifactPieces.ts";
+import { url } from "inspector";
 
 const investment: Investment = {
   characterAscession: 8,
@@ -11,8 +14,13 @@ const investment: Investment = {
 const KazuhaBuild = await getBuild(
   "Kazuha build name",
   investment,
-  "Kazuha",
+  "Raiden",
   "Freedom",
   ["Viridescent"],
   getArtifactPieces("Anemo")
 );
+
+if (KazuhaBuild.character) {
+  console.log(KazuhaBuild.character.parameters.icon);
+  console.log(KazuhaBuild.character.parameters.sticker);
+}

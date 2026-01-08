@@ -1,17 +1,16 @@
 import { Container } from "./container";
 
 interface Props {
-  padding?: string;
   children?: React.ReactNode;
 }
 
-export function Page({ padding = "0", children }: Props) {
+export function Page({ children }: Props) {
   return (
     <div
       style={{
         width: `100%`,
         minHeight: `100vh`,
-        padding: "var(--spacing)",
+        padding: "20px",
 
         display: "flex",
         flexWrap: "wrap",

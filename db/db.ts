@@ -5,10 +5,9 @@ const sqlite3 = verbose();
 
 const db = new sqlite3.Database(":libpact:");
 
-type Table = "builds" | "characters" | "artifacts" | "weapons";
+type Table = "teams" | "builds" | "characters" | "artifacts" | "weapons";
 
 export async function uploadData(table: Table, data: string) {
-  deleteData(table);
   db.serialize(async () => {
     db.run(`CREATE TABLE IF NOT EXISTS ${table} (info TEXT)`);
 
@@ -23,6 +22,8 @@ export async function downloadData(table: Table) {
   return new Promise<string[]>((resolve, reject) => {
     const tableData: string[] = [];
     db.serialize(() => {
+      db.run(`CREATE TABLE IF NOT EXISTS ${table} (info TEXT)`);
+
       db.get(
         `SELECT name FROM sqlite_master WHERE type='table' AND name=?`,
         [table],
@@ -30,9 +31,7 @@ export async function downloadData(table: Table) {
           if (err) {
             reject(err);
             return;
-          }
-
-          if (!row) {
+          } else if (!row) {
             resolve([]);
             return;
           }
