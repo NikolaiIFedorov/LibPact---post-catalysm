@@ -1,4 +1,5 @@
 import type { Stats, Talents } from ".";
+import { downloadData } from "../db/db.ts";
 import {
   charactersLib,
   getTalents,
@@ -22,6 +23,14 @@ type Parameters = {
   sticker: string;
 };
 
+type SqlCharacter = {
+  name: string;
+  ascension: number;
+  constellation: number;
+  icon: string;
+  sticker: string;
+};
+
 export async function getCharacter(
   name: string,
   ascension: number,
@@ -38,6 +47,7 @@ export async function getCharacter(
 
   const icon = await getIcon(libCharacter.name);
   const sticker = await getSticker(libCharacter.name);
+
   const parameters: Parameters = {
     element: libCharacter.element.id,
     weapon: libCharacter.weapon_type.id,
@@ -54,10 +64,12 @@ export async function getCharacter(
     parameters: parameters,
   };
 
-  const sqlCharacter = {
+  const sqlCharacter: SqlCharacter = {
     name: character.name,
     ascension: character.ascension,
     constellation: character.constellation,
+    icon: character.parameters.icon,
+    sticker: character.parameters.sticker,
   };
 
   uploadData("characters", JSON.stringify(sqlCharacter));
@@ -66,6 +78,12 @@ export async function getCharacter(
 }
 
 async function getIcon(name: string) {
+  const charactersSql = await downloadData("characters");
+  for (const characterSql of charactersSql) {
+    const jsonCharacter: SqlCharacter = JSON.parse(characterSql);
+    if (jsonCharacter.name === name) return jsonCharacter.icon;
+  }
+
   const galleryResponse = await fetch(
     `https://genshin-impact.fandom.com/api.php?action=query&titles=${name}/Gallery&prop=images&imlimit=500&format=json&origin=*`
   );
@@ -96,6 +114,12 @@ async function getIcon(name: string) {
 }
 
 async function getSticker(name: string) {
+  const charactersSql = await downloadData("characters");
+  for (const characterSql of charactersSql) {
+    const jsonCharacter: SqlCharacter = JSON.parse(characterSql);
+    if (jsonCharacter.sticker === name) return jsonCharacter.sticker;
+  }
+
   const galleryResponse = await fetch(
     `https://genshin-impact.fandom.com/api.php?action=query&titles=${name}/Gallery&prop=images&imlimit=500&format=json&origin=*`
   );

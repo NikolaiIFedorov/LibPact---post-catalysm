@@ -5,7 +5,13 @@ const sqlite3 = verbose();
 
 const db = new sqlite3.Database(":libpact:");
 
-type Table = "teams" | "builds" | "characters" | "artifacts" | "weapons";
+type Table =
+  | "teams"
+  | "builds"
+  | "characters"
+  | "artifacts"
+  | "weapons"
+  | "extract";
 
 export async function uploadData(table: Table, data: string) {
   db.serialize(async () => {
