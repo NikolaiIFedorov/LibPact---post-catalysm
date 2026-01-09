@@ -19,6 +19,7 @@ export type Character = {
 type Parameters = {
   element: string;
   weapon: string;
+  affiliation: "hexerei" | "moonsign" | "none";
   icon: string;
   sticker: string;
 };
