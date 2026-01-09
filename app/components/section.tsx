@@ -1,4 +1,4 @@
-import { downloadData, deleteData } from "../../../db/db";
+import { downloadData, deleteData } from "../../db/db";
 
 interface SectionProps {
   weight?: number;

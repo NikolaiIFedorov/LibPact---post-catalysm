@@ -1,5 +1,5 @@
 import { Container, Icon, Section } from "./index";
-import { downloadData } from "../../../db/db";
+import { downloadData } from "../../db/db";
 
 interface BuildProps {
   weight?: number;

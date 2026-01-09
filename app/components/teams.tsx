@@ -1,5 +1,5 @@
 import { Section, Container, Icon } from "./index";
-import { deleteData, downloadData, uploadData } from "../../../db/db";
+import { deleteData, downloadData, uploadData } from "../../db/db";
 
 interface TeamsProps {
   weight?: number;
