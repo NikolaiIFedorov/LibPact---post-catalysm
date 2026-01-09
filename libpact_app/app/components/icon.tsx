@@ -1,10 +1,12 @@
+import React from "react";
+
 interface Props {
   layer: number;
 
-  weight?: number;
+  children?: React.ReactNode;
 }
 
-export function Icon({ layer, weight }: Props) {
+export function Icon({ layer, children }: Props) {
   return (
     <div
       style={{
@@ -15,6 +17,8 @@ export function Icon({ layer, weight }: Props) {
         borderRadius: `calc(var(--spacing) / ${layer})`,
       }}
       className={"Icon"}
-    ></div>
+    >
+      {children}
+    </div>
   );
 }

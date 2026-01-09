@@ -16,10 +16,12 @@ export function Build({ weight }: BuildProps) {
 function BuildList() {
   return (
     <Container layer={2} weight={1} fit={true}>
-      <Icon layer={2} weight={1} />
-      <Icon layer={2} weight={1} />
-      <Icon layer={2} weight={1} />
-      <Icon layer={2} weight={1} />
+      <Icon layer={2}>
+        <img src="https://static.wikia.nocookie.net/gensin-impact/images/e/e3/Kaedehara_Kazuha_Icon.png"></img>
+      </Icon>
+      <Icon layer={2}></Icon>
+      <Icon layer={2}></Icon>
+      <Icon layer={2}></Icon>
     </Container>
   );
 }

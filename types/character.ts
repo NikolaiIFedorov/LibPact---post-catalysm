@@ -55,6 +55,9 @@ export async function getCharacter(
     sticker: sticker,
   };
 
+  console.log(icon);
+  console.log(sticker);
+
   const character: Character = {
     name: libCharacter.name,
     ascension: ascension,
@@ -78,11 +81,11 @@ export async function getCharacter(
 }
 
 async function getIcon(name: string) {
-  const charactersSql = await downloadData("characters");
+  /*const charactersSql = await downloadData("characters");
   for (const characterSql of charactersSql) {
     const jsonCharacter: SqlCharacter = JSON.parse(characterSql);
     if (jsonCharacter.name === name) return jsonCharacter.icon;
-  }
+  }*/
 
   const galleryResponse = await fetch(
     `https://genshin-impact.fandom.com/api.php?action=query&titles=${name}/Gallery&prop=images&imlimit=500&format=json&origin=*`
@@ -110,15 +113,16 @@ async function getIcon(name: string) {
 
     if (iconUrl) images.push(iconUrl);
   }
+
   return images[0];
 }
 
 async function getSticker(name: string) {
-  const charactersSql = await downloadData("characters");
+  /*const charactersSql = await downloadData("characters");
   for (const characterSql of charactersSql) {
     const jsonCharacter: SqlCharacter = JSON.parse(characterSql);
     if (jsonCharacter.sticker === name) return jsonCharacter.sticker;
-  }
+  }*/
 
   const galleryResponse = await fetch(
     `https://genshin-impact.fandom.com/api.php?action=query&titles=${name}/Gallery&prop=images&imlimit=500&format=json&origin=*`
