@@ -1,10 +1,6 @@
-import { Container, Section } from "./index";
+import { Container, Section, FC, FlexProps } from "./index";
 
-interface OutputProps {
-  weight?: number;
-}
-
-export function Output({ weight }: OutputProps) {
+export const Output: FC<FlexProps> = ({ weight }) => {
   return (
     <Container
       weight={weight}
@@ -31,4 +27,4 @@ export function Output({ weight }: OutputProps) {
       </Container>
     </Container>
   );
-}
+};

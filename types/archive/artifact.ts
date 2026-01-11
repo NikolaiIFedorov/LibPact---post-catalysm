@@ -2,14 +2,14 @@ import {
   artifactsLib,
   getArtifactFlatStats,
   getArtifactPercentStats,
-} from "./index.ts";
+} from "../index.ts";
 
 import {
   type Effect,
   type Stats,
   type ArtifactPieces,
   uploadData,
-} from "./index.ts";
+} from "../index.ts";
 
 export type Artifacts = {
   name?: string;

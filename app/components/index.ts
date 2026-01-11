@@ -1,7 +1,6 @@
-export { Page } from "./page";
-export { Container } from "./container";
-export { Section } from "./section";
-export { Icon } from "./icon";
+export type { FCParent, FC, FlexProps } from "./Structure/index";
 
-export { Build } from "./build";
-export { Teams } from "./teams";
+export { Container } from "./Structure/container";
+export { Section } from "./Structure/section";
+export { Teams } from "./Input/teams";
+export { Build } from "./Input/build";

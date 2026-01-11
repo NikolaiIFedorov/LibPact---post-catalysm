@@ -6,7 +6,7 @@ import type {
   Artifacts,
   ArtifactPieces,
   Substat,
-} from "./index.ts";
+} from "../index";
 
 export type Stats = {
   ATK: number;

@@ -4,14 +4,14 @@ import type {
   Weapon,
   Artifacts,
   ArtifactPieces,
-} from "./index.ts";
+} from "../index.ts";
 import {
   getCharacter,
   getWeapon,
   getArtifacts,
   getBuildStats,
   uploadData,
-} from "./index.ts";
+} from "../index.ts";
 
 export type Build = {
   name: string;

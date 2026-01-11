@@ -1,3 +1,3 @@
-import type { Effect } from ".";
+import type { Effect } from "..";
 
 export type Moonsign = Effect[];

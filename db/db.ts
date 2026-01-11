@@ -3,74 +3,58 @@ const { verbose } = pkg;
 
 const sqlite3 = verbose();
 
-const db = new sqlite3.Database(":libpact:");
+const db = new sqlite3.Database("./db/:libpact:");
 
-type Table =
-  | "teams"
-  | "builds"
-  | "characters"
-  | "artifacts"
-  | "weapons"
-  | "extract";
+type Name = "teams";
 
-export async function uploadData(table: Table, data: string) {
-  db.serialize(async () => {
-    db.run(`CREATE TABLE IF NOT EXISTS ${table} (info TEXT)`);
+type Data = {
+  name: string;
+  type: "boolean" | "number" | "string";
+};
 
-    const stmt = db.prepare(`INSERT INTO ${table} VALUES (?)`);
-    stmt.run(data);
+const createTableIfNotExists = (table: Table) => {
+  const fields = table.data
+    .map((field) => `${field.name} ${field.type}`)
+    .join(", ");
+  db.run(`CREATE TABLE IF NOT EXISTS ${table.name} (${fields})`);
+};
 
-    stmt.finalize();
-  });
-}
-
-export async function downloadData(table: Table) {
-  return new Promise<string[]>((resolve, reject) => {
-    const tableData: string[] = [];
-    db.serialize(() => {
-      db.run(`CREATE TABLE IF NOT EXISTS ${table} (info TEXT)`);
-
-      db.get(
-        `SELECT name FROM sqlite_master WHERE type='table' AND name=?`,
-        [table],
-        (err: Error | null, row: { name: string } | undefined) => {
-          if (err) {
-            reject(err);
-            return;
-          } else if (!row) {
-            resolve([]);
-            return;
-          }
-
-          db.each(
-            `SELECT rowid AS id, info FROM ${table}`,
-            (err: Error, row: { id: number; info: string }) => {
-              if (err) {
-                console.error(err);
-              } else {
-                tableData.push(row.info);
-              }
-            },
-            (err: Error | null) => {
-              if (err) {
-                reject(err);
-              } else {
-                resolve(tableData);
-              }
-            }
-          );
-        }
-      );
-    });
-  });
-}
-
-export async function deleteData(table: Table) {
-  db.serialize(() => {
-    db.run(`DELETE FROM ${table}`, function (err) {
+const downloadData = (name: Name): Promise<string[]> => {
+  return new Promise((resolve, reject) => {
+    db.all(`SELECT * FROM ${name}`, (err, rows: any[]) => {
       if (err) {
-        return console.error(err.message);
+        reject(err);
+      } else {
+        const data = rows.map((row) => row.data as string);
+        resolve(data);
       }
     });
   });
+};
+
+class Table {
+  private static instance: Table | null = null;
+  name: Name;
+  data: Array<Data>;
+
+  private constructor(name: Name, data: Array<Data>) {
+    this.name = name;
+    this.data = data;
+    createTableIfNotExists(this);
+  }
+
+  static getInstance(name: Name, data: Array<Data>): Table {
+    if (!Table.instance) {
+      Table.instance = new Table(name, data);
+    }
+    return Table.instance;
+  }
+
+  get(): Promise<string[]> {
+    return downloadData(this.name);
+  }
 }
+
+export const dbTeams: Table = Table.getInstance("teams", [
+  { name: "name", type: "string" },
+]);

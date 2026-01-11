@@ -1,11 +1,12 @@
-import type { Stats, Talents } from ".";
+import type { Stats, Talents, Element } from "../index.ts";
 import { downloadData } from "../db/db.ts";
 import {
   charactersLib,
   getTalents,
   getCharacterStats,
   uploadData,
-} from "./index.ts";
+} from "../index.ts";
+import { lib } from "./import/genshindata.ts";
 
 export type Character = {
   name: string;
@@ -17,7 +18,7 @@ export type Character = {
 };
 
 type Parameters = {
-  element: string;
+  element: Element;
   weapon: string;
   affiliation: "hexerei" | "moonsign" | "none";
   icon: string;
@@ -50,8 +51,9 @@ export async function getCharacter(
   const sticker = await getSticker(libCharacter.name);
 
   const parameters: Parameters = {
-    element: libCharacter.element.id,
+    element: libCharacter.element.id as Element,
     weapon: libCharacter.weapon_type.id,
+    affiliation: libCharacter.affiliation as "hexerei" | "moonsign" | "none",
     icon: icon,
     sticker: sticker,
   };

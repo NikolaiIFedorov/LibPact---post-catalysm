@@ -1,12 +1,6 @@
-import React from "react";
+import { FCParent } from "./index";
 
-interface Props {
-  layer: number;
-
-  children?: React.ReactNode;
-}
-
-export function Icon({ layer, children }: Props) {
+export const Icon: FCParent<{ layer: number }> = ({ layer, children }) => {
   return (
     <div
       style={{
@@ -21,4 +15,4 @@ export function Icon({ layer, children }: Props) {
       {children}
     </div>
   );
-}
+};

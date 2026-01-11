@@ -1,5 +1,5 @@
-import type { Stats, Effect } from "./index.ts";
-import { weaponsLib, getWeaponStats, uploadData } from "./index.ts";
+import type { Stats, Effect } from "../index.ts";
+import { weaponsLib, getWeaponStats, uploadData } from "../index.ts";
 
 export type Weapon = {
   name: string;

@@ -1,6 +1,6 @@
-import { downloadData, deleteData } from "../../db/db";
+import { FCParent } from "./index";
 
-interface SectionProps {
+export const Section: FCParent<{
   weight?: number;
   height?: number;
   maxHeight?: number;
@@ -9,11 +9,8 @@ interface SectionProps {
 
   layer?: number;
 
-  children?: React.ReactNode;
   direction?: "row" | "column";
-}
-
-export function Section({
+}> = ({
   weight,
   maxHeight,
   maxWidth,
@@ -23,7 +20,7 @@ export function Section({
 
   children,
   direction = "row",
-}: SectionProps) {
+}) => {
   return (
     <div
       style={{
@@ -46,4 +43,4 @@ export function Section({
       {children}
     </div>
   );
-}
+};

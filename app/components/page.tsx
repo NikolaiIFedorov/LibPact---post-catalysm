@@ -1,10 +1,6 @@
-import { Container } from "./container";
+import { type FCParent } from "./index";
 
-interface Props {
-  children?: React.ReactNode;
-}
-
-export function Page({ children }: Props) {
+export const Page: FCParent = ({ children }) => {
   return (
     <div
       style={{
@@ -21,4 +17,4 @@ export function Page({ children }: Props) {
       {children}
     </div>
   );
-}
+};

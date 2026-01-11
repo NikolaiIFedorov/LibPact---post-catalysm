@@ -1,5 +1,5 @@
-import type { Hit, CharacterLib } from ".";
-import { getHits } from "./index.ts";
+import type { Hit, CharacterLib } from "../index.ts";
+import { getHits } from "../index.ts";
 
 type Talent = {
   name: string;
