@@ -75,12 +75,9 @@ export type Team = {
   inputData?: Inputs;
 };
 
-export function getTeam(data?: string | Inputs): Team {
+export function getTeam(data?: Inputs): Team {
   let team: Team = {};
   switch (typeof data) {
-    case "string":
-      team.name = data;
-      break;
     case "undefined":
       team.name = "Unnamed";
       break;

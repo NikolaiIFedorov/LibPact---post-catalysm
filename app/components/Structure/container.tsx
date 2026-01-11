@@ -5,10 +5,13 @@ export const Container: FCParent<{
   minWidthMobile?: number;
   minWidthDesktop?: number;
   weight?: number;
+  height?: string;
+  maxHeight?: number | string;
 
   direction?: "row" | "column";
   layer?: number;
-  fit?: boolean;
+  fit?: "content" | "parent" | false;
+  overflow?: "scroll" | "hidden" | "auto";
 
   color?: boolean;
 }> = ({
@@ -16,11 +19,14 @@ export const Container: FCParent<{
   minWidthMobile,
   minWidthDesktop,
   weight,
+  height,
+  maxHeight,
 
   direction = "row",
   children,
   layer = 1,
   fit = false,
+  overflow = "auto",
 
   color = false,
 }) => {
@@ -28,6 +34,30 @@ export const Container: FCParent<{
   const mobileMin = minWidthMobile ?? minWidth;
   const desktopMin = minWidthDesktop ?? minWidth;
 
+  let flex: string;
+  switch (fit) {
+    case "content":
+      flex = `0 0 auto`;
+      break;
+    case "parent":
+      flex = `0 1 ${weight}`;
+      break;
+    default:
+      flex = `${weight}`;
+  }
+
+  let maxH: string;
+  switch (typeof maxHeight) {
+    case "undefined":
+      maxH = "none";
+      break;
+    case "string":
+      maxH = maxHeight;
+      break;
+    case "number":
+      maxH = `${maxHeight}px`;
+      break;
+  }
   return (
     <div
       className={`
@@ -35,15 +65,15 @@ export const Container: FCParent<{
         ${desktopMin > 0 ? `md:min-w-[${desktopMin}px]` : ""}
       `}
       style={{
-        borderRadius: "var(--spacing)",
+        borderRadius: `calc(var(--spacing)/${layer})`,
         backgroundColor: color ? "red" : "transparent",
+        maxHeight: maxH,
 
         display: "flex",
-        flex: fit ? `0 1 ${weight}` : `${weight}`,
+        flex: flex,
         flexDirection: direction,
-
         gap: `calc(var(--spacing)/${layer})`,
-        height: fit ? "fit-content" : undefined,
+        overflow: overflow,
       }}
     >
       {children}

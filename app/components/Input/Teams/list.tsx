@@ -5,5 +5,9 @@ export const List: React.FC<{ teams: Team[] }> = ({ teams }) => {
 
   if (icons.length === 0) icons.push(<Icon key="empty" layer={2} />);
 
-  return <Container direction="column">{icons}</Container>;
+  return (
+    <Container layer={2} direction="column" weight={1} overflow="scroll">
+      {icons}
+    </Container>
+  );
 };

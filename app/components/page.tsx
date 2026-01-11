@@ -3,10 +3,11 @@ import { type FCParent } from "./index";
 export const Page: FCParent = ({ children }) => {
   return (
     <div
+      className="md:h-screen md:max-h-screen"
       style={{
         width: `100%`,
-        minHeight: `100vh`,
-        padding: "20px",
+        height: `100vh`,
+        padding: "var(--spacing)",
 
         display: "flex",
         flexWrap: "wrap",
