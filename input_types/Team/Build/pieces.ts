@@ -1,11 +1,3 @@
-export type ArtifactPieces = {
-  flower?: Flower;
-  plume?: Plume;
-  sands?: Sands;
-  goblet?: Goblet;
-  circlet?: Circlet;
-};
-
 export type Substat = {
   stat:
     | "HP"
@@ -64,6 +56,14 @@ type Circlet = {
     | "CRIT_DMG"
     | "Healing_Bonus";
   subStats: Substat[];
+};
+
+export type ArtifactPieces = {
+  flower?: Flower;
+  plume?: Plume;
+  sands?: Sands;
+  goblet?: Goblet;
+  circlet?: Circlet;
 };
 
 export function getArtifactPieces(

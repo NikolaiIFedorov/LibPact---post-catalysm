@@ -1,12 +1,13 @@
+"use client";
+
 import { FCParent } from "./index.ts";
 
 export const Container: FCParent<{
-  minWidth?: number;
-  minWidthMobile?: number;
-  minWidthDesktop?: number;
   weight?: number;
-  height?: string;
+
+  minWidth?: number;
   maxHeight?: number | string;
+  height?: string;
 
   direction?: "row" | "column";
   layer?: number;
@@ -14,13 +15,13 @@ export const Container: FCParent<{
   overflow?: "scroll" | "hidden" | "auto";
 
   color?: boolean;
+  className?: string;
 }> = ({
-  minWidth = 0,
-  minWidthMobile,
-  minWidthDesktop,
   weight,
-  height,
+
+  minWidth = 0,
   maxHeight,
+  height,
 
   direction = "row",
   children,
@@ -29,11 +30,8 @@ export const Container: FCParent<{
   overflow = "auto",
 
   color = false,
+  className,
 }) => {
-  // Use specific mobile/desktop values if provided, otherwise fall back to minWidth
-  const mobileMin = minWidthMobile ?? minWidth;
-  const desktopMin = minWidthDesktop ?? minWidth;
-
   let flex: string;
   switch (fit) {
     case "content":
@@ -46,7 +44,7 @@ export const Container: FCParent<{
       flex = `${weight}`;
   }
 
-  let maxH: string;
+  let maxH: string = "none";
   switch (typeof maxHeight) {
     case "undefined":
       maxH = "none";
@@ -58,22 +56,23 @@ export const Container: FCParent<{
       maxH = `${maxHeight}px`;
       break;
   }
+
   return (
     <div
-      className={`
-        ${mobileMin > 0 ? `min-w-[${mobileMin}px]` : ""}
-        ${desktopMin > 0 ? `md:min-w-[${desktopMin}px]` : ""}
-      `}
+      className={className}
       style={{
         borderRadius: `calc(var(--spacing)/${layer})`,
         backgroundColor: color ? "red" : "transparent",
+        height: height ? height : fit ? "fit-content" : "none",
         maxHeight: maxH,
+        minWidth: minWidth ? `${minWidth}px` : "auto",
 
         display: "flex",
         flex: flex,
         flexDirection: direction,
         gap: `calc(var(--spacing)/${layer})`,
         overflow: overflow,
+        scrollbarWidth: "none",
       }}
     >
       {children}

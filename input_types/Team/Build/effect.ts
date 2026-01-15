@@ -1,4 +1,4 @@
-import type { Stats } from "..";
+import type { Stats } from ".";
 
 export type Effect = {
   target: Target;

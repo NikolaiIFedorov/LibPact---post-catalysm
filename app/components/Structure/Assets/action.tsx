@@ -1,9 +1,9 @@
-import { FCParent } from "./index";
+import { FCParent } from "../index";
 
-export const Icon: FCParent<{ layer: number }> = ({ layer, children }) => {
+export const Action: FCParent<{ layer: number }> = ({ layer, children }) => {
   return (
     <div
-      className={`w-[32px] md:w-[64px]`}
+      className={`w-[8px] md:w-[16px]`}
       style={{
         aspectRatio: "1 / 1",
         backgroundColor: `hsl(0, 0%, ${15 * layer}%)`,

@@ -1,19 +1,22 @@
-import { dbTeams } from "@/db/db";
-import { Container, Teams, Build, FC, FlexProps } from "./index";
+"use client";
 
-export const Input: FC<FlexProps> = async ({ weight }) => {
-  const teams = await dbTeams.get();
+import { Container, TeamList, TeamDesc, FC, FlexProps, Team } from "./index";
+import { useState } from "react";
+
+export const Input: FC<FlexProps & { teams: Team[] }> = ({ weight, teams }) => {
+  const [selected, handleSelect] = useState<Team | undefined>(undefined);
 
   return (
     <Container
       weight={weight}
       fit="content"
-      height="100%"
       layer={1}
-      maxHeight="100%"
+      maxHeight="50vw"
+      height="100%"
+      className="sm:min-h-[100%]"
     >
-      <Teams weight={1} db={teams} />
-      <Build weight={4} />
+      <TeamList teams={teams} handleSelect={handleSelect} />
+      <TeamDesc team={selected} />
     </Container>
   );
 };

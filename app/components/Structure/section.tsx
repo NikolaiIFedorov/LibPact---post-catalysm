@@ -2,7 +2,7 @@ import { FCParent } from "./index";
 
 export const Section: FCParent<{
   weight?: number;
-  height?: number;
+  height?: string;
   maxHeight?: number | string;
   maxWidth?: number;
   minWidth?: number;
@@ -13,9 +13,10 @@ export const Section: FCParent<{
   direction?: "row" | "column";
 }> = ({
   weight,
-  maxHeight,
   maxWidth,
   minWidth,
+  maxHeight,
+  height,
 
   layer = 1,
   fit = false,
@@ -47,12 +48,14 @@ export const Section: FCParent<{
       maxH = `${maxHeight}px`;
       break;
   }
+
   return (
     <div
       style={{
         maxHeight: maxH,
         minWidth: minWidth ? `${minWidth}px` : "none",
         maxWidth: maxWidth ? `${maxWidth}px` : "none",
+        height: height ? height : "none",
         borderRadius: `calc(var(--spacing)/${layer})`,
 
         backgroundColor: `hsl(0, 0%, ${15 * layer}%)`,

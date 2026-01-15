@@ -2,13 +2,7 @@ import { Container, Section, FC, FlexProps } from "./index";
 
 export const Output: FC<FlexProps> = ({ weight }) => {
   return (
-    <Container
-      weight={weight}
-      direction="column"
-      minWidthMobile={300}
-      minWidthDesktop={600}
-      layer={1}
-    >
+    <Container weight={weight} direction="column" minWidth={300} layer={1}>
       <Container weight={1.5} direction="column" layer={1}>
         <Section weight={2} layer={1}>
           Damage

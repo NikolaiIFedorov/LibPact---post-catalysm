@@ -1,5 +1,10 @@
-import type { Stats, Effect } from "../index.ts";
-import { weaponsLib, getWeaponStats, uploadData } from "../index.ts";
+import {
+  type Stats,
+  type Effect,
+  weaponsLib,
+  getWeaponStats,
+  getUnnamed,
+} from "./index.ts";
 
 export type Weapon = {
   name: string;
@@ -7,7 +12,7 @@ export type Weapon = {
   refinement: number;
   stats: Stats;
   effect: Effect | null;
-};
+} | null;
 
 export type WeaponType = {
   weaponType: "sword" | "polearm" | "catalyst" | "bow" | "claymore";
@@ -16,7 +21,8 @@ export type WeaponType = {
 export async function getWeapon(
   name: string,
   level: number,
-  refinement: number
+  refinement: number,
+  buildName?: string
 ) {
   const libWeapon = weaponsLib.find((w) => w.name.includes(name) === true);
 
@@ -35,14 +41,6 @@ export async function getWeapon(
     stats: stats,
     effect: effect,
   };
-
-  const sqlWeapon = {
-    name: weapon.name,
-    level: weapon.level,
-    refinement: weapon.refinement,
-  };
-
-  uploadData("weapons", JSON.stringify(sqlWeapon));
 
   return weapon;
 }

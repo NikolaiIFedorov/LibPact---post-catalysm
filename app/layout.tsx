@@ -23,8 +23,8 @@ export default function RootLayout({
   children: React.ReactNode;
 }>) {
   return (
-    <html lang="en" color="hsla(0, 0%, 20%, 1)">
-      <body color="hsla(0, 0%, 20%, 1)">{children}</body>
+    <html lang="en">
+      <body>{children}</body>
     </html>
   );
 }

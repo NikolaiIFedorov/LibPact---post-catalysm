@@ -6,7 +6,7 @@ import type {
   Artifacts,
   ArtifactPieces,
   Substat,
-} from "../index";
+} from "./index";
 
 export type Stats = {
   ATK: number;
@@ -222,10 +222,10 @@ export async function getBuildStats(
   }
 
   if (artifacts) {
-    const artifactPercentStats = artifacts.stats.percent;
+    const artifactPercentStats = artifacts.stats?.stats.percent;
     stats = await mergeStats(stats, artifactPercentStats, "%");
 
-    const artifactFlatStats = artifacts.stats.flat;
+    const artifactFlatStats = artifacts.stats?.stats.flat;
     stats = await mergeStats(stats, artifactFlatStats, "+");
   }
 
@@ -251,7 +251,12 @@ async function addToStat(
   return stats;
 }
 
-async function mergeStats(stats1: Stats, stats2: Stats, operation: "+" | "%") {
+async function mergeStats(
+  stats1: Stats,
+  stats2: Stats | undefined,
+  operation: "+" | "%"
+) {
+  if (!stats2) return stats1;
   let targetStats;
   let operationStats;
 

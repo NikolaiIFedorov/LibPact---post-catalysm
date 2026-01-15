@@ -3,11 +3,13 @@ import { type FCParent } from "./index";
 export const Page: FCParent = ({ children }) => {
   return (
     <div
-      className="md:h-screen md:max-h-screen"
+      className={"sm:h-screen flex-col sm:flex-row"}
       style={{
+        minHeight: "100vh",
         width: `100%`,
-        height: `100vh`,
         padding: "var(--spacing)",
+
+        flex: "1 0 1",
 
         display: "flex",
         flexWrap: "wrap",
