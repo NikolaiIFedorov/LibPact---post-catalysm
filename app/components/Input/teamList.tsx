@@ -1,40 +1,41 @@
 "use client";
 
-import { useReducer, useEffect } from "react";
+import { useCallback, useEffect, useReducer } from "react";
 import { FC, Section, List, Actions, getTeam, Team } from "./index";
+import { InputTypeInstances } from "@/input_types/Team/index";
 
 export const TeamList: FC<{
+  layer: number;
   teams: Team[];
-  handleSelect: (team: Team) => void;
-}> = ({ teams, handleSelect }) => {
-  const [teamsState, updateTeams] = useReducer(modify, teams);
+  names: InputTypeInstances;
+  handleSelectAction: (team: Team) => void;
+}> = ({ layer, teams, names, handleSelectAction }) => {
+  const modifyWithNames = useCallback(() => modify(names), [names]);
+  const [teamList, updateTeams] = useReducer(modifyWithNames(), teams);
 
   useEffect(() => {
-    if (teamsState.length === 0) {
-      updateTeams("add");
-    }
-  }, []);
-
-  useEffect(() => {
-    if (teamsState.length === 1) {
-      handleSelect(teamsState[0]);
-    }
-  }, [teamsState]);
+    if (teamList.length === 1) handleSelectAction(teams[0]);
+  }, [teams]);
 
   return (
-    <Section layer={1} direction="column" fit="content">
-      <List teams={teamsState} handleSelect={handleSelect} />
-      <Actions handleAdd={() => updateTeams("add")} />
+    <Section layer={layer} direction="column" fit="content">
+      <List
+        layer={layer + 1}
+        teams={teamList}
+        handleSelectAction={handleSelectAction}
+      />
+      <Actions layer={layer + 1} handleAdd={() => updateTeams("add")} />
     </Section>
   );
 };
 
-const modify = (teams: Team[], action: "add") => {
-  switch (action) {
-    case "add":
-      return [...teams, getTeam()];
-    default:
-      console.warn(`Unkown action: ${JSON.stringify(action)}`);
-      return teams;
-  }
-};
+const modify =
+  (names: InputTypeInstances) => (teams: Team[], action: "add") => {
+    switch (action) {
+      case "add":
+        return [...teams, getTeam(names)];
+      default:
+        console.warn(`Unknown action: ${JSON.stringify(action)}`);
+        return teams;
+    }
+  };

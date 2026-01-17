@@ -3,26 +3,33 @@
 import { Button, Icon, Container, Team, FC } from "./index";
 
 const TeamIcon: FC<{
-  handleSelect: (team: Team) => void;
+  layer: number;
+  handleSelectAction: (team: Team) => void;
   team: Team;
-}> = ({ handleSelect, team }) => {
+}> = ({ layer, handleSelectAction, team }) => {
   return (
-    <Button onClick={() => handleSelect(team)}>
-      <Icon layer={2} />
+    <Button onClick={() => handleSelectAction(team)}>
+      <Icon layer={layer} />
     </Button>
   );
 };
 
 export const List: React.FC<{
+  layer: number;
   teams: Team[];
-  handleSelect: (team: Team) => void;
-}> = ({ teams, handleSelect }) => {
+  handleSelectAction: (team: Team) => void;
+}> = ({ layer, teams, handleSelectAction }) => {
   const teamIcons = teams.map((team) => (
-    <TeamIcon key={team.name} handleSelect={handleSelect} team={team} />
+    <TeamIcon
+      layer={layer}
+      key={team.name}
+      handleSelectAction={handleSelectAction}
+      team={team}
+    />
   ));
 
   return (
-    <Container layer={2} direction="column" weight={1} overflow="scroll">
+    <Container layer={layer} direction="column" weight={1} overflow="scroll">
       {teamIcons}
     </Container>
   );

@@ -61,7 +61,7 @@ export const Container: FCParent<{
     <div
       className={className}
       style={{
-        borderRadius: `calc(var(--spacing)/${layer})`,
+        borderRadius: `calc(var(--spacing)/${layer + 1})`,
         backgroundColor: color ? "red" : "transparent",
         height: height ? height : fit ? "fit-content" : "none",
         maxHeight: maxH,
@@ -70,7 +70,7 @@ export const Container: FCParent<{
         display: "flex",
         flex: flex,
         flexDirection: direction,
-        gap: `calc(var(--spacing)/${layer})`,
+        gap: `calc(var(--spacing)/${layer + 1})`,
         overflow: overflow,
         scrollbarWidth: "none",
       }}

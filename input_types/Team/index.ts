@@ -1,4 +1,4 @@
-export { getUnnamed } from "../index.ts";
+export { getUnnamed, type InputTypeInstances } from "../index.ts";
 
 export { type Character, getCharacter } from "./Build/character.ts";
 export { type Weapon, getWeapon } from "./Build/weapon.ts";

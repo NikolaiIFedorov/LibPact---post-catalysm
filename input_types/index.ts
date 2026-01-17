@@ -1,15 +1,9 @@
 export type InputType = "team" | "build" | "artifacts";
-type InputTypeInstances = Record<InputType, number>;
+export type InputTypeInstances = Record<InputType, number>;
 
-let names: InputTypeInstances = {
-  team: 1,
-  build: 1,
-  artifacts: 1,
-};
-
-export function getUnnamed(data: InputType): string {
+export function getUnnamed(data: InputType, names: InputTypeInstances): string {
   const instances = names[data]++;
-  const name = "Unnamed" + (instances > 1 ? ` ${instances}` : "");
+  const name = "Unnamed" + (instances > 0 ? ` ${instances}` : "");
   return name;
 }
 

@@ -3,3 +3,10 @@
 :root {
   --spacing: 15px;
 }
+
+html,
+body {
+  font-family: var(--font-comfortaa), sans-serif;
+  font-weight: 700;
+  font-style: normal;
+}

@@ -51,17 +51,21 @@ export const Section: FCParent<{
 
   return (
     <div
+      className="font-sans"
       style={{
         maxHeight: maxH,
         minWidth: minWidth ? `${minWidth}px` : "none",
         maxWidth: maxWidth ? `${maxWidth}px` : "none",
         height: height ? height : "none",
         borderRadius: `calc(var(--spacing)/${layer})`,
-
         backgroundColor: `hsl(0, 0%, ${15 * layer}%)`,
+        flex: flex,
+
         color: `hsl(0, 0%, ${15 * layer + 45}%)`,
 
-        flex: flex,
+        fontFamily: "inherit",
+        fontSize: `calc(var(--spacing) - ${layer - 1}px)`,
+        textAlign: "left",
 
         display: "flex",
         flexDirection: direction,

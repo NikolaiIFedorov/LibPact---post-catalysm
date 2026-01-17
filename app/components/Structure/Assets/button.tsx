@@ -1,8 +1,13 @@
-import { FCParent } from ".";
+import { FCParent, FlexProps } from "../";
 
-export const Button: FCParent<{ onClick: () => void }> = ({
+export const Button: FCParent<FlexProps & { onClick: () => void }> = ({
+  weight,
   children,
   onClick,
 }) => {
-  return <button onClick={onClick}>{children}</button>;
+  return (
+    <button onClick={onClick} style={{ flex: weight }}>
+      {children}
+    </button>
+  );
 };

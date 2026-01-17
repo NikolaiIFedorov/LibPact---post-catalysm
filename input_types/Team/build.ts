@@ -1,5 +1,6 @@
 import {
   getUnnamed,
+  InputTypeInstances,
   Character,
   Weapon,
   Artifacts,
@@ -14,20 +15,10 @@ export type Build = {
   artifacts?: Artifacts;
 };
 
-export function getBuild(data?: Build): Build {
+export function getBuild(names: InputTypeInstances): Build {
   let build: Build = { name: "Unnamed build" };
-  switch (typeof data) {
-    case "undefined":
-      build.name = getUnnamed("build");
-      break;
-    case "object":
-      build = data;
-      break;
-    default:
-      build.name = getUnnamed("build");
-      console.warn(`Unexpected build data type: ${typeof data}`);
-      break;
-  }
+  build.name = getUnnamed("build", names);
+
   return build;
 }
 
@@ -35,7 +26,7 @@ export async function addCharacterToBuild(
   characterName: string,
   ascession: number,
   constellation: number,
-  build: Build
+  build: Build,
 ): Promise<Build> {
   const character = await getCharacter(characterName, ascession, constellation);
   build.character = character;
@@ -46,7 +37,7 @@ export async function addWeaponToBuild(
   weaponName: string,
   level: number,
   refinement: number,
-  build: Build
+  build: Build,
 ): Promise<Build> {
   const weapon = await getWeapon(weaponName, level, refinement);
   build.weapon = weapon;

@@ -1,27 +1,47 @@
-import { Container } from "../..";
-import { Section } from "../../Structure/section";
-import { Button } from "../../Structure/Assets/button";
-import { FC, Icon, Artifacts } from "./index";
+import {
+  FC,
+  Icon,
+  Button,
+  Section,
+  Artifacts,
+  Build,
+  Splitter,
+  Container,
+  Character,
+  Weapon,
+} from "./index";
 
 export const BuildDesc: FC<{
-  setSelected: (build: string) => void;
-}> = ({ setSelected }) => {
-  return (
-    <Button
-      onClick={() => {
-        setSelected("1");
-      }}
-      layer={2}
-      fit="content"
-      gap={1}
-    >
-      <Section layer={2}>
-        <Icon layer={3}></Icon>
-        <Container layer={3} direction={"column"}>
+  layer: number;
+  build: Build;
+  isSelected: boolean;
+  setSelected: (unselect: boolean) => void;
+}> = ({ layer, setSelected, isSelected, build }) => {
+  if (!isSelected) {
+    return (
+      <Button onClick={() => setSelected(false)}>
+        <Section layer={layer}>
+          <Icon layer={layer + 1}></Icon>
+          <Container layer={layer} direction={"column"}>
+            <Artifacts />
+            <Icon layer={layer + 1} direction={"x"}></Icon>
+          </Container>
+        </Section>
+      </Button>
+    );
+  } else {
+    return (
+      <Button onClick={() => setSelected(true)}>
+        <Section layer={layer} direction={"column"}>
+          Build: {build?.name}
+          <Splitter layer={layer + 1} />
+          <Character layer={layer + 1} />
+          <Splitter layer={layer + 1} />
+          <Weapon layer={layer + 1} />
+          <Splitter layer={layer + 1} />
           <Artifacts />
-          <Icon layer={3} direction={"x"}></Icon>
-        </Container>
-      </Section>
-    </Button>
-  );
+        </Section>
+      </Button>
+    );
+  }
 };
