@@ -1,4 +1,5 @@
 import { FCParent } from "../index";
+import { layerStyles } from "../layerStyles";
 
 export const Icon: FCParent<{ layer: number; direction?: "x" }> = ({
   layer,
@@ -15,8 +16,8 @@ export const Icon: FCParent<{ layer: number; direction?: "x" }> = ({
     <div
       className={className}
       style={{
-        backgroundColor: `hsl(0, 0%, ${15 * layer}%)`,
-        borderRadius: `calc(var(--spacing) / ${layer})`,
+        backgroundColor: layerStyles.backgroundColor(layer),
+        borderRadius: layerStyles.borderRadius(layer),
       }}
     >
       {children}

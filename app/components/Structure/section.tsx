@@ -1,4 +1,5 @@
 import { FCParent } from "./index";
+import { layerStyles } from "./layerStyles";
 
 export const Section: FCParent<{
   weight?: number;
@@ -57,20 +58,20 @@ export const Section: FCParent<{
         minWidth: minWidth ? `${minWidth}px` : "none",
         maxWidth: maxWidth ? `${maxWidth}px` : "none",
         height: height ? height : "none",
-        borderRadius: `calc(var(--spacing)/${layer})`,
-        backgroundColor: `hsl(0, 0%, ${15 * layer}%)`,
+        borderRadius: layerStyles.borderRadius(layer),
+        backgroundColor: layerStyles.backgroundColor(layer),
         flex: flex,
 
-        color: `hsl(0, 0%, ${15 * layer + 45}%)`,
+        color: layerStyles.textColor(layer),
 
         fontFamily: "inherit",
-        fontSize: `calc(var(--spacing) - ${layer - 1}px)`,
+        fontSize: layerStyles.fontSize(layer),
         textAlign: "left",
 
         display: "flex",
         flexDirection: direction,
-        padding: `calc(var(--spacing)/${layer + 1})`,
-        gap: `calc(var(--spacing)/${layer + 1})`,
+        padding: layerStyles.spacing(layer),
+        gap: layerStyles.spacing(layer),
         overflow: "hidden",
       }}
     >

@@ -1,6 +1,7 @@
 "use client";
 
 import { FCParent } from "./index.ts";
+import { layerStyles } from "./layerStyles";
 
 export const Container: FCParent<{
   weight?: number;
@@ -61,7 +62,7 @@ export const Container: FCParent<{
     <div
       className={className}
       style={{
-        borderRadius: `calc(var(--spacing)/${layer + 1})`,
+        borderRadius: layerStyles.borderRadius(layer, 1),
         backgroundColor: color ? "red" : "transparent",
         height: height ? height : fit ? "fit-content" : "none",
         maxHeight: maxH,
@@ -70,7 +71,7 @@ export const Container: FCParent<{
         display: "flex",
         flex: flex,
         flexDirection: direction,
-        gap: `calc(var(--spacing)/${layer + 1})`,
+        gap: layerStyles.spacing(layer),
         overflow: overflow,
         scrollbarWidth: "none",
       }}
