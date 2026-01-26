@@ -1,7 +1,7 @@
 "use client";
 
 import { useCallback, useEffect, useReducer } from "react";
-import { FC, Section, List, Actions, getTeam, Team } from "./index";
+import { FC, Section, List, Actions, getTeam, Team, Splitter } from "./index";
 import { InputTypeInstances } from "@/input_types/Team/index";
 
 export const TeamList: FC<{
@@ -18,12 +18,13 @@ export const TeamList: FC<{
   }, [teams]);
 
   return (
-    <Section layer={layer} direction="column" fit="content">
+    <Section layer={layer} direction="column" fit="content" maxHeight="100%">
       <List
         layer={layer + 1}
         teams={teamList}
         handleSelectAction={handleSelectAction}
       />
+      <Splitter layer={layer + 1} />
       <Actions layer={layer + 1} handleAdd={() => updateTeams("add")} />
     </Section>
   );

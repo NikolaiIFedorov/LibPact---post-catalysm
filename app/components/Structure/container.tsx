@@ -6,9 +6,9 @@ import { layerStyles } from "./layerStyles";
 export const Container: FCParent<{
   weight?: number;
 
+  height?: string;
   minWidth?: number;
   maxHeight?: number | string;
-  height?: string;
 
   direction?: "row" | "column";
   layer?: number;
@@ -19,10 +19,10 @@ export const Container: FCParent<{
   className?: string;
 }> = ({
   weight,
+  height,
 
   minWidth = 0,
   maxHeight,
-  height,
 
   direction = "row",
   children,
@@ -33,16 +33,24 @@ export const Container: FCParent<{
   color = false,
   className,
 }) => {
+  let thisHeight: string | undefined;
+  let width: string;
   let flex: string;
   switch (fit) {
     case "content":
       flex = `0 0 auto`;
+      width = "fit-content";
+      thisHeight = height ? height : "fit-content";
       break;
     case "parent":
       flex = `0 1 ${weight}`;
+      width = "100%";
+      thisHeight = "100%";
       break;
     default:
       flex = `${weight}`;
+      width = "none";
+      thisHeight = height;
   }
 
   let maxH: string = "none";
@@ -62,10 +70,10 @@ export const Container: FCParent<{
     <div
       className={className}
       style={{
-        borderRadius: layerStyles.borderRadius(layer, 1),
+        borderRadius: layerStyles.borderRadius(layer, "container"),
         backgroundColor: color ? "red" : "transparent",
-        height: height ? height : fit ? "fit-content" : "none",
-        maxHeight: maxH,
+        height: thisHeight,
+        width: width,
         minWidth: minWidth ? `${minWidth}px` : "auto",
 
         display: "flex",

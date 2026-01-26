@@ -2,9 +2,9 @@ export { type FC, type FlexProps } from "..";
 
 export { Section } from "../Structure/section";
 export { Container } from "../Structure/container";
-export { Icon } from "../Structure/Assets/icon";
-export { Action } from "../Structure/Assets/action";
-export { Splitter } from "../Structure/Assets/splitter";
+export { Icon } from "../Structure/Presets/icon";
+export { Action } from "../Structure/Presets/action";
+export { Splitter } from "../Structure/Presets/splitter";
 
 export { List } from "./TeamList/list";
 export { Actions } from "./TeamList/actions";

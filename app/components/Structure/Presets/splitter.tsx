@@ -8,7 +8,7 @@ export const Splitter: FC<{ layer: number }> = ({ layer }) => {
         alignSelf: "center",
         width: `calc(100% - ${layer}px)`,
         height: "calc(var(--spacing) / 2)",
-        backgroundColor: layerStyles.backgroundColor(layer, -3.75),
+        backgroundColor: layerStyles.backgroundColor(layer, "faint"),
         borderRadius: layerStyles.borderRadius(layer),
       }}
     ></div>

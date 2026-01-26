@@ -8,8 +8,8 @@ const TeamIcon: FC<{
   team: Team;
 }> = ({ layer, handleSelectAction, team }) => {
   return (
-    <Button onClick={() => handleSelectAction(team)}>
-      <Icon layer={layer} />
+    <Button layer={layer} onClick={() => handleSelectAction(team)}>
+      <Icon layer={layer + 1} />
     </Button>
   );
 };

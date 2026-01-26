@@ -1,8 +1,8 @@
 export { Container } from "../../Structure/container";
 export { Section } from "../../Structure/section";
-export { Splitter } from "../../Structure/Assets/splitter";
-export { Button } from "../../Structure/Assets/button";
-export { Icon } from "../../Structure/Assets/icon";
+export { Splitter } from "../../Structure/Presets/splitter";
+export { Button } from "../../Structure/Presets/button";
+export { Icon } from "../../Structure/Presets/icon";
 
 export { type FC } from "../../Structure/index";
 

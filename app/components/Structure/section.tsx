@@ -1,40 +1,48 @@
-import { FCParent } from "./index";
-import { layerStyles } from "./layerStyles";
+import { FCParent, layerStyles } from "./index";
 
 export const Section: FCParent<{
   weight?: number;
-  height?: string;
-  maxHeight?: number | string;
-  maxWidth?: number;
-  minWidth?: number;
+  minHeight?: string;
+  maxHeight?: string;
+  maxWidth?: string;
+  minWidth?: string;
 
   layer?: number;
   fit?: "content" | "parent" | false;
 
   direction?: "row" | "column";
+  align?: boolean;
 }> = ({
   weight,
   maxWidth,
   minWidth,
   maxHeight,
-  height,
+  minHeight,
 
   layer = 1,
   fit = false,
 
   children,
   direction = "row",
+  align = false,
 }) => {
+  let width: string;
+  let thisMinWidth = minWidth;
   let flex: string;
   switch (fit) {
     case "content":
       flex = `0 0 auto`;
+      width = "fit-content";
+      thisMinWidth = "fit-content";
       break;
     case "parent":
       flex = `0 1 ${weight}`;
+      width = "100%";
+      thisMinWidth = "100%";
       break;
     default:
       flex = `${weight}`;
+      width = "none";
   }
 
   let maxH: string;
@@ -54,25 +62,25 @@ export const Section: FCParent<{
     <div
       className="font-sans"
       style={{
+        ...layerStyles.DEFAULT(layer),
+        padding: layerStyles.spacing(layer),
+        gap: layerStyles.spacing(layer),
+
         maxHeight: maxH,
-        minWidth: minWidth ? `${minWidth}px` : "none",
-        maxWidth: maxWidth ? `${maxWidth}px` : "none",
-        height: height ? height : "none",
-        borderRadius: layerStyles.borderRadius(layer),
-        backgroundColor: layerStyles.backgroundColor(layer),
+        minWidth: thisMinWidth ? `${thisMinWidth}` : undefined,
+        maxWidth: maxWidth ? maxWidth : undefined,
+        minHeight: minHeight ? minHeight : undefined,
+        width: width,
+
         flex: flex,
 
-        color: layerStyles.textColor(layer),
-
         fontFamily: "inherit",
-        fontSize: layerStyles.fontSize(layer),
         textAlign: "left",
 
         display: "flex",
         flexDirection: direction,
-        padding: layerStyles.spacing(layer),
-        gap: layerStyles.spacing(layer),
         overflow: "hidden",
+        alignItems: align ? "center" : undefined,
       }}
     >
       {children}

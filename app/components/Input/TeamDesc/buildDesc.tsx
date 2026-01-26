@@ -19,28 +19,37 @@ export const BuildDesc: FC<{
 }> = ({ layer, setSelected, isSelected, build }) => {
   if (!isSelected) {
     return (
-      <Button onClick={() => setSelected(false)}>
-        <Section layer={layer}>
-          <Icon layer={layer + 1}></Icon>
-          <Container layer={layer} direction={"column"}>
-            <Artifacts />
-            <Icon layer={layer + 1} direction={"x"}></Icon>
-          </Container>
+      <Button
+        onClick={() => setSelected(false)}
+        layer={layer}
+        direction="column"
+        fit="content"
+      >
+        <Icon layer={layer + 1} />
+        <Container layer={layer + 1} direction="row">
+          <Icon layer={layer + 1} size={"small"} />
+          <Icon layer={layer + 1} size={"small"} />
+        </Container>
+        <Section layer={layer + 1} direction="row" fit="content">
+          <Icon layer={layer + 2} size={"small"} />
+          <Icon layer={layer + 2} size={"small"} />
         </Section>
       </Button>
     );
   } else {
     return (
-      <Button onClick={() => setSelected(true)}>
-        <Section layer={layer} direction={"column"}>
-          Build: {build?.name}
-          <Splitter layer={layer + 1} />
-          <Character layer={layer + 1} />
-          <Splitter layer={layer + 1} />
-          <Weapon layer={layer + 1} />
-          <Splitter layer={layer + 1} />
-          <Artifacts />
-        </Section>
+      <Button
+        onClick={() => setSelected(true)}
+        layer={layer}
+        direction="column"
+      >
+        {build.name}
+        <Splitter layer={layer + 1} />
+        <Character layer={layer + 1} build={build} />
+        <Splitter layer={layer + 1} />
+        <Weapon layer={layer + 1} build={build} />
+        <Splitter layer={layer + 1} />
+        <Artifacts layer={layer + 1} build={build} />
       </Button>
     );
   }

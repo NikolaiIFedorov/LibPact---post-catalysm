@@ -3,3 +3,7 @@ export type FC<Props = {}> = React.FC<Props>;
 export type FlexProps = { weight?: number };
 
 export { layerStyles } from "./layerStyles";
+
+export { Icon } from "./Presets/icon";
+export * as Lucide from "lucide-react";
+export type { LucideIcon } from "lucide-react";

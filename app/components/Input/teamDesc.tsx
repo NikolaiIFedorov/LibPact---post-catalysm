@@ -11,7 +11,7 @@ export const TeamDesc: FC<{ layer: number; team: Team }> = ({
   const [selected, setSelected] = useState<number | undefined>(undefined);
   return (
     <Section layer={layer} direction="column">
-      Team: {team?.name}
+      {team.name}
       <Splitter layer={2} />
       <BuildDesc
         layer={2}
