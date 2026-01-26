@@ -1,16 +1,12 @@
 import { FC } from "../..";
 import { layerStyles } from "../layerStyles";
+import presets from "../presets.module.css";
 
 export const Splitter: FC<{ layer: number }> = ({ layer }) => {
   return (
     <div
-      style={{
-        alignSelf: "center",
-        width: `calc(100% - ${layer}px)`,
-        height: "calc(var(--spacing) / 2)",
-        backgroundColor: layerStyles.backgroundColor(layer, "faint"),
-        borderRadius: layerStyles.borderRadius(layer),
-      }}
+      className={presets.splitter}
+      style={{ ...layerStyles.vars(layer) }}
     ></div>
   );
 };

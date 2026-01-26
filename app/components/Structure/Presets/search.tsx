@@ -1,5 +1,6 @@
 import { JSX } from "react";
 import { FC, layerStyles, Icon } from "../";
+import presets from "../presets.module.css";
 
 export const Search: FC<{
   layer: number;
@@ -14,22 +15,10 @@ export const Search: FC<{
 
   return (
     <div
-      style={{
-        flexDirection: "column",
-        display: "flex",
-        gap: layerStyles.spacing(layer),
-      }}
+      className={presets.searchColumn}
+      style={{ ...layerStyles.vars(layer) }}
     >
-      <div
-        style={{
-          ...layerStyles.FAINT(layer),
-
-          flexDirection: "row",
-          display: "flex",
-
-          alignItems: "center",
-        }}
-      >
+      <div className={presets.searchFaint}>
         <Icon layer={layer} size="tiny" name="Search" />
         {text}
       </div>

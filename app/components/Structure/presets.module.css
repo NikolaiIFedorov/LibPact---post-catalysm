@@ -1,0 +1,48 @@
+.action {
+  aspect-ratio: 1 / 1;
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  background-color: hsla(0, 0%, 100%, 0.15);
+  border-radius: calc(var(--spacing) / (var(--layer) + 0));
+}
+
+.buttonInner {
+  display: flex;
+  gap: calc(var(--spacing) / (var(--layer) + 1));
+  background-color: hsla(0, 0%, 100%, 0.15);
+  border-radius: calc(var(--spacing) / (var(--layer) + 0));
+  padding: calc(var(--spacing) / (var(--layer) + 1));
+  color: hsl(0 0% calc((15 * var(--layer)) + 30));
+}
+
+.icon {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  border-radius: calc(var(--spacing) / (var(--layer) + 0));
+}
+
+.searchColumn {
+  display: flex;
+  flex-direction: column;
+  gap: calc(var(--spacing) / (var(--layer) + 1));
+}
+
+.searchFaint {
+  display: flex;
+  flex-direction: row;
+  align-items: center;
+  gap: calc(var(--spacing) / (var(--layer) + 1));
+  padding: calc(var(--spacing) / (var(--layer) + 1));
+  border-radius: calc(var(--spacing) / (var(--layer) + 0));
+  background-color: hsla(0, 0%, 100%, 0.02);
+}
+
+.splitter {
+  align-self: center;
+  width: calc(100% - (var(--layer) * 1px));
+  height: calc(var(--spacing) / 2);
+  background-color: hsla(0, 0%, 100%, 0.05);
+  border-radius: calc(var(--spacing) / (var(--layer) + 0));
+}

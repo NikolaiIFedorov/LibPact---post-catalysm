@@ -1,0 +1,35 @@
+.layerBase {
+  border-radius: calc(var(--spacing) / (var(--layer) + 0));
+  background-color: hsla(0, 0%, 100%, 0.15);
+}
+
+.item {
+  font-size: calc(var(--spacing) - (var(--layer) * 2px));
+  color: hsl(0 0% calc((15 * var(--layer)) + 30));
+}
+
+.spacing {
+  gap: calc(var(--spacing) / (var(--layer) + 1));
+  padding: calc(var(--spacing) / (var(--layer) + 1));
+}
+
+.faint {
+  padding: calc(var(--spacing) / (var(--layer) + 1));
+  gap: calc(var(--spacing) / (var(--layer) + 1));
+}
+
+.container {
+  display: flex;
+  flex-direction: row;
+  gap: calc(var(--spacing) / (var(--layer) + 1));
+}
+
+.section {
+  display: flex;
+  flex-direction: row;
+  overflow: hidden;
+  text-align: left;
+  padding: calc(var(--spacing) / (var(--layer) + 1));
+  gap: calc(var(--spacing) / (var(--layer) + 1));
+  width: fit-content;
+}

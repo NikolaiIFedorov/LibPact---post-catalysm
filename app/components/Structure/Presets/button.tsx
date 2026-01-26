@@ -1,4 +1,5 @@
 import { FCParent, FlexProps, layerStyles } from "../";
+import presets from "../presets.module.css";
 
 export const Button: FCParent<
   FlexProps & {
@@ -34,19 +35,25 @@ export const Button: FCParent<
     default:
       flex = `${weight}`;
   }
+
+  let fontSize: string;
+  switch (size) {
+    case "faint":
+      fontSize = `calc(var(--spacing) - (var(--layer) * 3px))`;
+      break;
+    default:
+      fontSize = `calc(var(--spacing) - (var(--layer) * 2px))`;
+  }
   return (
     <button onClick={onClick} style={{ flex: flex }}>
       <div
+        className={`${presets.buttonInner}`}
         style={{
-          ...layerStyles.DEFAULT(layer, size),
-
+          ...layerStyles.vars(layer),
+          fontSize: fontSize,
           minWidth: minWidth,
-
-          display: "flex",
           flexDirection: direction,
           alignItems: align ? "center" : undefined,
-          gap: layerStyles.spacing(layer),
-          padding: layerStyles.spacing(layer, size),
         }}
       >
         {children}

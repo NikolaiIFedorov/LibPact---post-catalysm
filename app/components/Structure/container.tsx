@@ -2,6 +2,7 @@
 
 import { FCParent } from "./index.ts";
 import { layerStyles } from "./layerStyles";
+import styles from "./layer.module.css";
 
 export const Container: FCParent<{
   weight?: number;
@@ -68,18 +69,16 @@ export const Container: FCParent<{
 
   return (
     <div
-      className={className}
+      className={`${styles.container} ${className ?? ""} ${
+        color ? "bg-red-500" : ""
+      }`}
       style={{
-        borderRadius: layerStyles.borderRadius(layer, "container"),
-        backgroundColor: color ? "red" : "transparent",
+        ...layerStyles.vars(layer),
         height: thisHeight,
         width: width,
         minWidth: minWidth ? `${minWidth}px` : "auto",
-
-        display: "flex",
         flex: flex,
         flexDirection: direction,
-        gap: layerStyles.spacing(layer),
         overflow: overflow,
         scrollbarWidth: "none",
       }}
