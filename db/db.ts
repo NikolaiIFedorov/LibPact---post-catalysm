@@ -46,7 +46,7 @@ const downloadData = (
 
 const uploadData = (
   name: TableNames,
-  data: { [key: string]: string | number }[],
+  data: { [key: string]: string | number | null }[],
 ): Promise<void> => {
   return new Promise((resolve, reject) => {
     const columns = [...new Set(data.flatMap((o) => Object.keys(o)))];
@@ -121,7 +121,7 @@ class Table {
     return downloadData(this.name, searchFilter);
   }
 
-  insert(data: { [key: string]: string | number }[]): Promise<void> {
+  insert(data: { [key: string]: string | number | null }[]): Promise<void> {
     return uploadData(this.name, data);
   }
 }

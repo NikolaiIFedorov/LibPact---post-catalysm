@@ -8,6 +8,7 @@ import {
 } from ".";
 
 async function urlFromImage(image: any) {
+  if (!image) return null;
   const iconResponse = await fetch(
     `https://genshin-impact.fandom.com/api.php?action=query&titles=${encodeURIComponent(
       image.title,
@@ -23,55 +24,46 @@ async function urlFromImage(image: any) {
 
 export type CharacterImages = {
   icon: string;
-  sticker: string;
+  sticker: string | null;
 };
 
 export async function getImages(name: string): Promise<CharacterImages> {
-  try {
-    const galleryResponse = await fetch(
-      `https://genshin-impact.fandom.com/api.php?action=query&titles=${name}/Gallery&prop=images&imlimit=500&format=json&origin=*`,
-    );
-    const galleryData = await galleryResponse.json();
-    const galleryPages = galleryData.query.pages;
-    const galleryPageId = Object.keys(galleryPages)[0];
-    const galleryImages = galleryPages[galleryPageId].images;
+  let urlName = name;
+  if (urlName.includes("Aether") || urlName.includes("Lumine"))
+    urlName = "Traveler";
+  else if (urlName.includes("Manekin")) urlName = "Wonderland Manekin";
 
-    if (!galleryImages || galleryImages.length === 0) {
-      return {
-        icon: "",
-        sticker: "",
-      };
-    }
+  const galleryResponse = await fetch(
+    `https://genshin-impact.fandom.com/api.php?action=query&titles=${urlName}/Gallery&prop=images&imlimit=1000&format=json&origin=*`,
+  );
 
-    const iconImage = galleryImages.filter(
-      (img: any) =>
-        img.title.startsWith("File:" + name + " Icon") &&
-        img.title.includes(name),
-    )[0];
-    const icon = await urlFromImage(iconImage);
+  const galleryData = await galleryResponse.json();
+  const galleryPages = galleryData.query.pages;
+  const galleryPageId = Object.keys(galleryPages)[0];
+  const galleryImages = galleryPages[galleryPageId].images;
 
-    const stickerImage = galleryImages.filter((img: any) =>
-      img.title.startsWith("File:Icon Emoji Paimon's Paintings"),
-    )[0];
-    const sticker = await urlFromImage(stickerImage);
+  const iconImage = galleryImages.filter(
+    (img: any) =>
+      img.title.startsWith("File:" + name + " Icon") &&
+      img.title.includes(name),
+  )[0];
+  const icon = await urlFromImage(iconImage);
 
-    const images: CharacterImages = {
-      icon: icon,
-      sticker: sticker,
-    };
+  const stickerImage = galleryImages.filter(
+    (img: any) =>
+      img.title.startsWith("File:Icon Emoji Paimon's Paintings") &&
+      img.title.includes(name),
+  )[0];
+  const sticker = await urlFromImage(stickerImage);
 
-    return images;
-  } catch (error) {
-    console.warn("\n====");
-    console.warn("#getImages error for " + name + ": ");
-    console.warn(error);
-    console.warn("====\n");
-    return {
-      icon: "",
-      sticker: "",
-    };
-  }
+  const images: CharacterImages = {
+    icon: icon,
+    sticker: sticker,
+  };
+
+  return images;
 }
+``;
 
 type Parameters = {
   element: Element;

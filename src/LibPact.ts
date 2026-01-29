@@ -1,24 +1,41 @@
 import { charactersLib } from "@/input_types/Team/Build/index.ts";
-import { getImages } from "@/input_types/Team/Build/character.ts";
+import {
+  CharacterImages,
+  getImages,
+} from "@/input_types/Team/Build/character.ts";
 
-let results: any[] = [];
+import { dbImg } from "@/db/db";
 
+let results: { character: string }[] = [];
+let resultCount = 0;
 for (const libCharacter of charactersLib) {
-  const resultCount = results.length;
   const charactersCount = charactersLib.length;
   const progress = ((resultCount + 1) / charactersCount) * 100;
   console.log(progress.toFixed(2) + "%: " + libCharacter.name);
 
   const name = libCharacter.name;
-  let result = { name: name, icon: "", sticker: "" };
 
-  if (!name.includes("Traveler")) continue;
-  await getImages(name).then((images) => {
-    result.icon = images.icon;
-    result.sticker = images.sticker;
-  });
+  if (name.includes("Traveler")) {
+    results.push({ ...(await getImages("Aether")), character: "Aether" });
+    results.push({ ...(await getImages("Lumine")), character: "Lumine" });
+  } else {
+    let result: CharacterImages & { character: string } = {
+      character: name,
+      icon: "",
+      sticker: null,
+    };
 
-  results.push(result);
+    await getImages(name).then((images) => {
+      result.icon = images.icon;
+      result.sticker = images.sticker;
+    });
+
+    results.push(result);
+  }
+
+  resultCount++;
 }
 
-console.log(results);
+await dbImg.insert(results);
+
+console.log(await dbImg.get());
