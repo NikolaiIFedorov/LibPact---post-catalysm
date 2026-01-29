@@ -1,12 +1,25 @@
 "use client";
 
 import { InputTypeInstances } from "@/input_types/Team/index";
-import { Container, TeamList, TeamDesc, FC, FlexProps, Team } from "./index";
+import {
+  Container,
+  TeamList,
+  TeamDesc,
+  FC,
+  FlexProps,
+  Team,
+  CharacterImages,
+} from "./index";
 import { useState } from "react";
 
 export const Input: FC<
-  FlexProps & { layer: number; teams: Team[]; names: InputTypeInstances }
-> = ({ layer, weight, teams, names }) => {
+  FlexProps & {
+    layer: number;
+    teams: Team[];
+    names: InputTypeInstances;
+    characterImgs: CharacterImages[];
+  }
+> = ({ layer, weight, teams, names, characterImgs }) => {
   const [selected, handleSelect] = useState<Team>(teams[0]);
 
   return (
@@ -24,7 +37,11 @@ export const Input: FC<
         handleSelectAction={handleSelect}
         names={names}
       />
-      <TeamDesc layer={layer + 1} team={selected} />
+      <TeamDesc
+        layer={layer + 1}
+        team={selected}
+        characterImgs={characterImgs}
+      />
     </Container>
   );
 };

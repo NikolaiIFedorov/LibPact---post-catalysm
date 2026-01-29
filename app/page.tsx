@@ -5,7 +5,8 @@ import { Output } from "./components/output";
 import { dbTeams } from "@/db/db";
 import { Team, getTeam } from "../input_types/team";
 import { type InputTypeInstances } from "../input_types/index";
-import { get } from "http";
+import { dbImg, type DbImg } from "@/db/db";
+import { CharacterImages } from "./components";
 
 export default async function Home() {
   const dataTeams = await dbTeams.get();
@@ -15,16 +16,21 @@ export default async function Home() {
     build: 0,
     artifacts: 0,
   };
-
-  const teams: Team[] = dataTeams.map((dbTeam) =>
-    getTeam(names, JSON.parse(dbTeam)),
-  );
-
+  const teams: Team[] = dataTeams.map((dbTeam) => getTeam(names, dbTeam));
   if (teams.length === 0) teams.push(getTeam(names));
+
+  const characterImgs = await dbImg.get();
+  console.log(characterImgs);
 
   return (
     <Page>
-      <Input layer={0} weight={1} teams={teams} names={names} />
+      <Input
+        layer={0}
+        weight={1}
+        teams={teams}
+        names={names}
+        characterImgs={characterImgs as CharacterImages[]}
+      />
       <Output layer={0} weight={4} />
     </Page>
   );

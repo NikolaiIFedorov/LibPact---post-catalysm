@@ -2,6 +2,7 @@ import {
   type Element,
   type Talents,
   type Stats,
+  type WeaponType,
   charactersLib,
   getTalents,
   getCharacterStats,
@@ -63,18 +64,19 @@ export async function getImages(name: string): Promise<CharacterImages> {
 
   return images;
 }
-``;
 
-type Parameters = {
+type Affilation = "hexerei" | "moonsign" | "none";
+
+export type CharacterParameters = {
+  name: string;
   element: Element;
-  weapon: string;
-  affiliation: "hexerei" | "moonsign" | "none";
+  weapon: WeaponType;
+  affiliation: Affilation;
   images: CharacterImages;
 };
 
 export type Character = {
-  name: string;
-  parameters: Parameters;
+  parameters: CharacterParameters;
   talents: Talents;
   ascension: number;
   constellation: number;
@@ -97,15 +99,15 @@ export async function getCharacter(
 
   const images: CharacterImages = await getImages(libCharacter.name);
 
-  const parameters: Parameters = {
+  const parameters: CharacterParameters = {
+    name: libCharacter.name,
     element: libCharacter.element.id as Element,
-    weapon: libCharacter.weapon_type.id,
-    affiliation: libCharacter.affiliation as "hexerei" | "moonsign" | "none",
+    weapon: libCharacter.weapon_type.id as WeaponType,
+    affiliation: libCharacter.affiliation as Affilation,
     images: images,
   };
 
   const character: Character = {
-    name: libCharacter.name,
     ascension: ascension,
     constellation: constellation,
     talents: talents,

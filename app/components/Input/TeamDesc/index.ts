@@ -7,7 +7,8 @@ export { Icon } from "../../Structure/Presets/icon";
 export { type FC } from "../../Structure/index";
 
 export { Artifacts } from "./BuildDesc/artifacts";
-export { type Build, getBuild } from "../../../../input_types/Team/build";
-
-export { Character } from "./BuildDesc/Character/character";
+export { CharacterDesc as Character } from "./BuildDesc/Character/character";
 export { Weapon } from "./BuildDesc/weapon";
+
+export { type Build, getBuild } from "../../../../input_types/Team/build";
+export { type CharacterImages } from "@/input_types/Team/Build/character";

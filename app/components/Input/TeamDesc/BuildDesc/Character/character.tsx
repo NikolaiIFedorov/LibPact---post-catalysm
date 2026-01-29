@@ -6,15 +6,18 @@ import {
   Build,
   Search,
   charactersLib,
-  useState,
   CharacterLib,
+  useState,
+  CharacterParameters,
+  CharacterImages,
 } from "../index";
 import { List } from "./list";
 
-export const Character: FC<{ layer: number; build: Build }> = ({
-  layer,
-  build,
-}) => {
+export const CharacterDesc: FC<{
+  layer: number;
+  build: Build;
+  imgs: CharacterImages[];
+}> = ({ layer, build, imgs }) => {
   if (build.character) {
     return (
       <>
@@ -40,7 +43,7 @@ export const Character: FC<{ layer: number; build: Build }> = ({
           content={charactersLib}
           onSearch={setCharacters}
         />
-        <List layer={layer} list={characters} />
+        <List layer={layer} list={characters} imgs={imgs} />
       </Container>
     );
   }

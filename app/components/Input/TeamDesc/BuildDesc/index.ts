@@ -12,3 +12,7 @@ export { Search } from "../../../Structure/Presets/search";
 
 export { type FC } from "../../../Structure/index";
 export { type Build } from "../../../../../input_types/Team/build";
+export {
+  type CharacterParameters,
+  type CharacterImages,
+} from "@/input_types/Team/Build/character";

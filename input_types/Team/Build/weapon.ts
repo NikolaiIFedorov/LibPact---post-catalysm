@@ -14,15 +14,13 @@ export type Weapon = {
   effect: Effect | null;
 } | null;
 
-export type WeaponType = {
-  weaponType: "sword" | "polearm" | "catalyst" | "bow" | "claymore";
-};
+export type WeaponType = "sword" | "polearm" | "catalyst" | "bow" | "claymore";
 
 export async function getWeapon(
   name: string,
   level: number,
   refinement: number,
-  buildName?: string
+  buildName?: string,
 ) {
   const libWeapon = weaponsLib.find((w) => w.name.includes(name) === true);
 

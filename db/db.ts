@@ -16,7 +16,7 @@ type SearchFilter = {
 const downloadData = (
   name: TableNames,
   searchFilter?: SearchFilter,
-): Promise<string[]> => {
+): Promise<object[]> => {
   if (searchFilter) {
     return new Promise((resolve, reject) => {
       db.all(
@@ -25,7 +25,7 @@ const downloadData = (
           if (err) {
             reject(err);
           } else {
-            const data = rows.map((row) => row.data as string);
+            const data = rows.map((row) => row.data);
             resolve(data);
           }
         },
@@ -117,7 +117,7 @@ class Table {
     return Table.instance;
   }
 
-  get(searchFilter?: SearchFilter): Promise<string[]> {
+  get(searchFilter?: SearchFilter): Promise<object[]> {
     return downloadData(this.name, searchFilter);
   }
 
@@ -126,12 +126,13 @@ class Table {
   }
 }
 
+export type DbImg = {
+  character: string;
+  icon: string;
+  sticker: string | null;
+};
+
 export const dbImg: Table = Table.getInstance("icon", [
-  { name: "character", type: "string" },
-  { name: "icon", type: "string" },
-  { name: "sticker", type: "string" },
-]);
-export const dbCache: Table = Table.getInstance("icon", [
   { name: "character", type: "string" },
   { name: "icon", type: "string" },
   { name: "sticker", type: "string" },
@@ -144,4 +145,10 @@ export const dbBuilds: Table = Table.getInstance("build", [
 
 export const dbTeams: Table = Table.getInstance("team", [
   { name: "name", type: "string" },
+]);
+
+export const dbCache: Table = Table.getInstance("icon", [
+  { name: "character", type: "string" },
+  { name: "icon", type: "string" },
+  { name: "sticker", type: "string" },
 ]);

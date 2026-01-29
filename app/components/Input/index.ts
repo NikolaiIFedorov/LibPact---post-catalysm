@@ -8,6 +8,7 @@ export { Splitter } from "../Structure/Presets/splitter";
 
 export { List } from "./TeamList/list";
 export { Actions } from "./TeamList/actions";
-export { type Team, getTeam } from "../../../input_types/team";
-
 export { BuildDesc } from "./TeamDesc/buildDesc";
+
+export { type Team, getTeam } from "../../../input_types/team";
+export { type CharacterImages } from "../../../input_types/Team/Build/character";

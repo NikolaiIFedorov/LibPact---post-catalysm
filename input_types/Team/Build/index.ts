@@ -22,6 +22,6 @@ export { type Effect } from "./effect.ts";
 export { type ArtifactPieces } from "./pieces.ts";
 
 export { type Character } from "./character.ts";
-export { type Weapon } from "./weapon.ts";
+export { type Weapon, type WeaponType } from "./weapon.ts";
 export { type Artifacts } from "./artifact.ts";
 export { type Substat } from "./pieces.ts";

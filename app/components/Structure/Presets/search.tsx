@@ -1,4 +1,4 @@
-import { FC, layerStyles, Icon, useState } from "../";
+import { FC, layerStyles, Icon } from "../";
 
 export type SearchContent = {
   name: string;
