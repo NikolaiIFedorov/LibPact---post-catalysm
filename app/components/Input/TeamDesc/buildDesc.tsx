@@ -1,3 +1,5 @@
+"use client";
+
 import {
   FC,
   Icon,
@@ -27,30 +29,41 @@ export const BuildDesc: FC<{
       >
         <Icon layer={layer + 1} />
         <Container layer={layer + 1} direction="row">
-          <Icon layer={layer + 1} size={"small"} />
-          <Icon layer={layer + 1} size={"small"} />
+          <Icon layer={layer + 1} size={"medium"} />
+          <Icon layer={layer + 1} size={"medium"} />
         </Container>
         <Section layer={layer + 1} direction="row" fit="content">
-          <Icon layer={layer + 2} size={"small"} />
-          <Icon layer={layer + 2} size={"small"} />
+          <Icon layer={layer + 2} size={"medium"} />
+          <Icon layer={layer + 2} size={"medium"} />
         </Section>
       </Button>
     );
   } else {
     return (
-      <Button
-        onClick={() => setSelected(true)}
-        layer={layer}
-        direction="column"
-      >
-        {build.name}
+      <Section layer={layer} direction="column">
+        <Container direction="row" layer={layer + 1} align={true} size="faint">
+          <Button
+            onClick={() => setSelected(true)}
+            layer={layer + 1}
+            size="faint"
+            color={false}
+          >
+            <Icon
+              layer={layer + 1}
+              name={{ lucide: "ChevronLeft" }}
+              size="small"
+            />
+          </Button>
+
+          {build.name}
+        </Container>
         <Splitter layer={layer + 1} />
         <Character layer={layer + 1} build={build} />
         <Splitter layer={layer + 1} />
         <Weapon layer={layer + 1} build={build} />
         <Splitter layer={layer + 1} />
         <Artifacts layer={layer + 1} build={build} />
-      </Button>
+      </Section>
     );
   }
 };

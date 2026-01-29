@@ -16,7 +16,7 @@ async function getIcon(name: string) {
   if (dbIcon.length > 0) return dbIcon[0];*/
 
   const galleryResponse = await fetch(
-    `https://genshin-impact.fandom.com/api.php?action=query&titles=${name}/Gallery&prop=images&imlimit=500&format=json&origin=*`
+    `https://genshin-impact.fandom.com/api.php?action=query&titles=${name}/Gallery&prop=images&imlimit=500&format=json&origin=*`,
   );
   const galleryData = await galleryResponse.json();
   const galleryPages = galleryData.query.pages;
@@ -24,15 +24,15 @@ async function getIcon(name: string) {
   const galleryImages = galleryPages[galleryPageId].images;
 
   const iconImages = galleryImages.filter((img: any) =>
-    img.title.startsWith("File:" + name + " Icon")
+    img.title.startsWith("File:" + name + " Icon"),
   );
 
   let images = [];
   for (const img of iconImages) {
     const iconResponse = await fetch(
       `https://genshin-impact.fandom.com/api.php?action=query&titles=${encodeURIComponent(
-        img.title
-      )}&prop=imageinfo&iiprop=url&format=json&origin=*`
+        img.title,
+      )}&prop=imageinfo&iiprop=url&format=json&origin=*`,
     );
     const iconData = await iconResponse.json();
     const iconPages = iconData.query.pages;
@@ -47,7 +47,7 @@ async function getIcon(name: string) {
 
 async function getSticker(name: string) {
   const galleryResponse = await fetch(
-    `https://genshin-impact.fandom.com/api.php?action=query&titles=${name}/Gallery&prop=images&imlimit=500&format=json&origin=*`
+    `https://genshin-impact.fandom.com/api.php?action=query&titles=${name}/Gallery&prop=images&imlimit=500&format=json&origin=*`,
   );
   const galleryData = await galleryResponse.json();
   const galleryPages = galleryData.query.pages;
@@ -57,15 +57,15 @@ async function getSticker(name: string) {
   const iconImages = galleryImages.filter(
     (img: any) =>
       img.title.startsWith("File:Icon Emoji Paimon's Paintings") &&
-      img.title.includes(name)
+      img.title.includes(name),
   );
 
   let images = [];
   for (const img of iconImages) {
     const iconResponse = await fetch(
       `https://genshin-impact.fandom.com/api.php?action=query&titles=${encodeURIComponent(
-        img.title
-      )}&prop=imageinfo&iiprop=url&format=json&origin=*`
+        img.title,
+      )}&prop=imageinfo&iiprop=url&format=json&origin=*`,
     );
     const iconData = await iconResponse.json();
     const iconPages = iconData.query.pages;
@@ -97,7 +97,7 @@ export type Character = {
 export async function getCharacter(
   name: string,
   ascension: number,
-  constellation: number
+  constellation: number,
 ) {
   let libCharacter = charactersLib.find((c) => c.name.includes(name) === true);
   if (!libCharacter) {

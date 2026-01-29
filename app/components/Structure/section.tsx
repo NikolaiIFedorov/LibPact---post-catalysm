@@ -1,5 +1,4 @@
 import { FCParent, layerStyles } from "./index";
-import styles from "./layer.module.css";
 
 export const Section: FCParent<{
   weight?: number;
@@ -61,11 +60,11 @@ export const Section: FCParent<{
 
   return (
     <div
-      className={`${styles.section} font-sans ${styles.layerBase} ${styles.item}`}
+      className="font-sans"
       style={{
-        ...layerStyles.vars(layer),
-        padding: undefined,
-        gap: undefined,
+        ...layerStyles.DEFAULT(layer),
+        padding: layerStyles.spacing(layer),
+        gap: layerStyles.spacing(layer),
 
         maxHeight: maxH,
         minWidth: thisMinWidth ? `${thisMinWidth}` : undefined,
@@ -78,6 +77,7 @@ export const Section: FCParent<{
         fontFamily: "inherit",
         textAlign: "left",
 
+        display: "flex",
         flexDirection: direction,
         overflow: "hidden",
         alignItems: align ? "center" : undefined,

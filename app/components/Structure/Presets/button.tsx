@@ -1,5 +1,4 @@
 import { FCParent, FlexProps, layerStyles } from "../";
-import presets from "../presets.module.css";
 
 export const Button: FCParent<
   FlexProps & {
@@ -12,6 +11,7 @@ export const Button: FCParent<
     direction?: "inherit" | "row" | "column";
     align?: boolean;
     size?: "default" | "faint";
+    color?: boolean;
   }
 > = ({
   onClick,
@@ -23,6 +23,7 @@ export const Button: FCParent<
   direction = "inherit",
   align = false,
   size = "default",
+  color = true,
 }) => {
   let flex: string;
   switch (fit) {
@@ -35,29 +36,28 @@ export const Button: FCParent<
     default:
       flex = `${weight}`;
   }
-
-  let fontSize: string;
-  switch (size) {
-    case "faint":
-      fontSize = `calc(var(--spacing) - (var(--layer) * 3px))`;
-      break;
-    default:
-      fontSize = `calc(var(--spacing) - (var(--layer) * 2px))`;
-  }
   return (
-    <button onClick={onClick} style={{ flex: flex }}>
-      <div
-        className={`${presets.buttonInner}`}
-        style={{
-          ...layerStyles.vars(layer),
-          fontSize: fontSize,
-          minWidth: minWidth,
-          flexDirection: direction,
-          alignItems: align ? "center" : undefined,
-        }}
-      >
-        {children}
-      </div>
+    <button
+      onClick={onClick}
+      style={{
+        flex: flex,
+
+        ...layerStyles.ITEM(layer, size),
+        borderRadius: layerStyles.borderRadius(layer, size),
+        backgroundColor: color
+          ? layerStyles.backgroundColor(layer, size)
+          : "transparent",
+        padding: color ? layerStyles.spacing(layer, size) : undefined,
+        gap: layerStyles.spacing(layer, size),
+
+        minWidth: minWidth,
+
+        display: "flex",
+        flexDirection: direction,
+        alignItems: align ? "center" : undefined,
+      }}
+    >
+      {children}
     </button>
   );
 };

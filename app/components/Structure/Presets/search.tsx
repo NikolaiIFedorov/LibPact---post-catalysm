@@ -1,28 +1,58 @@
-import { JSX } from "react";
-import { FC, layerStyles, Icon } from "../";
-import presets from "../presets.module.css";
+import { FC, layerStyles, Icon, useState } from "../";
+
+export type SearchContent = {
+  name: string;
+  short: string;
+  content: any;
+};
 
 export const Search: FC<{
   layer: number;
   text: string;
-  filters?: string[];
-}> = ({ layer, text, filters }) => {
-  let filterList;
-  if (filters)
-    filterList = filters?.map((filter) => (
-      <Icon key={filter} layer={layer} size="tiny" name={filter} />
-    ));
-
+  content: any[];
+  onSearch: (results: any[]) => void;
+}> = ({ layer, text, content, onSearch }) => {
   return (
     <div
-      className={presets.searchColumn}
-      style={{ ...layerStyles.vars(layer) }}
+      style={{
+        ...layerStyles.FAINT(layer),
+
+        flexDirection: "row",
+        display: "flex",
+
+        alignItems: "center",
+      }}
     >
-      <div className={presets.searchFaint}>
-        <Icon layer={layer} size="tiny" name="Search" />
-        {text}
-      </div>
-      {filterList}
+      <Icon layer={layer} size="tiny" name={{ lucide: "Search" }} />
+      <input
+        style={{ maxWidth: "100px" }}
+        type="text"
+        placeholder={text}
+        onChange={(e) => {
+          onSearch(getResult(e.target.value, content));
+        }}
+      />
     </div>
   );
 };
+
+function shortFromName(name: string): string {
+  return name
+    .split(" ")
+    .map((word) => word.charAt(0).toLowerCase())
+    .join("");
+}
+
+function getResult(input: string, content: any[]): any[] {
+  let results: any[] = [];
+  const lowerInput = input.toLowerCase();
+  for (const item of content) {
+    const name = item.name;
+    const lowerName = name.toLowerCase();
+    const short = shortFromName(name);
+    if (lowerName.includes(lowerInput) || short.includes(lowerInput))
+      results.push(item);
+  }
+  console.log(results);
+  return results;
+}

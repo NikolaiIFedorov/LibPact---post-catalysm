@@ -2,7 +2,6 @@
 
 import { FCParent } from "./index.ts";
 import { layerStyles } from "./layerStyles";
-import styles from "./layer.module.css";
 
 export const Container: FCParent<{
   weight?: number;
@@ -15,8 +14,9 @@ export const Container: FCParent<{
   layer?: number;
   fit?: "content" | "parent" | false;
   overflow?: "scroll" | "hidden" | "auto";
+  align?: boolean;
+  size?: "default" | "faint";
 
-  color?: boolean;
   className?: string;
 }> = ({
   weight,
@@ -30,8 +30,9 @@ export const Container: FCParent<{
   layer = 1,
   fit = false,
   overflow = "auto",
+  align = false,
+  size = "default",
 
-  color = false,
   className,
 }) => {
   let thisHeight: string | undefined;
@@ -69,16 +70,19 @@ export const Container: FCParent<{
 
   return (
     <div
-      className={`${styles.container} ${className ?? ""} ${
-        color ? "bg-red-500" : ""
-      }`}
+      className={className}
       style={{
-        ...layerStyles.vars(layer),
+        borderRadius: layerStyles.borderRadius(layer, "container"),
         height: thisHeight,
         width: width,
         minWidth: minWidth ? `${minWidth}px` : "auto",
+
         flex: flex,
+
+        display: "flex",
+        alignItems: align ? "center" : undefined,
         flexDirection: direction,
+        gap: layerStyles.spacing(layer, size),
         overflow: overflow,
         scrollbarWidth: "none",
       }}

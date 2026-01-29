@@ -12,8 +12,9 @@ export const Actions: FC<{ layer: number; handleAdd: () => void }> = ({
         minWidth="64px"
         align={true}
         size="faint"
+        direction="row"
       >
-        <Icon layer={layer + 1} size="tiny" name="Plus" />
+        <Icon layer={layer + 1} size="tiny" name={{ lucide: "Plus" }} />
         Team
       </Button>
     </Container>
