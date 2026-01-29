@@ -1,6 +1,9 @@
 export { useState } from "react";
 
-export { charactersLib } from "@/input_types/Team/Build/Character/import/genshindata";
+export {
+  charactersLib,
+  type CharacterLib,
+} from "@/input_types/Team/Build/Character/import/genshindata";
 
 export { Icon } from "../../../Structure/Presets/icon";
 export { Container } from "../../../Structure/container";

@@ -7,7 +7,9 @@ import {
   Search,
   charactersLib,
   useState,
-} from "./index";
+  CharacterLib,
+} from "../index";
+import { List } from "./list";
 
 export const Character: FC<{ layer: number; build: Build }> = ({
   layer,
@@ -29,14 +31,17 @@ export const Character: FC<{ layer: number; build: Build }> = ({
       </>
     );
   } else {
-    const [characters, setCharacters] = useState(charactersLib);
+    const [characters, setCharacters] = useState<CharacterLib[]>([]);
     return (
-      <Search
-        layer={layer}
-        text="Character"
-        content={characters}
-        onSearch={setCharacters}
-      />
+      <Container layer={layer} direction="column">
+        <Search
+          layer={layer}
+          text="Character"
+          content={charactersLib}
+          onSearch={setCharacters}
+        />
+        <List layer={layer} list={characters} />
+      </Container>
     );
   }
 };
