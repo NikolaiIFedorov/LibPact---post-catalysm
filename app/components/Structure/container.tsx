@@ -8,6 +8,7 @@ export const Container: FCParent<{
 
   height?: string;
   minWidth?: number;
+  maxWidth?: string;
   maxHeight?: number | string;
 
   direction?: "row" | "column";
@@ -23,6 +24,7 @@ export const Container: FCParent<{
   height,
 
   minWidth = 0,
+  maxWidth,
   maxHeight,
 
   direction = "row",
@@ -75,6 +77,7 @@ export const Container: FCParent<{
         borderRadius: layerStyles.borderRadius(layer, "container"),
         height: thisHeight,
         width: width,
+        maxWidth: maxWidth ? maxWidth : undefined,
         minWidth: minWidth ? `${minWidth}px` : "auto",
 
         flex: flex,

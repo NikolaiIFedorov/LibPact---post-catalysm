@@ -77,6 +77,9 @@ export const layerStyles = {
     return {
       fontSize: layerStyles.fontSize(layer, offset),
       color: layerStyles.itemColor(layer, offset),
+
+      overflowY: "auto",
+      scrollbarWidth: "none",
     };
   },
 

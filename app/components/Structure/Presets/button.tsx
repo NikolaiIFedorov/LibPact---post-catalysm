@@ -1,29 +1,28 @@
-import { FCParent, FlexProps, layerStyles } from "../";
+import { FCParent, FlexProps, Icon, layerStyles, IconProps } from "../";
 
 export const Button: FCParent<
   FlexProps & {
-    onClick: () => void;
+    onClick?: () => void;
     layer: number;
-
-    minWidth?: string;
 
     fit?: "content" | "parent";
     direction?: "inherit" | "row" | "column";
     align?: boolean;
     size?: "default" | "faint";
-    color?: boolean;
+    icon?: IconProps;
   }
 > = ({
-  onClick,
+  onClick = () => {
+    console.log(`Button clicked with icon: ${icon?.img}`);
+  },
   layer,
   weight,
   fit,
-  minWidth,
   children,
   direction = "inherit",
   align = false,
   size = "default",
-  color = true,
+  icon,
 }) => {
   let flex: string;
   switch (fit) {
@@ -44,20 +43,27 @@ export const Button: FCParent<
 
         ...layerStyles.ITEM(layer, size),
         borderRadius: layerStyles.borderRadius(layer, size),
-        backgroundColor: color
-          ? layerStyles.backgroundColor(layer, size)
-          : "transparent",
-        padding: color ? layerStyles.spacing(layer, size) : undefined,
+        backgroundColor: icon
+          ? "transparent"
+          : layerStyles.backgroundColor(layer, size),
+        padding: icon ? undefined : layerStyles.spacing(layer, size),
         gap: layerStyles.spacing(layer, size),
-
-        minWidth: minWidth,
 
         display: "flex",
         flexDirection: direction,
         alignItems: align ? "center" : undefined,
       }}
     >
-      {children}
+      {icon ? (
+        <Icon
+          layer={layer}
+          img={icon.img}
+          size={icon.size}
+          color={icon.color}
+        />
+      ) : (
+        children
+      )}
     </button>
   );
 };

@@ -48,14 +48,8 @@ export const BuildDesc: FC<{
             onClick={() => setSelected(true)}
             layer={layer + 1}
             size="faint"
-            color={false}
-          >
-            <Icon
-              layer={layer + 1}
-              name={{ lucide: "ChevronLeft" }}
-              size="small"
-            />
-          </Button>
+            icon={{ img: { lucide: "ChevronLeft" }, size: "small" }}
+          />
 
           {build.name}
         </Container>

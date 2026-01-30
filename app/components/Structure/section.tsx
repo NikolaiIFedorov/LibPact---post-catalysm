@@ -73,13 +73,14 @@ export const Section: FCParent<{
         width: width,
 
         flex: flex,
+        flexWrap: "wrap",
 
         fontFamily: "inherit",
         textAlign: "left",
 
         display: "flex",
         flexDirection: direction,
-        overflow: "hidden",
+        overflow: "wrap",
         alignItems: align ? "center" : undefined,
       }}
     >

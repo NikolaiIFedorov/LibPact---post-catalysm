@@ -1,12 +1,21 @@
 import { FC, layerStyles, LucideIcon, Lucide } from "../";
 
-export const Icon: FC<{
-  layer: number;
-  size?: "default" | "medium" | "small" | "tiny";
-  name?: { lucide: keyof typeof Lucide } | string;
-}> = ({ layer, size, name }) => {
+export interface IconProps {
+  size?: "default" | "big" | "medium" | "small" | "tiny";
+  img?: { lucide: keyof typeof Lucide } | string;
+  color?: string;
+}
+
+export const Icon: FC<
+  {
+    layer: number;
+  } & IconProps
+> = ({ layer, size, img, color }) => {
   let length = 64;
   switch (size) {
+    case "big":
+      length = 48;
+      break;
     case "medium":
       length = 32;
       break;
@@ -20,14 +29,16 @@ export const Icon: FC<{
 
   const style = {
     ...layerStyles.ITEM(layer - 1, "faint"),
-    padding: layerStyles.spacing(layer - 1, "faint"),
+    borderRadius: `${length / 3}px`,
     maxHeight: length,
+    padding: "unset",
 
     display: "flex",
-    alignItems: "center",
+    alignSelf: "center",
+    backgroundColor: color ? color : undefined,
   };
 
-  if (!name) {
+  if (!img) {
     return (
       <div
         style={{
@@ -37,19 +48,13 @@ export const Icon: FC<{
         }}
       />
     );
-  } else if (typeof name === "string") {
-    return (
-      <div style={style}>
-        <img src={`/${name}.png`}></img>
-      </div>
-    );
+  } else if (typeof img === "string") {
+    if (img.startsWith("http"))
+      return <img style={style} src={img.split("/revision")[0]}></img>;
+    else return <img style={style} src={`/${img}.png`}></img>;
   } else {
-    const IconComponent = Lucide[name.lucide] as LucideIcon;
+    const IconComponent = Lucide[img.lucide] as LucideIcon;
 
-    return (
-      <div style={style}>
-        <IconComponent size={length} strokeWidth={3} />
-      </div>
-    );
+    return <IconComponent style={style} size={length} strokeWidth={3} />;
   }
 };

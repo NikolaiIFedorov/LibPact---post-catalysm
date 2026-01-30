@@ -8,9 +8,7 @@ const TeamIcon: FC<{
   team: Team;
 }> = ({ layer, handleSelectAction, team }) => {
   return (
-    <Button layer={layer} onClick={() => handleSelectAction(team)}>
-      <Icon layer={layer + 1} />
-    </Button>
+    <Button layer={layer} onClick={() => handleSelectAction(team)} icon={{}} />
   );
 };
 

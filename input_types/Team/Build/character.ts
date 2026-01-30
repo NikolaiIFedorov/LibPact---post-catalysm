@@ -39,6 +39,12 @@ export type CharacterImages = {
 export type Affilation = "hexerei" | "moonsign" | "none";
 
 export function getImages(name: string, db: DbImg[]): CharacterImages {
+  if (name.startsWith("Traveler")) {
+    return {
+      icon: "Traveler icon",
+      sticker: "Traveler sticker",
+    };
+  }
   const imgs = db.find((img) => img.character === name);
   if (imgs) {
     return {

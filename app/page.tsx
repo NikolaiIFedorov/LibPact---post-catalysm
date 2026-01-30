@@ -1,4 +1,4 @@
-import { Page } from "./components/page";
+import { Window } from "./components/window";
 
 import { Input } from "./components/input";
 import { Output } from "./components/output";
@@ -24,20 +24,21 @@ export default async function Home() {
   if (teams.length === 0) teams.push(getTeam(names));
 
   const characterImgs = await dbImg.get();
-  const characterParameters: CharacterParameters[] = charactersLib.map(
-    (char) => {
-      return {
-        name: char.name,
-        element: char.element.name as Element,
-        weapon: char.weapon_type.name as WeaponType,
-        affiliation: char.affiliation as Affilation,
-        images: getImages(char.name, characterImgs),
-      };
-    },
-  );
+
+  let characterParameters: CharacterParameters[] = [];
+  for (const characterLib of charactersLib) {
+    if (characterLib.name.includes("Manekin")) continue;
+    characterParameters.push({
+      name: characterLib.name,
+      element: characterLib.element.name as Element,
+      weapon: characterLib.weapon_type.name as WeaponType,
+      affiliation: characterLib.affiliation as Affilation,
+      images: getImages(characterLib.name, characterImgs),
+    });
+  }
 
   return (
-    <Page>
+    <Window>
       <Input
         layer={0}
         weight={1}
@@ -46,6 +47,6 @@ export default async function Home() {
         characterParameters={characterParameters}
       />
       <Output layer={0} weight={4} />
-    </Page>
+    </Window>
   );
 }

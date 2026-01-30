@@ -1,6 +1,6 @@
 import { type FCParent } from "./index";
 
-export const Page: FCParent = ({ children }) => {
+export const Window: FCParent = ({ children }) => {
   return (
     <div
       className={"sm:h-screen flex-col sm:flex-row"}

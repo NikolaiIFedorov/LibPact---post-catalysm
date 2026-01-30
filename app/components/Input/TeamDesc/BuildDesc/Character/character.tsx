@@ -5,8 +5,6 @@ import {
   Section,
   Build,
   Search,
-  charactersLib,
-  CharacterLib,
   useState,
   CharacterParameters,
 } from "../index";

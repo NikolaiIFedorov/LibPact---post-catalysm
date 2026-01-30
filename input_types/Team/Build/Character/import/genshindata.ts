@@ -7,6 +7,9 @@ export type {
 } from "genshin-data";
 
 export const lib = new GenshinData();
-export const charactersLib = await lib.characters();
+export const charactersLib = await lib
+  .characters()
+  .then((charactersLib) => charactersLib.sort((a, b) => b.release - a.release));
+
 export const weaponsLib = await lib.weapons();
 export const artifactsLib = await lib.artifacts();
