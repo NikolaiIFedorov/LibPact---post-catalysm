@@ -1,21 +1,21 @@
 "use client";
 
-import { useState } from "react";
 import {
+  useState,
   FC,
   Splitter,
   Section,
   Team,
   BuildDesc,
-  CharacterImages,
+  CharacterParameters,
+  Parameters,
 } from "./index";
-import { Parameters } from "./TeamDesc/parameters";
 
 export const TeamDesc: FC<{
   layer: number;
   team: Team;
-  characterImgs: CharacterImages[];
-}> = ({ layer, team, characterImgs }) => {
+  characterParameters: CharacterParameters[];
+}> = ({ layer, team, characterParameters }) => {
   const [selected, setSelected] = useState<number | undefined>(undefined);
   return (
     <Section layer={layer} direction="column">
@@ -28,7 +28,7 @@ export const TeamDesc: FC<{
         setSelected={(unselect?: boolean) =>
           setSelected(unselect ? undefined : 0)
         }
-        characterImgs={characterImgs}
+        characterParameters={characterParameters}
       />
       <BuildDesc
         layer={layer + 1}
@@ -37,7 +37,7 @@ export const TeamDesc: FC<{
         setSelected={(unselect?: boolean) =>
           setSelected(unselect ? undefined : 1)
         }
-        characterImgs={characterImgs}
+        characterParameters={characterParameters}
       />
       <BuildDesc
         layer={layer + 1}
@@ -46,7 +46,7 @@ export const TeamDesc: FC<{
         setSelected={(unselect?: boolean) =>
           setSelected(unselect ? undefined : 2)
         }
-        characterImgs={characterImgs}
+        characterParameters={characterParameters}
       />
       <BuildDesc
         layer={layer + 1}
@@ -55,7 +55,7 @@ export const TeamDesc: FC<{
         setSelected={(unselect?: boolean) =>
           setSelected(unselect ? undefined : 3)
         }
-        characterImgs={characterImgs}
+        characterParameters={characterParameters}
       />
       <Splitter layer={layer + 1} />
       <Parameters layer={layer + 1} />

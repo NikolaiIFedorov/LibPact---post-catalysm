@@ -1,21 +1,13 @@
-import {
-  CharacterLib,
-  CharacterParameters,
-  CharacterImages,
-  FC,
-  Section,
-} from "../";
+import { CharacterParameters, FC, Section } from "../";
 
 export const List: FC<{
   layer: number;
-  list: CharacterLib[];
-  imgs: CharacterImages[];
-}> = ({ layer, list, imgs }) => {
+  list: CharacterParameters[];
+}> = ({ layer, list }) => {
   if (list.length > 0) {
+    console.log(list);
     return <Section layer={layer} fit="content"></Section>;
   } else {
     return <></>;
   }
 };
-
-function parametersFromLib(lib: CharacterLib[], imgs: string[]) {}

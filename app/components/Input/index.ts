@@ -1,3 +1,5 @@
+export { useState } from "react";
+
 export { type FC, type FlexProps } from "..";
 
 export { Section } from "../Structure/section";
@@ -10,5 +12,7 @@ export { List } from "./TeamList/list";
 export { Actions } from "./TeamList/actions";
 export { BuildDesc } from "./TeamDesc/buildDesc";
 
+export { Parameters } from "./TeamDesc/parameters";
+
 export { type Team, getTeam } from "../../../input_types/team";
-export { type CharacterImages } from "../../../input_types/Team/Build/character";
+export { type CharacterParameters } from "../../../input_types/Team/Build/character";

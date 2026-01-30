@@ -11,7 +11,7 @@ import {
   Container,
   Character,
   Weapon,
-  CharacterImages,
+  CharacterParameters,
 } from "./index";
 
 export const BuildDesc: FC<{
@@ -19,8 +19,8 @@ export const BuildDesc: FC<{
   build: Build;
   isSelected: boolean;
   setSelected: (unselect: boolean) => void;
-  characterImgs: CharacterImages[];
-}> = ({ layer, setSelected, isSelected, build, characterImgs }) => {
+  characterParameters: CharacterParameters[];
+}> = ({ layer, setSelected, isSelected, build, characterParameters }) => {
   if (!isSelected) {
     return (
       <Button
@@ -60,7 +60,11 @@ export const BuildDesc: FC<{
           {build.name}
         </Container>
         <Splitter layer={layer + 1} />
-        <Character layer={layer + 1} build={build} imgs={characterImgs} />
+        <Character
+          layer={layer + 1}
+          build={build}
+          parameters={characterParameters}
+        />
         <Splitter layer={layer + 1} />
         <Weapon layer={layer + 1} build={build} />
         <Splitter layer={layer + 1} />

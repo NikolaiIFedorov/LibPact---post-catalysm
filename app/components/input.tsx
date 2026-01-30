@@ -8,7 +8,7 @@ import {
   FC,
   FlexProps,
   Team,
-  CharacterImages,
+  CharacterParameters,
 } from "./index";
 import { useState } from "react";
 
@@ -17,9 +17,9 @@ export const Input: FC<
     layer: number;
     teams: Team[];
     names: InputTypeInstances;
-    characterImgs: CharacterImages[];
+    characterParameters: CharacterParameters[];
   }
-> = ({ layer, weight, teams, names, characterImgs }) => {
+> = ({ layer, weight, teams, names, characterParameters }) => {
   const [selected, handleSelect] = useState<Team>(teams[0]);
 
   return (
@@ -40,7 +40,7 @@ export const Input: FC<
       <TeamDesc
         layer={layer + 1}
         team={selected}
-        characterImgs={characterImgs}
+        characterParameters={characterParameters}
       />
     </Container>
   );

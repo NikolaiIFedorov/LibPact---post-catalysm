@@ -8,19 +8,19 @@ const sqlite3 = verbose();
 const db = new sqlite3.Database("./db/:libpact:");
 type TableNames = InputType | "icon";
 type SearchFilter = {
-  data: string;
-  where: string;
-  whereData: string;
+  what: string;
+  in: string;
+  whereIn: string;
 };
 
 const downloadData = (
   name: TableNames,
   searchFilter?: SearchFilter,
-): Promise<object[]> => {
+): Promise<any[]> => {
   if (searchFilter) {
     return new Promise((resolve, reject) => {
       db.all(
-        `SELECT ${searchFilter.data} FROM ${name} WHERE ${searchFilter.where}="${searchFilter.whereData}"`,
+        `SELECT ${searchFilter.what} FROM ${name} WHERE ${searchFilter.in}="${searchFilter.whereIn}"`,
         (err, rows: any[]) => {
           if (err) {
             reject(err);
@@ -44,10 +44,7 @@ const downloadData = (
   }
 };
 
-const uploadData = (
-  name: TableNames,
-  data: { [key: string]: string | number | null }[],
-): Promise<void> => {
+const uploadData = (name: TableNames, data: any[]): Promise<void> => {
   return new Promise((resolve, reject) => {
     const columns = [...new Set(data.flatMap((o) => Object.keys(o)))];
 
@@ -86,7 +83,7 @@ type Data =
       reference: TableNames;
     };
 
-const createTableIfNotExists = (table: Table) => {
+const createTableIfNotExists = (table: Table<any>) => {
   const fields = table.data
     .map(
       (field) =>
@@ -100,8 +97,8 @@ const createTableIfNotExists = (table: Table) => {
   );
 };
 
-class Table {
-  private static instance: Table | null = null;
+class Table<RowType> {
+  private static instance: Table<any> | null = null;
   name: TableNames;
   data: Array<Data>;
 
@@ -111,17 +108,17 @@ class Table {
     createTableIfNotExists(this);
   }
 
-  static getInstance(name: TableNames, data: Array<Data>): Table {
+  static getInstance(name: TableNames, data: Array<Data>): Table<any> {
     Table.instance = new Table(name, data);
 
     return Table.instance;
   }
 
-  get(searchFilter?: SearchFilter): Promise<object[]> {
+  get(searchFilter?: SearchFilter): Promise<RowType[]> {
     return downloadData(this.name, searchFilter);
   }
 
-  insert(data: { [key: string]: string | number | null }[]): Promise<void> {
+  insert(data: RowType[]): Promise<void> {
     return uploadData(this.name, data);
   }
 }
@@ -132,22 +129,33 @@ export type DbImg = {
   sticker: string | null;
 };
 
-export const dbImg: Table = Table.getInstance("icon", [
+export const dbImg: Table<DbImg> = Table.getInstance("icon", [
   { name: "character", type: "string" },
   { name: "icon", type: "string" },
   { name: "sticker", type: "string" },
 ]);
 
-export const dbBuilds: Table = Table.getInstance("build", [
+type DbBuilds = {
+  name: string;
+  team: number;
+};
+
+export const dbBuilds: Table<DbBuilds> = Table.getInstance("build", [
   { name: "name", type: "string" },
   { name: "team", type: "number", reference: "team" },
 ]);
 
-export const dbTeams: Table = Table.getInstance("team", [
+type DbTeams = {
+  name: string;
+};
+
+export const dbTeams: Table<DbTeams> = Table.getInstance("team", [
   { name: "name", type: "string" },
 ]);
 
-export const dbCache: Table = Table.getInstance("icon", [
+type DbCache = any;
+
+export const dbCache: Table<DbCache> = Table.getInstance("icon", [
   { name: "character", type: "string" },
   { name: "icon", type: "string" },
   { name: "sticker", type: "string" },

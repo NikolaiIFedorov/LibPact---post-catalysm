@@ -3,10 +3,18 @@ import {
   type Talents,
   type Stats,
   type WeaponType,
+  type CharacterLib,
   charactersLib,
   getTalents,
   getCharacterStats,
+  DbImg,
 } from ".";
+
+function getUrlName(name: string) {
+  if (name.includes("Aether") || name.includes("Lumine")) return "Traveler";
+  else if (name.includes("Manekin")) return "Wonderland Manekin";
+  else return name;
+}
 
 async function urlFromImage(image: any) {
   if (!image) return null;
@@ -28,44 +36,21 @@ export type CharacterImages = {
   sticker: string | null;
 };
 
-export async function getImages(name: string): Promise<CharacterImages> {
-  let urlName = name;
-  if (urlName.includes("Aether") || urlName.includes("Lumine"))
-    urlName = "Traveler";
-  else if (urlName.includes("Manekin")) urlName = "Wonderland Manekin";
+export type Affilation = "hexerei" | "moonsign" | "none";
 
-  const galleryResponse = await fetch(
-    `https://genshin-impact.fandom.com/api.php?action=query&titles=${urlName}/Gallery&prop=images&imlimit=1000&format=json&origin=*`,
-  );
-
-  const galleryData = await galleryResponse.json();
-  const galleryPages = galleryData.query.pages;
-  const galleryPageId = Object.keys(galleryPages)[0];
-  const galleryImages = galleryPages[galleryPageId].images;
-
-  const iconImage = galleryImages.filter(
-    (img: any) =>
-      img.title.startsWith("File:" + name + " Icon") &&
-      img.title.includes(name),
-  )[0];
-  const icon = await urlFromImage(iconImage);
-
-  const stickerImage = galleryImages.filter(
-    (img: any) =>
-      img.title.startsWith("File:Icon Emoji Paimon's Paintings") &&
-      img.title.includes(name),
-  )[0];
-  const sticker = await urlFromImage(stickerImage);
-
-  const images: CharacterImages = {
-    icon: icon,
-    sticker: sticker,
+export function getImages(name: string, db: DbImg[]): CharacterImages {
+  const imgs = db.find((img) => img.character === name);
+  if (imgs) {
+    return {
+      icon: imgs.icon,
+      sticker: imgs.sticker,
+    };
+  }
+  return {
+    icon: "",
+    sticker: null,
   };
-
-  return images;
 }
-
-type Affilation = "hexerei" | "moonsign" | "none";
 
 export type CharacterParameters = {
   name: string;
@@ -74,6 +59,23 @@ export type CharacterParameters = {
   affiliation: Affilation;
   images: CharacterImages;
 };
+
+export function getCharacterParameters(
+  character: CharacterLib,
+  db: DbImg[],
+): CharacterParameters {
+  const images: CharacterImages = getImages(character.name, db);
+
+  const parameters: CharacterParameters = {
+    name: character.name,
+    element: character.element.id as Element,
+    weapon: character.weapon_type.id as WeaponType,
+    affiliation: character.affiliation as Affilation,
+    images: images,
+  };
+
+  return parameters;
+}
 
 export type Character = {
   parameters: CharacterParameters;
@@ -97,22 +99,21 @@ export async function getCharacter(
   const talents: Talents = getTalents(libCharacter);
   const stats: Stats = await getCharacterStats(libCharacter, ascension);
 
-  const images: CharacterImages = await getImages(libCharacter.name);
-
-  const parameters: CharacterParameters = {
-    name: libCharacter.name,
-    element: libCharacter.element.id as Element,
-    weapon: libCharacter.weapon_type.id as WeaponType,
-    affiliation: libCharacter.affiliation as Affilation,
-    images: images,
-  };
-
   const character: Character = {
     ascension: ascension,
     constellation: constellation,
     talents: talents,
     stats: stats,
-    parameters: parameters,
+    parameters: {
+      name: libCharacter.name,
+      element: libCharacter.element.id as Element,
+      affiliation: libCharacter.affiliation as Affilation,
+      weapon: libCharacter.weapon_type.id as WeaponType,
+      images: {
+        icon: "",
+        sticker: null,
+      },
+    },
   };
 
   return character;

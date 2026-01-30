@@ -9,15 +9,14 @@ import {
   CharacterLib,
   useState,
   CharacterParameters,
-  CharacterImages,
 } from "../index";
 import { List } from "./list";
 
 export const CharacterDesc: FC<{
   layer: number;
   build: Build;
-  imgs: CharacterImages[];
-}> = ({ layer, build, imgs }) => {
+  parameters: CharacterParameters[];
+}> = ({ layer, build, parameters }) => {
   if (build.character) {
     return (
       <>
@@ -34,16 +33,16 @@ export const CharacterDesc: FC<{
       </>
     );
   } else {
-    const [characters, setCharacters] = useState<CharacterLib[]>([]);
+    const [characters, setCharacters] = useState<CharacterParameters[]>([]);
     return (
       <Container layer={layer} direction="column">
         <Search
           layer={layer}
           text="Character"
-          content={charactersLib}
+          content={parameters}
           onSearch={setCharacters}
         />
-        <List layer={layer} list={characters} imgs={imgs} />
+        <List layer={layer} list={characters} />
       </Container>
     );
   }

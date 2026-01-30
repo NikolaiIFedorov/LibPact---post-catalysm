@@ -53,5 +53,6 @@ function getResult(input: string, content: any[]): any[] {
     if (lowerName.includes(lowerInput) || short.includes(lowerInput))
       results.push(item);
   }
+  console.log(results);
   return results;
 }
