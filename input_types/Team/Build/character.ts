@@ -38,24 +38,15 @@ export type CharacterImages = {
 
 export type Affilation = "hexerei" | "moonsign" | "none";
 
-export function getImages(name: string, db: DbImg[]): CharacterImages {
+export function getImg(name: string, db: DbImg[]): string {
   if (name.startsWith("Traveler")) {
-    return {
-      icon: "Traveler icon",
-      sticker: "Traveler sticker",
-    };
+    return "Traveler icon";
   }
   const imgs = db.find((img) => img.character === name);
   if (imgs) {
-    return {
-      icon: imgs.icon,
-      sticker: imgs.sticker,
-    };
+    return imgs.icon;
   }
-  return {
-    icon: "",
-    sticker: null,
-  };
+  return "";
 }
 
 export type CharacterParameters = {
@@ -63,21 +54,21 @@ export type CharacterParameters = {
   element: Element;
   weapon: WeaponType;
   affiliation: Affilation;
-  images: CharacterImages;
+  img: string;
 };
 
 export function getCharacterParameters(
   character: CharacterLib,
   db: DbImg[],
 ): CharacterParameters {
-  const images: CharacterImages = getImages(character.name, db);
+  const img: string = getImg(character.name, db);
 
   const parameters: CharacterParameters = {
     name: character.name,
     element: character.element.id as Element,
     weapon: character.weapon_type.id as WeaponType,
     affiliation: character.affiliation as Affilation,
-    images: images,
+    img: img,
   };
 
   return parameters;
@@ -86,15 +77,16 @@ export function getCharacterParameters(
 export type Character = {
   parameters: CharacterParameters;
   talents: Talents;
-  ascension: number;
+  level: number;
   constellation: number;
   stats: Stats;
 } | null;
 
-export async function getCharacter(
+export function getCharacter(
   name: string,
-  ascension: number,
-  constellation: number,
+  dbImg: DbImg[],
+  level: number = 90,
+  constellation: number = 0,
 ) {
   let libCharacter = charactersLib.find((c) => c.name.includes(name) === true);
   if (!libCharacter) {
@@ -103,23 +95,14 @@ export async function getCharacter(
   }
 
   const talents: Talents = getTalents(libCharacter);
-  const stats: Stats = await getCharacterStats(libCharacter, ascension);
+  const stats: Stats = getCharacterStats(libCharacter, level);
 
   const character: Character = {
-    ascension: ascension,
+    level: level,
     constellation: constellation,
     talents: talents,
     stats: stats,
-    parameters: {
-      name: libCharacter.name,
-      element: libCharacter.element.id as Element,
-      affiliation: libCharacter.affiliation as Affilation,
-      weapon: libCharacter.weapon_type.id as WeaponType,
-      images: {
-        icon: "",
-        sticker: null,
-      },
-    },
+    parameters: getCharacterParameters(libCharacter, dbImg),
   };
 
   return character;

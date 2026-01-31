@@ -3,26 +3,37 @@ import {
   Container,
   Icon,
   Section,
-  Build,
   Search,
   useState,
   CharacterParameters,
-} from "../index";
-import { List } from "./list";
+  Character,
+  List,
+  colorFromElement,
+} from "./index";
 
 export const CharacterDesc: FC<{
   layer: number;
-  build: Build;
+  character?: Character;
+  setCharacter: (character: Character | undefined) => void;
   parameters: CharacterParameters[];
-}> = ({ layer, build, parameters }) => {
-  if (build.character) {
+}> = ({ layer, character, setCharacter, parameters }) => {
+  console.log(character);
+  if (character) {
     return (
       <>
         <Container layer={layer - 1}>
-          <Icon layer={layer} />
+          <Icon
+            layer={layer}
+            img={character.parameters.img}
+            color={colorFromElement(character.parameters.element)}
+          />
           <Container layer={layer} direction="column" weight={1}>
-            <Section layer={layer} weight={1}></Section>
-            <Section layer={layer} weight={1}></Section>
+            <Section layer={layer} weight={1}>
+              Lvl: {character.level}
+            </Section>
+            <Section layer={layer} weight={1}>
+              C: {character.constellation}
+            </Section>
           </Container>
         </Container>
         <Section layer={layer} weight={1}></Section>
@@ -40,7 +51,7 @@ export const CharacterDesc: FC<{
           content={parameters}
           onSearch={setCharacters}
         />
-        <List layer={layer} list={characters} />
+        <List layer={layer} list={characters} setCharacter={setCharacter} />
       </Container>
     );
   }

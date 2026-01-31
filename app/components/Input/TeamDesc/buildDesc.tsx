@@ -1,5 +1,3 @@
-"use client";
-
 import {
   FC,
   Icon,
@@ -12,6 +10,8 @@ import {
   Character,
   Weapon,
   CharacterParameters,
+  useState,
+  CharacterDesc,
 } from "./index";
 
 export const BuildDesc: FC<{
@@ -21,6 +21,9 @@ export const BuildDesc: FC<{
   setSelected: (unselect: boolean) => void;
   characterParameters: CharacterParameters[];
 }> = ({ layer, setSelected, isSelected, build, characterParameters }) => {
+  const [character, setCharacter] = useState<Character | undefined>(
+    build.character,
+  );
   if (!isSelected) {
     return (
       <Button
@@ -54,9 +57,10 @@ export const BuildDesc: FC<{
           {build.name}
         </Container>
         <Splitter layer={layer + 1} />
-        <Character
+        <CharacterDesc
           layer={layer + 1}
-          build={build}
+          character={character}
+          setCharacter={setCharacter}
           parameters={characterParameters}
         />
         <Splitter layer={layer + 1} />

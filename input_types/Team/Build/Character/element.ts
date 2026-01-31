@@ -1,8 +1,8 @@
 export type Element =
-  | "Pyro"
-  | "Hydro"
-  | "Anemo"
-  | "Electro"
-  | "Dendro"
-  | "Cryo"
-  | "Geo";
+  | "pyro"
+  | "hydro"
+  | "anemo"
+  | "electro"
+  | "dendro"
+  | "cryo"
+  | "geo";

@@ -23,10 +23,10 @@ export const layerStyles = {
    * @param layer - The layer depth (1, 2, 3, etc.)
    * @param offset - Optional offset to adjust the lightness (default: 0)
    */
-  backgroundColor: (layer: number, offset?: Size): string => {
+  backgroundColor: (offset?: Size): string => {
     let numOffset = 0;
-    if (offset == "faint") numOffset = -3.75;
-    return `hsla(0, 0%, 100%, 0.15)`;
+    if (offset == "faint") numOffset = -0.05;
+    return `hsla(0, 0%, 100%, ${0.15 + numOffset})`;
   },
 
   /**
@@ -69,7 +69,7 @@ export const layerStyles = {
   LAYER: (layer: number, offset?: Size): CSSProperties => {
     return {
       borderRadius: layerStyles.borderRadius(layer, offset),
-      backgroundColor: layerStyles.backgroundColor(layer, offset),
+      backgroundColor: layerStyles.backgroundColor(offset),
     };
   },
 

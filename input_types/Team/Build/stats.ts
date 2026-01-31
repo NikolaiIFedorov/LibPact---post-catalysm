@@ -102,12 +102,14 @@ const defaultBuild: Stats = {
   Healing_Bonus: 0,
 };
 
-export async function getCharacterStats(
-  character: CharacterLib,
-  ascension: number
-) {
-  let stats: Stats = { ...defaultCharacter };
+function ascensionFromLevel(level: number) {
+  if (level <= 1) return (level - 20) / 20;
+  else return (level - 30) / 10;
+}
 
+export function getCharacterStats(character: CharacterLib, level: number) {
+  let stats: Stats = { ...defaultCharacter };
+  const ascension = ascensionFromLevel(level);
   const characterStats = character.ascension[ascension - 1].stats;
   for (const stat of characterStats) {
     const name = stat.label;
@@ -125,7 +127,7 @@ export async function getCharacterStats(
         stats.DEF += Number(stat.values[1]);
         break;
       default:
-        stats = await addToStat(name, Number(stat.values[1]), stats, "+");
+        stats = addToStat(name, Number(stat.values[1]), stats, "+");
         break;
     }
   }
@@ -207,7 +209,7 @@ export async function getArtifactPercentStats(pieces: ArtifactPieces) {
 export async function getBuildStats(
   character: Character | null,
   weapon: Weapon | null,
-  artifacts: Artifacts | null
+  artifacts: Artifacts | null,
 ) {
   let stats: Stats = { ...defaultBuild };
 
@@ -222,21 +224,21 @@ export async function getBuildStats(
   }
 
   if (artifacts) {
-    const artifactPercentStats = artifacts.stats?.stats.percent;
+    const artifactPercentStats = artifacts.stats.percent;
     stats = await mergeStats(stats, artifactPercentStats, "%");
 
-    const artifactFlatStats = artifacts.stats?.stats.flat;
+    const artifactFlatStats = artifacts.stats.flat;
     stats = await mergeStats(stats, artifactFlatStats, "+");
   }
 
   return stats;
 }
 
-async function addToStat(
+function addToStat(
   name: string,
   value: number,
   stats: Stats,
-  operation: "+" | "%"
+  operation: "+" | "%",
 ) {
   name = name.replaceAll("%", "");
   name = name.replaceAll(" ", "_");
@@ -254,7 +256,7 @@ async function addToStat(
 async function mergeStats(
   stats1: Stats,
   stats2: Stats | undefined,
-  operation: "+" | "%"
+  operation: "+" | "%",
 ) {
   if (!stats2) return stats1;
   let targetStats;

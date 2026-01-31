@@ -52,22 +52,44 @@ function shortFromName(name: string): string {
     .join("");
 }
 
+function getSegment(name: string, inputLower: string): string {
+  const segments = name.toLowerCase().split(" ");
+  if (segments.length == 1) return name;
+  else {
+    console.log(name, segments);
+    const relevantSegments = segments.filter((seg) => seg.includes(inputLower));
+    return relevantSegments.sort((x, y) => x.length - y.length)[0];
+  }
+}
+
+function sortNameLength(a: string, b: string, inputLower: string): number {
+  const aSegment = getSegment(a, inputLower);
+  const bSegment = getSegment(b, inputLower);
+  return aSegment.length - bSegment.length;
+}
+
 function getResult(input: string, content: any[]): any[] {
   let results: any[] = [];
-  const lowerInput = input.toLowerCase();
+  const inputLower = input.toLowerCase();
 
   for (const item of content) {
-    const name = item.name;
+    const name = getSegment(item.name, inputLower);
+    if (!name) continue;
+
     const lowerName = name.toLowerCase();
-    if (lowerName.startsWith(lowerInput)) results.push(item);
+    if (lowerName.startsWith(inputLower)) results.push(item);
   }
+
+  results.sort((a, b) => {
+    return sortNameLength(a.name, b.name, inputLower);
+  });
 
   for (const item of content) {
     if (results.includes(item)) continue;
     const name = item.name;
     const lowerName = name.toLowerCase();
     const short = shortFromName(name);
-    if (lowerName.includes(lowerInput) || short.startsWith(lowerInput))
+    if (lowerName.includes(inputLower) || short.startsWith(inputLower))
       results.push(item);
   }
   return results;

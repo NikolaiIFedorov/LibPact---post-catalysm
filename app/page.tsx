@@ -8,7 +8,7 @@ import { type InputTypeInstances } from "../input_types/index";
 import {
   Affilation,
   CharacterParameters,
-  getImages,
+  getImg,
 } from "@/input_types/Team/Build/character";
 import { charactersLib, Element, WeaponType } from "../input_types/Team/Build/";
 
@@ -24,16 +24,15 @@ export default async function Home() {
   if (teams.length === 0) teams.push(getTeam(names));
 
   const characterImgs = await dbImg.get();
-
   let characterParameters: CharacterParameters[] = [];
   for (const characterLib of charactersLib) {
     if (characterLib.name.includes("Manekin")) continue;
     characterParameters.push({
       name: characterLib.name,
-      element: characterLib.element.name as Element,
+      element: characterLib.element.id as Element,
       weapon: characterLib.weapon_type.name as WeaponType,
       affiliation: characterLib.affiliation as Affilation,
-      images: getImages(characterLib.name, characterImgs),
+      img: getImg(characterLib.name, characterImgs),
     });
   }
 
