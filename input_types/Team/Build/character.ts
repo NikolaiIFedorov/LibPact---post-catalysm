@@ -16,25 +16,21 @@ function getUrlName(name: string) {
   else return name;
 }
 
-async function urlFromImage(image: any) {
-  if (!image) return null;
-  const iconResponse = await fetch(
-    `https://genshin-impact.fandom.com/api.php?action=query&titles=${encodeURIComponent(
-      image.title,
-    )}&prop=imageinfo&iiprop=url&format=json&origin=*`,
-  );
-  const iconData = await iconResponse.json();
-  const iconPages = iconData.query.pages;
-  const iconPageId = Object.keys(iconPages)[0];
-  const iconUrl = iconPages[iconPageId].imageinfo?.[0]?.url;
-
-  return iconUrl;
-}
-
 export type Affilation = "hexerei" | "moonsign" | "none";
 
+export function normalizeName(name: string): string {
+  if (name.includes("Manekin")) return "";
+
+  let nameNormal = name;
+  if (name.includes("Traveler")) return "Traveler";
+
+  nameNormal = nameNormal.replaceAll(" ", "_");
+  return nameNormal;
+}
+
 export function getCharacterImg(name: string): string {
-  return `character/${name}`;
+  const fileName = normalizeName(name);
+  return `character/${fileName}`;
 }
 
 export type CharacterParameters = {

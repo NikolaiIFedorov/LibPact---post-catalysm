@@ -7,6 +7,8 @@ import path from "path";
 import https from "https";
 import http from "http";
 
+export { normalizeName } from "@/input_types/Team/Build/character";
+
 const { verbose } = pkg;
 const sqlite3 = verbose();
 
@@ -217,8 +219,9 @@ export async function getImgs(
   name: string,
   type: "character" | "weapon",
 ): Promise<string> {
-  if (name.includes("Manekin")) return "";
-  if (name.includes("Traveler")) return "Traveler";
+  const nameNormal = normalizeName(name);
+  if (nameNormal === "") return "";
+  if (nameNormal === "Traveler") return "Traveler";
 
   if (fs.existsSync(`./public/${type}/${name}.png`)) return name;
 
