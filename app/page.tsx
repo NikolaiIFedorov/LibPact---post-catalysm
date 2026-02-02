@@ -10,7 +10,16 @@ import {
   CharacterParameters,
   getCharacterImg,
 } from "@/input_types/Team/Build/character";
-import { charactersLib, Element, WeaponType } from "../input_types/Team/Build/";
+import {
+  charactersLib,
+  weaponsLib,
+  Element,
+  WeaponType,
+} from "../input_types/Team/Build/";
+import {
+  getWeaponImg,
+  WeaponParameters,
+} from "@/input_types/Team/Build/weapon";
 
 export default async function Home() {
   const dataTeams = await dbTeams.get();
@@ -34,6 +43,17 @@ export default async function Home() {
       img: getCharacterImg(characterLib.name),
     });
   }
+
+  let weaponParameters: WeaponParameters[] = [];
+  for (const weaponLib of weaponsLib) {
+    weaponParameters.push({
+      name: weaponLib.name,
+      img: getWeaponImg(weaponLib.name),
+      type: weaponLib.type.name as WeaponType,
+    });
+  }
+
+  console.log(weaponParameters);
 
   return (
     <Window>

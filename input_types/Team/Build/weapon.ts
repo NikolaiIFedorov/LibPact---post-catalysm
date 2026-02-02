@@ -4,10 +4,10 @@ import {
   weaponsLib,
   type WeaponLib,
   getWeaponStats,
-  DbImg,
+  normalizeName,
 } from "./index.ts";
 
-export type WeaponType = "sword" | "polearm" | "catalyst" | "bow" | "claymore";
+export type WeaponType = "Sword" | "Polearm" | "Catalyst" | "Bow" | "Claymore";
 
 export type WeaponParameters = {
   name: string;
@@ -23,21 +23,15 @@ export type Weapon = {
   stats: Stats;
 } | null;
 
-export function getWeaponImg(name: string, db: DbImg[]): string {
-  const imgs = db.find((img) => img.name === name);
-  if (imgs) {
-    return imgs.img;
-  }
-  return "";
+export function getWeaponImg(name: string): string {
+  const fileName = normalizeName(name);
+  return `weapon/${fileName}`;
 }
 
-export function getWeaponParameters(
-  weapon: WeaponLib,
-  imgs: DbImg[],
-): WeaponParameters {
+export function getWeaponParameters(weapon: WeaponLib): WeaponParameters {
   return {
     name: weapon.name,
-    img: getWeaponImg(weapon.name, imgs),
+    img: getWeaponImg(weapon.name),
     type: weapon.type.id as WeaponType,
   };
 }
@@ -46,7 +40,6 @@ export function getWeapon(
   name: string,
   level: number,
   refinement: number,
-  imgs: DbImg[],
 ): Weapon {
   const libWeapon = weaponsLib.find((w) => w.name.includes(name) === true);
 
@@ -63,7 +56,7 @@ export function getWeapon(
     refinement: refinement,
     stats: stats,
     effect: effect,
-    parameters: getWeaponParameters(libWeapon, imgs),
+    parameters: getWeaponParameters(libWeapon),
   };
   return weapon;
 }

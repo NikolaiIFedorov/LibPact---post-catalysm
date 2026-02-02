@@ -6,8 +6,7 @@ import fs from "fs";
 import path from "path";
 import https from "https";
 import http from "http";
-
-export { normalizeName } from "@/input_types/Team/Build/character";
+import { normalizeName } from "@/input_types/Team/Build/";
 
 const { verbose } = pkg;
 const sqlite3 = verbose();
@@ -225,40 +224,52 @@ export async function getImgs(
 
   if (fs.existsSync(`./public/${type}/${name}.png`)) return name;
 
-  if (type === "character") {
-    const galleryResponse = await fetch(
-      `https://genshin-impact.fandom.com/api.php?action=query&titles=${name}/Gallery&prop=images&imlimit=500&format=json&origin=*`,
+  let target = "";
+  if (type === "character") target = `${name}/Gallery`;
+  else if (type === "weapon") target = name;
+  const filters = "&prop=images&imlimit=500&format=json&origin=*";
+  const base = "https://genshin-impact.fandom.com/api.php?action=query&titles=";
+  const url = base + target + filters;
+
+  const galleryResponse = await fetch(url);
+
+  const galleryData = await galleryResponse.json();
+  const galleryPages = galleryData.query.pages;
+  const galleryPageId = Object.keys(galleryPages)[0];
+  const galleryImages = galleryPages[galleryPageId].images;
+
+  const iconImages = galleryImages.filter((img: any) => {
+    if (type === "character")
+      return img.title.startsWith("File:" + name + " Icon");
+    else if (type === "weapon")
+      return img.title === "File:Weapon " + name + ".png";
+  });
+
+  if (iconImages.length === 0)
+    throw galleryImages
+      .filter((img: any) => img.title.includes(name))
+      .map((img: any) => img.title)
+      .join(", ");
+
+  let images = [];
+  for (const img of iconImages) {
+    const iconResponse = await fetch(
+      `https://genshin-impact.fandom.com/api.php?action=query&titles=${encodeURIComponent(
+        img.title,
+      )}&prop=imageinfo&iiprop=url&format=json&origin=*`,
     );
+    const iconData = await iconResponse.json();
+    const iconPages = iconData.query.pages;
+    const iconPageId = Object.keys(iconPages)[0];
+    const iconUrl = iconPages[iconPageId].imageinfo?.[0]?.url;
 
-    const galleryData = await galleryResponse.json();
-    const galleryPages = galleryData.query.pages;
-    const galleryPageId = Object.keys(galleryPages)[0];
-    const galleryImages = galleryPages[galleryPageId].images;
+    if (iconUrl) images.push(iconUrl);
+  }
 
-    const iconImages = galleryImages.filter((img: any) =>
-      img.title.startsWith("File:" + name + " Icon"),
-    );
-
-    let images = [];
-    for (const img of iconImages) {
-      const iconResponse = await fetch(
-        `https://genshin-impact.fandom.com/api.php?action=query&titles=${encodeURIComponent(
-          img.title,
-        )}&prop=imageinfo&iiprop=url&format=json&origin=*`,
-      );
-      const iconData = await iconResponse.json();
-      const iconPages = iconData.query.pages;
-      const iconPageId = Object.keys(iconPages)[0];
-      const iconUrl = iconPages[iconPageId].imageinfo?.[0]?.url;
-
-      if (iconUrl) images.push(iconUrl);
-    }
-
-    if (images[0]) {
-      const imageUrl = images[0].split("/revision")[0];
-      const localPath = await downloadImage(imageUrl, name, type);
-      return localPath || imageUrl;
-    }
+  if (images[0]) {
+    const imageUrl = images[0].split("/revision")[0];
+    const localPath = await downloadImage(imageUrl, name, type);
+    return localPath || imageUrl;
   }
 
   return "";

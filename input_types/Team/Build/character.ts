@@ -3,30 +3,13 @@ import {
   type Talents,
   type Stats,
   type WeaponType,
-  type CharacterLib,
   charactersLib,
   getTalents,
   getCharacterStats,
-  DbImg,
+  normalizeName,
 } from ".";
 
-function getUrlName(name: string) {
-  if (name.includes("Aether") || name.includes("Lumine")) return "Traveler";
-  else if (name.includes("Manekin")) return "Wonderland Manekin";
-  else return name;
-}
-
 export type Affilation = "hexerei" | "moonsign" | "none";
-
-export function normalizeName(name: string): string {
-  if (name.includes("Manekin")) return "";
-
-  let nameNormal = name;
-  if (name.includes("Traveler")) return "Traveler";
-
-  nameNormal = nameNormal.replaceAll(" ", "_");
-  return nameNormal;
-}
 
 export function getCharacterImg(name: string): string {
   const fileName = normalizeName(name);
@@ -39,19 +22,17 @@ export type CharacterParameters = {
   weapon: WeaponType;
   affiliation: Affilation;
   img: string;
-};
+} | null;
 
-export function getCharacterParameters(
-  character: CharacterLib,
-): CharacterParameters {
-  const img: string = getCharacterImg(character.name);
-
+export function getCharacterParameters(name: string): CharacterParameters {
+  const character = charactersLib.find((c) => c.name === name);
+  if (!character) return null;
   const parameters: CharacterParameters = {
     name: character.name,
     element: character.element.id as Element,
     weapon: character.weapon_type.id as WeaponType,
     affiliation: character.affiliation as Affilation,
-    img: img,
+    img: getCharacterImg(character.name),
   };
 
   return parameters;
@@ -84,7 +65,7 @@ export function getCharacter(
     constellation: constellation,
     talents: talents,
     stats: stats,
-    parameters: getCharacterParameters(libCharacter),
+    parameters: getCharacterParameters(libCharacter.name),
   };
 
   return character;

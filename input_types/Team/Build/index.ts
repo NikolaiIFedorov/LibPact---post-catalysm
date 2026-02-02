@@ -26,4 +26,12 @@ export { type Weapon, type WeaponType } from "./weapon.ts";
 export { type Artifacts } from "./artifact.ts";
 export { type Substat } from "./pieces.ts";
 
-export { type DbImg } from "@/db/db";
+export function normalizeName(name: string): string {
+  if (name.includes("Manekin")) return "";
+
+  let nameNormal = name;
+  if (name.includes("Traveler")) return "Traveler";
+
+  nameNormal = nameNormal.replaceAll(" ", "_");
+  return nameNormal;
+}
