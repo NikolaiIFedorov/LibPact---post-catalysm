@@ -7,21 +7,20 @@ import {
   Weapon,
   List,
   WeaponParameters,
+  weaponParametersFromLib,
+  useState,
 } from "./Weapon/";
 
 export const WeaponDesc: FC<{
   layer: number;
-  parameters: WeaponParameters[];
   setWeapon: (weapon: Weapon | undefined) => void;
   weapon?: Weapon;
-  setWeapons: (weaponParameters: WeaponParameters[]) => void;
-  weapons: WeaponParameters[];
-}> = ({ layer, weapon, setWeapon, setWeapons, weapons }) => {
+}> = ({ layer, weapon, setWeapon }) => {
   if (weapon) {
     return (
       <>
         <Container layer={layer - 1}>
-          <Icon layer={layer} img={weapon.parameters.img} />
+          <Icon layer={layer} img={weapon.parameters?.img} color={true} />
           <Container layer={layer} direction="column" weight={1}>
             <Section layer={layer} weight={1}>
               Lvl: {weapon.level}
@@ -37,12 +36,14 @@ export const WeaponDesc: FC<{
       </>
     );
   } else {
+    const parameters: WeaponParameters[] = weaponParametersFromLib();
+    const [weapons, setWeapons] = useState<WeaponParameters[]>([]);
     return (
       <Container layer={layer} direction="column">
         <Search
           layer={layer}
           text="Weapon"
-          content={weapons}
+          content={parameters}
           onSearch={setWeapons}
         />
         <List layer={layer} list={weapons} setWeapon={setWeapon} />

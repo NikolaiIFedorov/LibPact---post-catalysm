@@ -154,12 +154,10 @@ export async function downloadImage(
   subfolder?: string,
 ): Promise<string | null> {
   try {
-    const sanitizedFilename = filename.replace(/[^a-zA-Z0-9_-]/g, "_");
-
     const urlPath = new URL(url).pathname;
     const ext = path.extname(urlPath) || ".png";
 
-    const fullFilename = `${sanitizedFilename}${ext}`;
+    const fullFilename = `${filename}${ext}`;
 
     const publicDir = path.join(process.cwd(), "public");
     const targetDir = subfolder ? path.join(publicDir, subfolder) : publicDir;
@@ -222,7 +220,7 @@ export async function getImgs(
   if (nameNormal === "") return "";
   if (nameNormal === "Traveler") return "Traveler";
 
-  if (fs.existsSync(`./public/${type}/${name}.png`)) return name;
+  if (fs.existsSync(`./public/${type}/${nameNormal}.png`)) return nameNormal;
 
   let target = "";
   if (type === "character") target = `${name}/Gallery`;
@@ -268,7 +266,8 @@ export async function getImgs(
 
   if (images[0]) {
     const imageUrl = images[0].split("/revision")[0];
-    const localPath = await downloadImage(imageUrl, name, type);
+    // Use nameNormal to ensure consistent filename handling
+    const localPath = await downloadImage(imageUrl, nameNormal, type);
     return localPath || imageUrl;
   }
 

@@ -14,8 +14,7 @@ import {
 export const TeamDesc: FC<{
   layer: number;
   team: Team;
-  characterParameters: CharacterParameters[];
-}> = ({ layer, team, characterParameters }) => {
+}> = ({ layer, team }) => {
   const [selected, setSelected] = useState<number | undefined>(undefined);
   return (
     <Section layer={layer} direction="column">
@@ -28,7 +27,6 @@ export const TeamDesc: FC<{
         setSelected={(unselect?: boolean) =>
           setSelected(unselect ? undefined : 0)
         }
-        characterParameters={characterParameters}
       />
       <BuildDesc
         layer={layer + 1}
@@ -37,7 +35,6 @@ export const TeamDesc: FC<{
         setSelected={(unselect?: boolean) =>
           setSelected(unselect ? undefined : 1)
         }
-        characterParameters={characterParameters}
       />
       <BuildDesc
         layer={layer + 1}
@@ -46,7 +43,6 @@ export const TeamDesc: FC<{
         setSelected={(unselect?: boolean) =>
           setSelected(unselect ? undefined : 2)
         }
-        characterParameters={characterParameters}
       />
       <BuildDesc
         layer={layer + 1}
@@ -55,7 +51,6 @@ export const TeamDesc: FC<{
         setSelected={(unselect?: boolean) =>
           setSelected(unselect ? undefined : 3)
         }
-        characterParameters={characterParameters}
       />
       <Splitter layer={layer + 1} />
       <Parameters layer={layer + 1} />

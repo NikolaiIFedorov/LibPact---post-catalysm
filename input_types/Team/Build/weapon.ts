@@ -28,12 +28,17 @@ export function getWeaponImg(name: string): string {
   return `weapon/${fileName}`;
 }
 
-export function getWeaponParameters(weapon: WeaponLib): WeaponParameters {
+export function weaponParametersFromName(name: string): WeaponParameters {
+  const weapon = weaponsLib.find((w) => w.name === name) as WeaponLib;
   return {
-    name: weapon.name,
-    img: getWeaponImg(weapon.name),
+    name: name,
+    img: getWeaponImg(name),
     type: weapon.type.id as WeaponType,
   };
+}
+
+export function weaponParametersFromLib(): WeaponParameters[] {
+  return weaponsLib.map((weapon) => weaponParametersFromName(weapon.name));
 }
 
 export function getWeapon(
@@ -56,7 +61,7 @@ export function getWeapon(
     refinement: refinement,
     stats: stats,
     effect: effect,
-    parameters: getWeaponParameters(libWeapon),
+    parameters: weaponParametersFromName(libWeapon.name),
   };
   return weapon;
 }

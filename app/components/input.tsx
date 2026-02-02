@@ -17,9 +17,8 @@ export const Input: FC<
     layer: number;
     teams: Team[];
     names: InputTypeInstances;
-    characterParameters: CharacterParameters[];
   }
-> = ({ layer, weight, teams, names, characterParameters }) => {
+> = ({ layer, weight, teams, names }) => {
   const [selected, handleSelect] = useState<Team>(teams[0]);
 
   return (
@@ -37,11 +36,7 @@ export const Input: FC<
         handleSelectAction={handleSelect}
         names={names}
       />
-      <TeamDesc
-        layer={layer + 1}
-        team={selected}
-        characterParameters={characterParameters}
-      />
+      <TeamDesc layer={layer + 1} team={selected} />
     </Container>
   );
 };

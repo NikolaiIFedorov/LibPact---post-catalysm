@@ -32,38 +32,9 @@ export default async function Home() {
   const teams: Team[] = dataTeams.map((dbTeam) => getTeam(names, dbTeam));
   if (teams.length === 0) teams.push(getTeam(names));
 
-  let characterParameters: CharacterParameters[] = [];
-  for (const characterLib of charactersLib) {
-    if (characterLib.name.includes("Manekin")) continue;
-    characterParameters.push({
-      name: characterLib.name,
-      element: characterLib.element.id as Element,
-      weapon: characterLib.weapon_type.name as WeaponType,
-      affiliation: characterLib.affiliation as Affilation,
-      img: getCharacterImg(characterLib.name),
-    });
-  }
-
-  let weaponParameters: WeaponParameters[] = [];
-  for (const weaponLib of weaponsLib) {
-    weaponParameters.push({
-      name: weaponLib.name,
-      img: getWeaponImg(weaponLib.name),
-      type: weaponLib.type.name as WeaponType,
-    });
-  }
-
-  console.log(weaponParameters);
-
   return (
     <Window>
-      <Input
-        layer={0}
-        weight={1}
-        teams={teams}
-        names={names}
-        characterParameters={characterParameters}
-      />
+      <Input layer={0} weight={1} teams={teams} names={names} />
       <Output layer={0} weight={4} />
     </Window>
   );

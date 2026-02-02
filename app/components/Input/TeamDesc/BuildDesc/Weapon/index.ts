@@ -20,7 +20,6 @@ export { type Build } from "../../../../../../input_types/Team/build";
 export {
   type Weapon,
   type WeaponParameters,
+  weaponParametersFromLib,
   getWeapon,
 } from "@/input_types/Team/Build/weapon";
-
-export { type DbImg } from "@/db/db";

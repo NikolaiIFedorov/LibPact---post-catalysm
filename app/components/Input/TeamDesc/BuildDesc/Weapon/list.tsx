@@ -5,7 +5,6 @@ import {
   Weapon,
   WeaponParameters,
   getWeapon,
-  DbImg,
 } from "./index";
 
 export const List: FC<{
@@ -14,7 +13,7 @@ export const List: FC<{
   setWeapon?: (weapon: Weapon | undefined) => void;
 }> = ({ layer, list, setWeapon }) => {
   if (list.length > 0) {
-    const imgs: DbImg[] = list.map((p) => ({
+    const imgs = list.map((p) => ({
       name: p.name,
       img: p.img,
     }));
@@ -27,10 +26,9 @@ export const List: FC<{
             icon={{
               img: c.img,
               size: "big",
+              color: true,
             }}
-            onClick={() =>
-              setWeapon && setWeapon(getWeapon(c.name, 90, 1, imgs))
-            }
+            onClick={() => setWeapon && setWeapon(getWeapon(c.name, 90, 1))}
           />
         ))}
       </Section>

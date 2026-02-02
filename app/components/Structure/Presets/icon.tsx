@@ -3,7 +3,7 @@ import { FC, layerStyles, LucideIcon, Lucide } from "../";
 export interface IconProps {
   size?: "default" | "big" | "medium" | "small" | "tiny";
   img?: { lucide: keyof typeof Lucide } | string;
-  color?: string;
+  color?: string | boolean;
 }
 
 export const Icon: FC<
@@ -27,6 +27,13 @@ export const Icon: FC<
       break;
   }
 
+  let backgroundColor = "transparent";
+  if (color === true) {
+    backgroundColor = layerStyles.backgroundColor("faint");
+  } else if (typeof color === "string") {
+    backgroundColor = color;
+  }
+
   const style = {
     ...layerStyles.ITEM(layer - 1, "faint"),
     borderRadius: `${length / 3}px`,
@@ -38,7 +45,7 @@ export const Icon: FC<
 
     display: "flex",
     alignSelf: "first-baseline",
-    backgroundColor: color ? color : undefined,
+    backgroundColor: backgroundColor,
   };
 
   if (!img) {

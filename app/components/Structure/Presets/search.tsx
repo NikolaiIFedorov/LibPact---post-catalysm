@@ -68,6 +68,7 @@ function sortNameLength(a: string, b: string, inputLower: string): number {
 }
 
 function getResult(input: string, content: any[]): any[] {
+  console.log(content);
   let results: any[] = [];
   const inputLower = input.toLowerCase();
 

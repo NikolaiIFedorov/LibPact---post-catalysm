@@ -1,3 +1,4 @@
+import { characterParametersFromLib } from "@/input_types/Team/Build/character";
 import {
   type FC,
   Container,
@@ -8,31 +9,23 @@ import {
   Character,
   List,
   colorFromElement,
+  useState,
+  charactersLib,
 } from "./Character/index";
 
 export const CharacterDesc: FC<{
   layer: number;
   setCharacter: (character: Character | undefined) => void;
   character?: Character;
-  setCharacters: (parameters: CharacterParameters[]) => void;
-  characters: CharacterParameters[];
-  parameters: CharacterParameters[];
-}> = ({
-  layer,
-  character,
-  setCharacter,
-  characters,
-  setCharacters,
-  parameters,
-}) => {
+}> = ({ layer, character, setCharacter }) => {
   if (character) {
     return (
       <>
         <Container layer={layer - 1}>
           <Icon
             layer={layer}
-            img={character.parameters.img}
-            color={colorFromElement(character.parameters.element)}
+            img={character.parameters?.img}
+            color={colorFromElement(character.parameters?.element)}
           />
           <Container layer={layer} direction="column" weight={1}>
             <Section layer={layer} weight={1}>
@@ -49,6 +42,8 @@ export const CharacterDesc: FC<{
       </>
     );
   } else {
+    const parameters: CharacterParameters[] = characterParametersFromLib();
+    const [characters, setCharacters] = useState<CharacterParameters[]>([]);
     return (
       <Container layer={layer} direction="column">
         <Search

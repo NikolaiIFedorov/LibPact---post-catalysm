@@ -9,12 +9,10 @@ import {
   Container,
   Character,
   WeaponDesc,
-  CharacterParameters,
   useState,
   CharacterDesc,
   colorFromElement,
   Weapon,
-  WeaponParameters,
 } from "./index";
 
 export const BuildDesc: FC<{
@@ -22,25 +20,13 @@ export const BuildDesc: FC<{
   build: Build;
   isSelected: boolean;
   setSelected: (unselect: boolean) => void;
-  characterParameters: CharacterParameters[];
-  weaponParameters: WeaponParameters[];
-}> = ({
-  layer,
-  setSelected,
-  isSelected,
-  build,
-  characterParameters,
-  weaponParameters,
-}) => {
+}> = ({ layer, setSelected, isSelected, build }) => {
   const [character, setCharacter] = useState<Character | undefined>(
     build.character,
   );
   const [weapon, setWeapon] = useState<Weapon | undefined>(build.weapon);
   if (build.character != character) build.character = character;
   if (build.weapon != weapon) build.weapon = weapon;
-
-  const [characters, setCharacters] = useState<CharacterParameters[]>([]);
-  const [weapons, setWeapons] = useState<WeaponParameters[]>([]);
 
   if (isSelected) {
     return (
@@ -59,27 +45,18 @@ export const BuildDesc: FC<{
         <CharacterDesc
           layer={layer + 1}
           character={character}
-          parameters={characterParameters}
           setCharacter={setCharacter}
-          characters={characters}
-          setCharacters={setCharacters}
         />
         <Splitter layer={layer + 1} />
-        <WeaponDesc
-          layer={layer + 1}
-          weapon={weapon}
-          parameters={weaponParameters}
-          setWeapon={setWeapon}
-          weapons={weapons}
-          setWeapons={setWeapons}
-        />
+        <WeaponDesc layer={layer + 1} weapon={weapon} setWeapon={setWeapon} />
         <Splitter layer={layer + 1} />
         <Artifacts layer={layer + 1} build={build} />
       </Section>
     );
   } else {
     let info: any[] = [];
-    if (build.character) info.push(build.character.parameters.img);
+    if (build.character) info.push(build.character.parameters?.img);
+    if (build.weapon) info.push(build.weapon.parameters?.img);
 
     if (info.length == 0) {
       return (
@@ -101,14 +78,21 @@ export const BuildDesc: FC<{
           fit="content"
           size="faint"
         >
-          {info.map((i, index) => (
+          {build.character && (
             <Icon
-              key={index}
               layer={layer + 1}
-              img={i}
-              color={colorFromElement(build.character?.parameters.element)}
+              img={build.character.parameters?.img}
+              color={colorFromElement(build.character.parameters?.element)}
             />
-          ))}
+          )}
+          {build.weapon && (
+            <Icon
+              layer={layer + 1}
+              img={build.weapon.parameters?.img}
+              size="big"
+              color={true}
+            />
+          )}
         </Button>
       );
     }

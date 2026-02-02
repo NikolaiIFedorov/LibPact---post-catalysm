@@ -7,6 +7,7 @@ import {
   getTalents,
   getCharacterStats,
   normalizeName,
+  CharacterLib,
 } from ".";
 
 export type Affilation = "hexerei" | "moonsign" | "none";
@@ -22,11 +23,10 @@ export type CharacterParameters = {
   weapon: WeaponType;
   affiliation: Affilation;
   img: string;
-} | null;
+};
 
-export function getCharacterParameters(name: string): CharacterParameters {
-  const character = charactersLib.find((c) => c.name === name);
-  if (!character) return null;
+export function characterParametersFromName(name: string): CharacterParameters {
+  const character = charactersLib.find((c) => c.name === name) as CharacterLib;
   const parameters: CharacterParameters = {
     name: character.name,
     element: character.element.id as Element,
@@ -36,6 +36,19 @@ export function getCharacterParameters(name: string): CharacterParameters {
   };
 
   return parameters;
+}
+
+export function characterParametersFromLib(): CharacterParameters[] {
+  return charactersLib.map((c) => {
+    const parameters: CharacterParameters = {
+      name: c.name,
+      element: c.element.id as Element,
+      weapon: c.weapon_type.id as WeaponType,
+      affiliation: c.affiliation as Affilation,
+      img: getCharacterImg(c.name),
+    };
+    return parameters;
+  });
 }
 
 export type Character = {
@@ -65,7 +78,7 @@ export function getCharacter(
     constellation: constellation,
     talents: talents,
     stats: stats,
-    parameters: getCharacterParameters(libCharacter.name),
+    parameters: characterParametersFromName(libCharacter.name),
   };
 
   return character;

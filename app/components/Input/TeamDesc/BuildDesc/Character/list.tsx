@@ -30,9 +30,7 @@ export const List: FC<{
               size: "big",
               color: colorFromElement(p.element),
             }}
-            onClick={() =>
-              setCharacter && setCharacter(getCharacter(p.name, imgs))
-            }
+            onClick={() => setCharacter && setCharacter(getCharacter(p.name))}
           />
         ))}
       </Section>
