@@ -8,10 +8,13 @@ import {
   Splitter,
   Container,
   Character,
-  Weapon,
+  WeaponDesc,
   CharacterParameters,
   useState,
   CharacterDesc,
+  colorFromElement,
+  Weapon,
+  WeaponParameters,
 } from "./index";
 
 export const BuildDesc: FC<{
@@ -20,30 +23,26 @@ export const BuildDesc: FC<{
   isSelected: boolean;
   setSelected: (unselect: boolean) => void;
   characterParameters: CharacterParameters[];
-}> = ({ layer, setSelected, isSelected, build, characterParameters }) => {
+  weaponParameters: WeaponParameters[];
+}> = ({
+  layer,
+  setSelected,
+  isSelected,
+  build,
+  characterParameters,
+  weaponParameters,
+}) => {
   const [character, setCharacter] = useState<Character | undefined>(
     build.character,
   );
-  if (!isSelected) {
-    return (
-      <Button
-        onClick={() => setSelected(false)}
-        layer={layer}
-        direction="column"
-        fit="content"
-      >
-        <Icon layer={layer + 1} />
-        <Container layer={layer + 1} direction="row">
-          <Icon layer={layer + 1} size={"medium"} />
-          <Icon layer={layer + 1} size={"medium"} />
-        </Container>
-        <Section layer={layer + 1} direction="row" fit="content">
-          <Icon layer={layer + 2} size={"medium"} />
-          <Icon layer={layer + 2} size={"medium"} />
-        </Section>
-      </Button>
-    );
-  } else {
+  const [weapon, setWeapon] = useState<Weapon | undefined>(build.weapon);
+  if (build.character != character) build.character = character;
+  if (build.weapon != weapon) build.weapon = weapon;
+
+  const [characters, setCharacters] = useState<CharacterParameters[]>([]);
+  const [weapons, setWeapons] = useState<WeaponParameters[]>([]);
+
+  if (isSelected) {
     return (
       <Section layer={layer} direction="column">
         <Container direction="row" layer={layer + 1} align={true} size="faint">
@@ -60,14 +59,58 @@ export const BuildDesc: FC<{
         <CharacterDesc
           layer={layer + 1}
           character={character}
-          setCharacter={setCharacter}
           parameters={characterParameters}
+          setCharacter={setCharacter}
+          characters={characters}
+          setCharacters={setCharacters}
         />
         <Splitter layer={layer + 1} />
-        <Weapon layer={layer + 1} build={build} />
+        <WeaponDesc
+          layer={layer + 1}
+          weapon={weapon}
+          parameters={weaponParameters}
+          setWeapon={setWeapon}
+          weapons={weapons}
+          setWeapons={setWeapons}
+        />
         <Splitter layer={layer + 1} />
         <Artifacts layer={layer + 1} build={build} />
       </Section>
     );
+  } else {
+    let info: any[] = [];
+    if (build.character) info.push(build.character.parameters.img);
+
+    if (info.length == 0) {
+      return (
+        <Button
+          onClick={() => setSelected(false)}
+          layer={layer}
+          direction="column"
+          size="faint"
+        >
+          {build.name}
+        </Button>
+      );
+    } else {
+      return (
+        <Button
+          onClick={() => setSelected(false)}
+          layer={layer}
+          direction="column"
+          fit="content"
+          size="faint"
+        >
+          {info.map((i, index) => (
+            <Icon
+              key={index}
+              layer={layer + 1}
+              img={i}
+              color={colorFromElement(build.character?.parameters.element)}
+            />
+          ))}
+        </Button>
+      );
+    }
   }
 };

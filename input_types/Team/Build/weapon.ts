@@ -2,26 +2,52 @@ import {
   type Stats,
   type Effect,
   weaponsLib,
+  type WeaponLib,
   getWeaponStats,
-  getUnnamed,
+  DbImg,
 } from "./index.ts";
-
-export type Weapon = {
-  name: string;
-  level: number;
-  refinement: number;
-  stats: Stats;
-  effect: Effect | null;
-} | null;
 
 export type WeaponType = "sword" | "polearm" | "catalyst" | "bow" | "claymore";
 
-export async function getWeapon(
+export type WeaponParameters = {
+  name: string;
+  img: string;
+  type: WeaponType;
+};
+
+export type Weapon = {
+  parameters: WeaponParameters;
+  level: number;
+  refinement: number;
+  effect: Effect | null;
+  stats: Stats;
+} | null;
+
+export function getWeaponImg(name: string, db: DbImg[]): string {
+  const imgs = db.find((img) => img.name === name);
+  if (imgs) {
+    return imgs.img;
+  }
+  return "";
+}
+
+export function getWeaponParameters(
+  weapon: WeaponLib,
+  imgs: DbImg[],
+): WeaponParameters {
+  return {
+    name: weapon.name,
+    img: getWeaponImg(weapon.name, imgs),
+    type: weapon.type.id as WeaponType,
+  };
+}
+
+export function getWeapon(
   name: string,
   level: number,
   refinement: number,
-  buildName?: string,
-) {
+  imgs: DbImg[],
+): Weapon {
   const libWeapon = weaponsLib.find((w) => w.name.includes(name) === true);
 
   if (!libWeapon) {
@@ -29,16 +55,15 @@ export async function getWeapon(
     return null;
   }
 
-  const stats = await getWeaponStats(libWeapon, level);
+  const stats = getWeaponStats(libWeapon, level);
   const effect = null;
 
   const weapon: Weapon = {
-    name: libWeapon.name,
     level: level,
     refinement: refinement,
     stats: stats,
     effect: effect,
+    parameters: getWeaponParameters(libWeapon, imgs),
   };
-
   return weapon;
 }

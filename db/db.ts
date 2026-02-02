@@ -2,11 +2,16 @@ import pkg from "sqlite3";
 import { InputType } from "../input_types/";
 import { v4 as uuidv4 } from "uuid";
 
+import fs from "fs";
+import path from "path";
+import https from "https";
+import http from "http";
+
 const { verbose } = pkg;
 const sqlite3 = verbose();
 
 const db = new sqlite3.Database("./db/:libpact:");
-type TableNames = InputType | "icon";
+type TableNames = InputType;
 type SearchFilter = {
   what: string;
   in: string;
@@ -121,19 +126,140 @@ class Table<RowType> {
   insert(data: RowType[]): Promise<void> {
     return uploadData(this.name, data);
   }
+
+  delete(confirm: string): Promise<void> {
+    return new Promise((resolve, reject) => {
+      if (confirm === this.name)
+        db.run(`DELETE FROM ${this.name}`, (err) => {
+          if (err) {
+            reject(err);
+          } else resolve();
+        });
+      else reject("Table name does not match. Deletion aborted.");
+    });
+  }
 }
 
-export type DbImg = {
-  character: string;
-  icon: string;
-  sticker: string | null;
-};
+/**
+ * Downloads an image from a URL and saves it to the public folder
+ * @param url - The URL of the image to download
+ * @param filename - The desired filename (without extension)
+ * @param subfolder - Optional subfolder within public (e.g., 'characters', 'weapons')
+ * @returns The local path relative to public folder, or null if failed
+ */
+export async function downloadImage(
+  url: string,
+  filename: string,
+  subfolder?: string,
+): Promise<string | null> {
+  try {
+    const sanitizedFilename = filename.replace(/[^a-zA-Z0-9_-]/g, "_");
 
-export const dbImg: Table<DbImg> = Table.getInstance("icon", [
-  { name: "character", type: "string" },
-  { name: "icon", type: "string" },
-  { name: "sticker", type: "string" },
-]);
+    const urlPath = new URL(url).pathname;
+    const ext = path.extname(urlPath) || ".png";
+
+    const fullFilename = `${sanitizedFilename}${ext}`;
+
+    const publicDir = path.join(process.cwd(), "public");
+    const targetDir = subfolder ? path.join(publicDir, subfolder) : publicDir;
+
+    if (!fs.existsSync(targetDir)) {
+      fs.mkdirSync(targetDir, { recursive: true });
+    }
+
+    const filePath = path.join(targetDir, fullFilename);
+
+    if (fs.existsSync(filePath)) {
+      console.log(`Image already exists: ${fullFilename}`);
+      return subfolder ? `/${subfolder}/${fullFilename}` : `/${fullFilename}`;
+    }
+
+    await new Promise<void>((resolve, reject) => {
+      const protocol = url.startsWith("https") ? https : http;
+      const file = fs.createWriteStream(filePath);
+
+      protocol
+        .get(url, (response) => {
+          if (response.statusCode !== 200) {
+            reject(new Error(`Failed to download: ${response.statusCode}`));
+            return;
+          }
+
+          response.pipe(file);
+
+          file.on("finish", () => {
+            file.close();
+            resolve();
+          });
+        })
+        .on("error", (err) => {
+          fs.unlink(filePath, () => {});
+          reject(err);
+        });
+
+      file.on("error", (err) => {
+        fs.unlink(filePath, () => {});
+        reject(err);
+      });
+    });
+
+    const relativePath = subfolder
+      ? `/${subfolder}/${fullFilename}`
+      : `/${fullFilename}`;
+    return relativePath;
+  } catch (error) {
+    console.error(`Error downloading image from ${url}:`, error);
+    return null;
+  }
+}
+
+export async function getImgs(
+  name: string,
+  type: "character" | "weapon",
+): Promise<string> {
+  if (name.includes("Manekin")) return "";
+  if (name.includes("Traveler")) return "Traveler";
+
+  if (fs.existsSync(`./public/${type}/${name}.png`)) return name;
+
+  if (type === "character") {
+    const galleryResponse = await fetch(
+      `https://genshin-impact.fandom.com/api.php?action=query&titles=${name}/Gallery&prop=images&imlimit=500&format=json&origin=*`,
+    );
+
+    const galleryData = await galleryResponse.json();
+    const galleryPages = galleryData.query.pages;
+    const galleryPageId = Object.keys(galleryPages)[0];
+    const galleryImages = galleryPages[galleryPageId].images;
+
+    const iconImages = galleryImages.filter((img: any) =>
+      img.title.startsWith("File:" + name + " Icon"),
+    );
+
+    let images = [];
+    for (const img of iconImages) {
+      const iconResponse = await fetch(
+        `https://genshin-impact.fandom.com/api.php?action=query&titles=${encodeURIComponent(
+          img.title,
+        )}&prop=imageinfo&iiprop=url&format=json&origin=*`,
+      );
+      const iconData = await iconResponse.json();
+      const iconPages = iconData.query.pages;
+      const iconPageId = Object.keys(iconPages)[0];
+      const iconUrl = iconPages[iconPageId].imageinfo?.[0]?.url;
+
+      if (iconUrl) images.push(iconUrl);
+    }
+
+    if (images[0]) {
+      const imageUrl = images[0].split("/revision")[0];
+      const localPath = await downloadImage(imageUrl, name, type);
+      return localPath || imageUrl;
+    }
+  }
+
+  return "";
+}
 
 type DbBuilds = {
   name: string;
@@ -151,12 +277,4 @@ type DbTeams = {
 
 export const dbTeams: Table<DbTeams> = Table.getInstance("team", [
   { name: "name", type: "string" },
-]);
-
-type DbCache = any;
-
-export const dbCache: Table<DbCache> = Table.getInstance("icon", [
-  { name: "character", type: "string" },
-  { name: "icon", type: "string" },
-  { name: "sticker", type: "string" },
 ]);

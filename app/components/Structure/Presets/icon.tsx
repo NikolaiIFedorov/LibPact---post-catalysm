@@ -30,11 +30,14 @@ export const Icon: FC<
   const style = {
     ...layerStyles.ITEM(layer - 1, "faint"),
     borderRadius: `${length / 3}px`,
+    height: length,
+    width: length,
     maxHeight: length,
+    maxWidth: length,
     padding: "unset",
 
     display: "flex",
-    alignSelf: "center",
+    alignSelf: "first-baseline",
     backgroundColor: color ? color : undefined,
   };
 

@@ -76,6 +76,7 @@ export const layerStyles = {
   ITEM: (layer: number, offset?: Size): CSSProperties => {
     return {
       fontSize: layerStyles.fontSize(layer, offset),
+      textAlign: "left",
       color: layerStyles.itemColor(layer, offset),
 
       overflowY: "auto",

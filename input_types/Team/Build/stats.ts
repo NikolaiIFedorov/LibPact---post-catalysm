@@ -135,7 +135,7 @@ export function getCharacterStats(character: CharacterLib, level: number) {
   return stats;
 }
 
-export async function getWeaponStats(weapon: WeaponLib, level: number) {
+export function getWeaponStats(weapon: WeaponLib, level: number) {
   let stats: Stats = { ...defaultEquipment };
 
   const weaponStats = weapon.stats;
@@ -156,13 +156,13 @@ export async function getWeaponStats(weapon: WeaponLib, level: number) {
 
   const primaryStatValue = Number(targetAscession.primary);
 
-  stats = await addToStat("ATK", primaryStatValue, stats, "+");
-  stats = await addToStat("Base_ATK", primaryStatValue, stats, "+");
+  stats = addToStat("ATK", primaryStatValue, stats, "+");
+  stats = addToStat("Base_ATK", primaryStatValue, stats, "+");
 
   const secondaryStatValue = Number(targetAscession.secondary);
   const secondaryStatName = weaponStats.secondary;
   if (secondaryStatName && targetAscession.secondary) {
-    stats = await addToStat(secondaryStatName, secondaryStatValue, stats, "+");
+    stats = addToStat(secondaryStatName, secondaryStatValue, stats, "+");
   }
   return stats;
 }

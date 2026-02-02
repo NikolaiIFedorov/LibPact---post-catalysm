@@ -4,20 +4,27 @@ import {
   Icon,
   Section,
   Search,
-  useState,
   CharacterParameters,
   Character,
   List,
   colorFromElement,
-} from "./index";
+} from "./Character/index";
 
 export const CharacterDesc: FC<{
   layer: number;
-  character?: Character;
   setCharacter: (character: Character | undefined) => void;
+  character?: Character;
+  setCharacters: (parameters: CharacterParameters[]) => void;
+  characters: CharacterParameters[];
   parameters: CharacterParameters[];
-}> = ({ layer, character, setCharacter, parameters }) => {
-  console.log(character);
+}> = ({
+  layer,
+  character,
+  setCharacter,
+  characters,
+  setCharacters,
+  parameters,
+}) => {
   if (character) {
     return (
       <>
@@ -42,7 +49,6 @@ export const CharacterDesc: FC<{
       </>
     );
   } else {
-    const [characters, setCharacters] = useState<CharacterParameters[]>([]);
     return (
       <Container layer={layer} direction="column">
         <Search

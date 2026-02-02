@@ -56,7 +56,6 @@ function getSegment(name: string, inputLower: string): string {
   const segments = name.toLowerCase().split(" ");
   if (segments.length == 1) return name;
   else {
-    console.log(name, segments);
     const relevantSegments = segments.filter((seg) => seg.includes(inputLower));
     return relevantSegments.sort((x, y) => x.length - y.length)[0];
   }

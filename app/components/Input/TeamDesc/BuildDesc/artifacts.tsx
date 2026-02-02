@@ -1,4 +1,4 @@
-import { Build, FC, Search, Section } from "./";
+import { Build, FC, Search, Section } from "./Character";
 
 export const Artifacts: FC<{ layer: number; build: Build }> = ({
   layer,

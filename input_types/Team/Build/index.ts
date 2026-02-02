@@ -16,7 +16,7 @@ export {
   charactersLib,
   artifactsLib,
   weaponsLib,
-} from "./Character/import/genshindata.ts";
+} from "./import/genshindata.ts";
 
 export { type Effect } from "./effect.ts";
 export { type ArtifactPieces } from "./pieces.ts";

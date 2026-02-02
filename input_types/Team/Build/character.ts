@@ -31,22 +31,10 @@ async function urlFromImage(image: any) {
   return iconUrl;
 }
 
-export type CharacterImages = {
-  icon: string;
-  sticker: string | null;
-};
-
 export type Affilation = "hexerei" | "moonsign" | "none";
 
-export function getImg(name: string, db: DbImg[]): string {
-  if (name.startsWith("Traveler")) {
-    return "Traveler icon";
-  }
-  const imgs = db.find((img) => img.character === name);
-  if (imgs) {
-    return imgs.icon;
-  }
-  return "";
+export function getCharacterImg(name: string): string {
+  return `character/${name}`;
 }
 
 export type CharacterParameters = {
@@ -59,9 +47,8 @@ export type CharacterParameters = {
 
 export function getCharacterParameters(
   character: CharacterLib,
-  db: DbImg[],
 ): CharacterParameters {
-  const img: string = getImg(character.name, db);
+  const img: string = getCharacterImg(character.name);
 
   const parameters: CharacterParameters = {
     name: character.name,
@@ -84,7 +71,6 @@ export type Character = {
 
 export function getCharacter(
   name: string,
-  dbImg: DbImg[],
   level: number = 90,
   constellation: number = 0,
 ) {
@@ -102,7 +88,7 @@ export function getCharacter(
     constellation: constellation,
     talents: talents,
     stats: stats,
-    parameters: getCharacterParameters(libCharacter, dbImg),
+    parameters: getCharacterParameters(libCharacter),
   };
 
   return character;

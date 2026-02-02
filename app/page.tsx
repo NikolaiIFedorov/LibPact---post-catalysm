@@ -2,13 +2,13 @@ import { Window } from "./components/window";
 
 import { Input } from "./components/input";
 import { Output } from "./components/output";
-import { dbTeams, dbImg } from "@/db/db";
+import { dbTeams } from "@/db/db";
 import { Team, getTeam } from "../input_types/team";
 import { type InputTypeInstances } from "../input_types/index";
 import {
   Affilation,
   CharacterParameters,
-  getImg,
+  getCharacterImg,
 } from "@/input_types/Team/Build/character";
 import { charactersLib, Element, WeaponType } from "../input_types/Team/Build/";
 
@@ -23,7 +23,6 @@ export default async function Home() {
   const teams: Team[] = dataTeams.map((dbTeam) => getTeam(names, dbTeam));
   if (teams.length === 0) teams.push(getTeam(names));
 
-  const characterImgs = await dbImg.get();
   let characterParameters: CharacterParameters[] = [];
   for (const characterLib of charactersLib) {
     if (characterLib.name.includes("Manekin")) continue;
@@ -32,7 +31,7 @@ export default async function Home() {
       element: characterLib.element.id as Element,
       weapon: characterLib.weapon_type.name as WeaponType,
       affiliation: characterLib.affiliation as Affilation,
-      img: getImg(characterLib.name, characterImgs),
+      img: getCharacterImg(characterLib.name),
     });
   }
 

@@ -25,15 +25,23 @@ export const Button: FCParent<
   icon,
 }) => {
   let flex: string;
+  let height: string;
+  let width: string;
   switch (fit) {
     case "content":
       flex = `0 0 auto`;
+      width = `fit-content`;
+      height = "fit-content";
       break;
     case "parent":
       flex = `0 1 ${weight}`;
+      width = `100%`;
+      height = "100%";
       break;
     default:
       flex = `${weight}`;
+      width = "auto";
+      height = "auto";
   }
   return (
     <button
@@ -45,9 +53,12 @@ export const Button: FCParent<
         borderRadius: layerStyles.borderRadius(layer, size),
         backgroundColor: icon
           ? "transparent"
-          : layerStyles.backgroundColor(layer, size),
+          : layerStyles.backgroundColor(size),
         padding: icon ? undefined : layerStyles.spacing(layer, size),
         gap: layerStyles.spacing(layer, size),
+
+        width: width,
+        height: height,
 
         display: "flex",
         flexDirection: direction,
