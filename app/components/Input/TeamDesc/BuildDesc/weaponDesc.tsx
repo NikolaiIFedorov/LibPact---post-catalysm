@@ -30,9 +30,6 @@ export const WeaponDesc: FC<{
             </Section>
           </Container>
         </Container>
-        <Section layer={layer} weight={1}></Section>
-        <Section layer={layer} weight={1}></Section>
-        <Section layer={layer} weight={1}></Section>
       </>
     );
   } else {

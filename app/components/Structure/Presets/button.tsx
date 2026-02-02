@@ -10,6 +10,7 @@ export const Button: FCParent<
     align?: boolean;
     size?: "default" | "faint";
     icon?: IconProps;
+    color?: string;
   }
 > = ({
   onClick = () => {
@@ -23,6 +24,7 @@ export const Button: FCParent<
   align = false,
   size = "default",
   icon,
+  color,
 }) => {
   let flex: string;
   let height: string;
@@ -53,7 +55,9 @@ export const Button: FCParent<
         borderRadius: layerStyles.borderRadius(layer, size),
         backgroundColor: icon
           ? "transparent"
-          : layerStyles.backgroundColor(size),
+          : color
+            ? color
+            : layerStyles.backgroundColor(size),
         padding: icon ? undefined : layerStyles.spacing(layer, size),
         gap: layerStyles.spacing(layer, size),
 

@@ -59,9 +59,7 @@ export const Icon: FC<
       />
     );
   } else if (typeof img === "string") {
-    if (img.startsWith("http"))
-      return <img style={style} src={img.split("/revision")[0]}></img>;
-    else return <img style={style} src={`/${img}.png`}></img>;
+    return <img style={style} src={`/${img}.png`}></img>;
   } else {
     const IconComponent = Lucide[img.lucide] as LucideIcon;
 

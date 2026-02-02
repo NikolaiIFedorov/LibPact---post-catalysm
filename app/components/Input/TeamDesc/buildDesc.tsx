@@ -77,18 +77,23 @@ export const BuildDesc: FC<{
           direction="column"
           fit="content"
           size="faint"
+          color={
+            build.character
+              ? colorFromElement(build.character.parameters.element)
+              : undefined
+          }
         >
           {build.character && (
             <Icon
               layer={layer + 1}
-              img={build.character.parameters?.img}
-              color={colorFromElement(build.character.parameters?.element)}
+              img={build.character.parameters.img}
+              color={colorFromElement(build.character.parameters.element)}
             />
           )}
           {build.weapon && (
             <Icon
               layer={layer + 1}
-              img={build.weapon.parameters?.img}
+              img={build.weapon.parameters.img}
               size="big"
               color={true}
             />
