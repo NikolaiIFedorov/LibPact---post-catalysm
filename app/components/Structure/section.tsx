@@ -65,8 +65,8 @@ export const Section: FCParent<{
       className="font-sans"
       style={{
         ...layerStyles.DEFAULT(layer, size),
-        padding: layerStyles.spacing(layer),
-        gap: layerStyles.spacing(layer),
+        padding: layerStyles.spacing(layer, size),
+        gap: layerStyles.spacing(layer, size),
 
         maxHeight: maxH,
         minWidth: thisMinWidth ? `${thisMinWidth}` : undefined,

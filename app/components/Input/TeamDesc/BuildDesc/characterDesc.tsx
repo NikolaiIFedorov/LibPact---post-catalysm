@@ -27,22 +27,22 @@ export const CharacterDesc: FC<{
             color={colorFromElement(character.parameters?.element)}
           />
           <Container layer={layer} direction="column" weight={1}>
-            <Section layer={layer} weight={1}>
+            <Section layer={layer} weight={1} size="faint">
               Lvl: {character.level}
             </Section>
-            <Section layer={layer} weight={1}>
+            <Section layer={layer} weight={1} size="faint">
               C: {character.constellation}
             </Section>
           </Container>
         </Container>
-        <Section layer={layer} weight={1}>
-          test
+        <Section layer={layer} weight={1} size="faint">
+          {character.talents.normal.name}
         </Section>
-        <Section layer={layer} weight={1}>
-          1
+        <Section layer={layer} weight={1} size="faint">
+          {character.talents.skill.name}
         </Section>
-        <Section layer={layer} weight={1}>
-          2
+        <Section layer={layer} weight={1} size="faint">
+          {character.talents.burst.name}
         </Section>
       </>
     );

@@ -22,10 +22,10 @@ export const WeaponDesc: FC<{
         <Container layer={layer - 1}>
           <Icon layer={layer} img={weapon.parameters?.img} color={true} />
           <Container layer={layer} direction="column" weight={1}>
-            <Section layer={layer} weight={1}>
+            <Section layer={layer} weight={1} size="faint">
               Lvl: {weapon.level}
             </Section>
-            <Section layer={layer} weight={1}>
+            <Section layer={layer} weight={1} size="faint">
               R: {weapon.refinement}
             </Section>
           </Container>
