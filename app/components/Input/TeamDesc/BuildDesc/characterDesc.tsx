@@ -1,4 +1,3 @@
-import { characterParametersFromLib } from "@/input_types/Team/Build/character";
 import {
   type FC,
   Container,
@@ -10,7 +9,7 @@ import {
   List,
   colorFromElement,
   useState,
-  charactersLib,
+  characterParametersFromLib,
 } from "./Character/index";
 
 export const CharacterDesc: FC<{

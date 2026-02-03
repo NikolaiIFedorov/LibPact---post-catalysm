@@ -56,7 +56,6 @@ export type Character = {
   talents: Talents;
   level: number;
   constellation: number;
-  stats: Stats;
 } | null;
 
 export function getCharacter(
@@ -71,13 +70,11 @@ export function getCharacter(
   }
 
   const talents: Talents = getTalents(libCharacter);
-  const stats: Stats = getCharacterStats(libCharacter, level);
 
   const character: Character = {
     level: level,
     constellation: constellation,
     talents: talents,
-    stats: stats,
     parameters: characterParametersFromName(libCharacter.name),
   };
 

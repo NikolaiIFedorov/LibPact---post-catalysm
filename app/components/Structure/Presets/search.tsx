@@ -16,6 +16,7 @@ export const Search: FC<{
     <div
       style={{
         ...layerStyles.FAINT(layer),
+        width: "100%",
 
         flexDirection: "row",
         display: "flex",
@@ -39,7 +40,6 @@ export const Search: FC<{
         onChange={(e) => {
           onSearch(getResult(e.target.value, content));
         }}
-        onClick={() => onSearch(content)}
       />
     </div>
   );
@@ -68,7 +68,7 @@ function sortNameLength(a: string, b: string, inputLower: string): number {
 }
 
 function getResult(input: string, content: any[]): any[] {
-  console.log(content);
+  if (input.length === 0) return [];
   let results: any[] = [];
   const inputLower = input.toLowerCase();
 
@@ -92,5 +92,6 @@ function getResult(input: string, content: any[]): any[] {
     if (lowerName.includes(inputLower) || short.startsWith(inputLower))
       results.push(item);
   }
+  console.log(results);
   return results;
 }

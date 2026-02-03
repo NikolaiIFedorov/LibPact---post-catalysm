@@ -13,22 +13,24 @@ export type Substat = {
   rolls: number;
 };
 
-type Flower = {
+export type Substats = [Substat?, Substat?, Substat?, Substat?];
+
+export type Flower = {
   main: "HP";
-  subStats: Substat[];
+  subStats: Substats;
 };
 
-type Plume = {
+export type Plume = {
   main: "ATK";
-  subStats: Substat[];
+  subStats: Substats;
 };
 
-type Sands = {
+export type Sands = {
   main: "ATK%" | "HP%" | "DEF%" | "Elemental_Mastery" | "Energy_Recharge";
-  subStats: Substat[];
+  subStats: Substats;
 };
 
-type Goblet = {
+export type Goblet = {
   main:
     | "ATK%"
     | "HP%"
@@ -42,10 +44,10 @@ type Goblet = {
     | "Dendro_DMG_Bonus"
     | "Anemo_DMG_Bonus"
     | "Geo_DMG_Bonus";
-  subStats: Substat[];
+  subStats: Substats;
 };
 
-type Circlet = {
+export type Circlet = {
   main:
     | "ATK%"
     | "HP%"
@@ -55,19 +57,19 @@ type Circlet = {
     | "CRIT_Rate"
     | "CRIT_DMG"
     | "Healing_Bonus";
-  subStats: Substat[];
+  subStats: Substats;
 };
 
 export type ArtifactPieces = {
-  flower?: Flower;
-  plume?: Plume;
-  sands?: Sands;
-  goblet?: Goblet;
-  circlet?: Circlet;
+  Flower?: Flower;
+  Plume?: Plume;
+  Sands?: Sands;
+  Goblet?: Goblet;
+  Circlet?: Circlet;
 };
 
 export function getArtifactPieces(
-  element:
+  element?:
     | "Pyro"
     | "Hydro"
     | "Cryo"
@@ -75,7 +77,7 @@ export function getArtifactPieces(
     | "Dendro"
     | "Anemo"
     | "Geo"
-    | "Physical"
+    | "Physical",
 ) {
   const flower: Flower = {
     main: "HP",
@@ -128,7 +130,7 @@ export function getArtifactPieces(
   };
 
   const goblet: Goblet = {
-    main: `${element}_DMG_Bonus`,
+    main: element ? `${element}_DMG_Bonus` : "ATK%",
     subStats: [
       {
         stat: "CRIT_Rate",
@@ -156,11 +158,11 @@ export function getArtifactPieces(
   };
 
   const artifactPieces: ArtifactPieces = {
-    flower: flower,
-    plume: plume,
-    sands: sands,
-    goblet: goblet,
-    circlet: circlet,
+    Flower: flower,
+    Plume: plume,
+    Sands: sands,
+    Goblet: goblet,
+    Circlet: circlet,
   };
 
   return artifactPieces;

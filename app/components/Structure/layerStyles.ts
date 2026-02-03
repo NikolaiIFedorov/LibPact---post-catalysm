@@ -46,7 +46,7 @@ export const layerStyles = {
   fontSize: (layer: number, offset?: Size): string => {
     let numOffset = 0;
     if (offset == "faint") numOffset = -1;
-    return `calc(var(--spacing) - ${(layer - numOffset) * 2}px)`;
+    return `calc(var(--spacing) - ${layer * 1.5 - numOffset}px)`;
   },
 
   /**

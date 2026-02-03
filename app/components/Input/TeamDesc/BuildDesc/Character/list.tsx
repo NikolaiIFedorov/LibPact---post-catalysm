@@ -6,7 +6,6 @@ import {
   colorFromElement,
   Character,
   getCharacter,
-  DbImg,
 } from "./index";
 
 export const List: FC<{
@@ -15,10 +14,6 @@ export const List: FC<{
   setCharacter?: (character: Character | undefined) => void;
 }> = ({ layer, list, setCharacter }) => {
   if (list.length > 0) {
-    const imgs: DbImg[] = list.map((p) => ({
-      name: p.name,
-      img: p.img,
-    }));
     return (
       <Section layer={layer} maxWidth="100px" maxHeight="200px" fit="content">
         {list.map((p, i) => (

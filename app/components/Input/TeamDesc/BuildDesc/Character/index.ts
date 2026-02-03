@@ -22,9 +22,8 @@ export {
   type CharacterParameters,
   type Character,
   getCharacter,
+  characterParametersFromLib,
 } from "@/input_types/Team/Build/character";
-
-export { type DbImg } from "@/db/db";
 
 export function colorFromElement(element?: Element) {
   if (!element) return "#040506";

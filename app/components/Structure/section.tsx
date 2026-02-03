@@ -9,6 +9,7 @@ export const Section: FCParent<{
 
   layer?: number;
   fit?: "content" | "parent" | false;
+  size?: "faint";
 
   direction?: "row" | "column";
   align?: boolean;
@@ -21,6 +22,7 @@ export const Section: FCParent<{
 
   layer = 1,
   fit = false,
+  size,
 
   children,
   direction = "row",
@@ -62,7 +64,7 @@ export const Section: FCParent<{
     <div
       className="font-sans"
       style={{
-        ...layerStyles.DEFAULT(layer),
+        ...layerStyles.DEFAULT(layer, size),
         padding: layerStyles.spacing(layer),
         gap: layerStyles.spacing(layer),
 

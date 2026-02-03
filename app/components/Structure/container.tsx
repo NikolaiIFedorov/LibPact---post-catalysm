@@ -7,7 +7,7 @@ export const Container: FCParent<{
   weight?: number;
 
   height?: string;
-  minWidth?: number;
+  minWidth?: string;
   maxWidth?: string;
   maxHeight?: number | string;
 
@@ -23,7 +23,7 @@ export const Container: FCParent<{
   weight,
   height,
 
-  minWidth = 0,
+  minWidth,
   maxWidth,
   maxHeight,
 
@@ -78,9 +78,10 @@ export const Container: FCParent<{
         height: thisHeight,
         width: width,
         maxWidth: maxWidth ? maxWidth : undefined,
-        minWidth: minWidth ? `${minWidth}px` : "auto",
+        minWidth: minWidth ? minWidth : "auto",
 
         flex: flex,
+        flexWrap: "wrap",
 
         display: "flex",
         alignItems: align ? "center" : undefined,

@@ -20,7 +20,6 @@ export type Weapon = {
   level: number;
   refinement: number;
   effect: Effect | null;
-  stats: Stats;
 } | null;
 
 export function getWeaponImg(name: string): string {
@@ -53,13 +52,11 @@ export function getWeapon(
     return null;
   }
 
-  const stats = getWeaponStats(libWeapon, level);
   const effect = null;
 
   const weapon: Weapon = {
     level: level,
     refinement: refinement,
-    stats: stats,
     effect: effect,
     parameters: weaponParametersFromName(libWeapon.name),
   };

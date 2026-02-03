@@ -10,7 +10,7 @@ export { Icon } from "../../Structure/Presets/icon";
 
 export { type FC } from "../../Structure/index";
 
-export { Artifacts } from "./BuildDesc/artifacts";
+export { ArtifactsDesc } from "./BuildDesc/artifactsDesc";
 export { CharacterDesc } from "./BuildDesc/characterDesc";
 export { WeaponDesc } from "./BuildDesc/weaponDesc";
 

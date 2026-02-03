@@ -1,9 +1,10 @@
+import { Artifacts } from "@/input_types/Team/index";
 import {
   FC,
   Icon,
   Button,
   Section,
-  Artifacts,
+  ArtifactsDesc,
   Build,
   Splitter,
   Container,
@@ -25,8 +26,12 @@ export const BuildDesc: FC<{
     build.character,
   );
   const [weapon, setWeapon] = useState<Weapon | undefined>(build.weapon);
+  const [artifacts, setArtifacts] = useState<Artifacts | undefined>(
+    build.artifacts,
+  );
   if (build.character != character) build.character = character;
   if (build.weapon != weapon) build.weapon = weapon;
+  if (build.artifacts != artifacts) build.artifacts = artifacts;
 
   if (isSelected) {
     return (
@@ -50,7 +55,7 @@ export const BuildDesc: FC<{
         <Splitter layer={layer + 1} />
         <WeaponDesc layer={layer + 1} weapon={weapon} setWeapon={setWeapon} />
         <Splitter layer={layer + 1} />
-        <Artifacts layer={layer + 1} build={build} />
+        <ArtifactsDesc layer={layer + 1} artifacts={artifacts} />
       </Section>
     );
   } else {
@@ -74,7 +79,7 @@ export const BuildDesc: FC<{
         <Button
           onClick={() => setSelected(false)}
           layer={layer}
-          direction="column"
+          direction="row"
           fit="content"
           size="faint"
           color={
@@ -87,7 +92,7 @@ export const BuildDesc: FC<{
             <Icon
               layer={layer + 1}
               img={build.character.parameters.img}
-              color={colorFromElement(build.character.parameters.element)}
+              color={true}
             />
           )}
           {build.weapon && (

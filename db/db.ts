@@ -158,6 +158,7 @@ export async function downloadImage(
     const ext = path.extname(urlPath) || ".png";
 
     const fullFilename = `${filename}${ext}`;
+    console.log(fullFilename);
 
     const publicDir = path.join(process.cwd(), "public");
     const targetDir = subfolder ? path.join(publicDir, subfolder) : publicDir;
@@ -214,7 +215,7 @@ export async function downloadImage(
 
 export async function getImgs(
   name: string,
-  type: "character" | "weapon",
+  type: "character" | "weapon" | "artifact",
 ): Promise<string> {
   const nameNormal = normalizeName(name);
   if (nameNormal === "") return "";
@@ -225,6 +226,7 @@ export async function getImgs(
   let target = "";
   if (type === "character") target = `${name}/Gallery`;
   else if (type === "weapon") target = name;
+  else if (type === "artifact") target = name;
   const filters = "&prop=images&imlimit=500&format=json&origin=*";
   const base = "https://genshin-impact.fandom.com/api.php?action=query&titles=";
   const url = base + target + filters;
@@ -238,16 +240,21 @@ export async function getImgs(
 
   const iconImages = galleryImages.filter((img: any) => {
     if (type === "character")
-      return img.title.startsWith("File:" + name + " Icon");
+      return img.title.startsWith("File: " + name + " Icon");
     else if (type === "weapon")
       return img.title === "File:Weapon " + name + ".png";
+    else if (type === "artifact") {
+      return img.title.startsWith("File:Item " + name);
+    }
   });
 
-  if (iconImages.length === 0)
+  if (iconImages.length === 0) {
+    console.log();
     throw galleryImages
       .filter((img: any) => img.title.includes(name))
       .map((img: any) => img.title)
       .join(", ");
+  }
 
   let images = [];
   for (const img of iconImages) {
@@ -266,7 +273,6 @@ export async function getImgs(
 
   if (images[0]) {
     const imageUrl = images[0].split("/revision")[0];
-    // Use nameNormal to ensure consistent filename handling
     const localPath = await downloadImage(imageUrl, nameNormal, type);
     return localPath || imageUrl;
   }

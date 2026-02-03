@@ -167,7 +167,7 @@ export function getWeaponStats(weapon: WeaponLib, level: number) {
   return stats;
 }
 
-export async function getArtifactFlatStats(pieces: ArtifactPieces) {
+export function getArtifactFlatStats(pieces: ArtifactPieces) {
   let stats: Stats = { ...defaultEquipment };
   for (const pieceName in pieces) {
     const piece = pieces[pieceName as keyof ArtifactPieces];
@@ -176,18 +176,18 @@ export async function getArtifactFlatStats(pieces: ArtifactPieces) {
     const subStats = piece.subStats;
     for (const subStat of subStats) {
       const value = getArtifactSubstatValue(subStat, "+");
-      stats = await addToStat(subStat.stat, value, stats, "+");
+      stats = addToStat(subStat.stat, value, stats, "+");
     }
 
     const main = piece.main;
     const mainValue = getArtifactMainStatValue(main, "+");
-    stats = await addToStat(main, mainValue, stats, "+");
+    stats = addToStat(main, mainValue, stats, "+");
   }
 
   return stats;
 }
 
-export async function getArtifactPercentStats(pieces: ArtifactPieces) {
+export function getArtifactPercentStats(pieces: ArtifactPieces) {
   let stats: Stats = { ...defaultEquipment };
   for (const pieceName in pieces) {
     const piece = pieces[pieceName as keyof ArtifactPieces];
@@ -196,12 +196,12 @@ export async function getArtifactPercentStats(pieces: ArtifactPieces) {
     const subStats = piece.subStats;
     for (const subStat of subStats) {
       const value = getArtifactSubstatValue(subStat, "%");
-      stats = await addToStat(subStat.stat, value, stats, "+");
+      stats = addToStat(subStat.stat, value, stats, "+");
     }
 
     const main = piece.main;
     const mainValue = getArtifactMainStatValue(main, "%");
-    stats = await addToStat(main, mainValue, stats, "+");
+    stats = addToStat(main, mainValue, stats, "+");
   }
   return stats;
 }

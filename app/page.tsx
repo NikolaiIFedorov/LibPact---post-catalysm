@@ -5,21 +5,6 @@ import { Output } from "./components/output";
 import { dbTeams } from "@/db/db";
 import { Team, getTeam } from "../input_types/team";
 import { type InputTypeInstances } from "../input_types/index";
-import {
-  Affilation,
-  CharacterParameters,
-  getCharacterImg,
-} from "@/input_types/Team/Build/character";
-import {
-  charactersLib,
-  weaponsLib,
-  Element,
-  WeaponType,
-} from "../input_types/Team/Build/";
-import {
-  getWeaponImg,
-  WeaponParameters,
-} from "@/input_types/Team/Build/weapon";
 
 export default async function Home() {
   const dataTeams = await dbTeams.get();

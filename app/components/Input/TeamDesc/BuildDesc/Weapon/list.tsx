@@ -13,10 +13,6 @@ export const List: FC<{
   setWeapon?: (weapon: Weapon | undefined) => void;
 }> = ({ layer, list, setWeapon }) => {
   if (list.length > 0) {
-    const imgs = list.map((p) => ({
-      name: p.name,
-      img: p.img,
-    }));
     return (
       <Section layer={layer} maxWidth="100px" maxHeight="200px" fit="content">
         {list.map((c, i) => (

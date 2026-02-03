@@ -1,14 +1,19 @@
-import { charactersLib, weaponsLib } from "@/input_types/Team/Build/index.ts";
+import {
+  artifactsLib,
+  charactersLib,
+  weaponsLib,
+} from "@/input_types/Team/Build/index.ts";
 
 import { getImgs } from "@/db/db";
 
-async function fetchImgs(type: "character" | "weapon") {
+async function fetchImgs(type: "character" | "weapon" | "artifact") {
   let results: { name: string; img: string }[] = [];
   let resultCount = 0;
 
   let lib: any = [];
   if (type === "character") lib = charactersLib;
   else if (type === "weapon") lib = weaponsLib;
+  else if (type === "artifact") lib = artifactsLib;
 
   for (const itemLib of lib) {
     const count = lib.length;
@@ -16,7 +21,7 @@ async function fetchImgs(type: "character" | "weapon") {
     console.log(progress.toFixed(2) + "%: " + itemLib.name);
 
     const name = itemLib.name;
-    if (name.includes("Traveler")) {
+    if (name.startsWith("Traveler (")) {
       results.push({ name: "Traveler", img: "Traveler icon" });
       continue;
     }
@@ -36,4 +41,4 @@ async function fetchImgs(type: "character" | "weapon") {
   console.log(results);
 }
 
-fetchImgs("weapon");
+fetchImgs("artifact");

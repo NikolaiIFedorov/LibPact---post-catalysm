@@ -29,7 +29,7 @@ export const Icon: FC<
 
   let backgroundColor = "transparent";
   if (color === true) {
-    backgroundColor = layerStyles.backgroundColor("faint");
+    backgroundColor = layerStyles.backgroundColor();
   } else if (typeof color === "string") {
     backgroundColor = color;
   }
