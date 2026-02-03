@@ -92,6 +92,5 @@ function getResult(input: string, content: any[]): any[] {
     if (lowerName.includes(inputLower) || short.startsWith(inputLower))
       results.push(item);
   }
-  console.log(results);
   return results;
 }

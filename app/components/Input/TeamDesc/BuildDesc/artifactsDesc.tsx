@@ -2,24 +2,47 @@ import {
   FC,
   Container,
   Piece,
-  SetDesc,
-  Artifacts,
+  Build,
   useState,
+  useEffect,
   ArtifactPieces,
   getArtifactPieces,
+  SetsDesc,
   Sets,
+  Artifacts,
 } from "./Artifacts";
 
-export const ArtifactsDesc: FC<{ layer: number; artifacts?: Artifacts }> = ({
-  layer,
-  artifacts,
-}) => {
-  let pieces: ArtifactPieces = artifacts?.pieces ?? getArtifactPieces();
+export const ArtifactsDesc: FC<{
+  layer: number;
+  build: Build;
+  setArtifacts: (artifacts: Artifacts) => void;
+}> = ({ layer, build, setArtifacts }) => {
+  let artifacts = build?.artifacts;
 
+  let pieces: ArtifactPieces = artifacts?.pieces ?? getArtifactPieces();
+  const [sets, setSets] = useState<Sets>(artifacts?.sets ?? []);
   const [selected, setSelected] = useState<string | null>(null);
+
+  useEffect(() => {
+    if (!artifacts) artifacts = {};
+    artifacts.sets = sets;
+    setArtifacts(artifacts);
+  }, [sets]);
+
+  useEffect(() => {
+    if (!artifacts) artifacts = {};
+    artifacts.pieces = pieces;
+    setArtifacts(artifacts);
+  }, [pieces]);
+
   return (
     <Container layer={layer} direction="row" maxWidth="128px">
-      <SetDesc layer={layer} />
+      <SetsDesc
+        layer={layer}
+        isSelected={selected === "Set"}
+        setSelected={() => setSelected("Set")}
+        setSets={setSets}
+      />
       <Piece
         layer={layer + 1}
         name="Flower"

@@ -1,4 +1,4 @@
-export { useState } from "react";
+export { useState, useEffect } from "react";
 
 export { type FC } from "../../../../Structure/";
 
@@ -10,11 +10,12 @@ export { Button } from "../../../../Structure/Presets/button";
 
 export { Piece } from "./piece";
 export {
-  type Artifacts,
   type SetParameters,
   setParametersFromLib,
   type Sets,
+  type Artifacts,
 } from "@/input_types/Team/Build/artifacts";
+
 export {
   type Flower,
   type Plume,
@@ -24,6 +25,8 @@ export {
   type ArtifactPieces,
   getArtifactPieces,
 } from "@/input_types/Team/Build/pieces";
+export { type Build } from "@/input_types/Team/build";
 
-export { SetDesc } from "./setDesc";
-export { List } from "./Set/list";
+export { SetsDesc } from "./setsDesc";
+export { SetDesc } from "./Sets/setDesc";
+export { List } from "./Sets/list";

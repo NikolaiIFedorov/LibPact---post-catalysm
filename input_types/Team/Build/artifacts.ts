@@ -16,6 +16,8 @@ export type SetParameters = {
   name: string;
   quality: number;
   img: string;
+  _2pc?: string;
+  _4pc?: string;
 };
 
 export function setParametersFromLib(): SetParameters[] {
@@ -36,7 +38,7 @@ export type Sets = [Set?, Set?, Set?];
 
 export type Artifacts = {
   name?: string;
-  set?: Sets;
+  sets?: Sets;
   pieces?: ArtifactPieces;
 };
 
@@ -57,6 +59,8 @@ export function getSet(names?: [string?, string?, string?]): Sets {
           name: libSet.name,
           quality: libSet.max_rarity,
           img: getSetImg(libSet.name),
+          _2pc: libSet.two_pc,
+          _4pc: libSet.four_pc,
         },
         _2pc: null,
         _4pc: null,
@@ -79,7 +83,7 @@ export function getArtifacts(
 
   const artifact: Artifacts = {
     name: name,
-    set: setsDesc,
+    sets: setsDesc,
     pieces: pieces,
   };
 

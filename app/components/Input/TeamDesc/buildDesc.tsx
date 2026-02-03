@@ -32,6 +32,7 @@ export const BuildDesc: FC<{
   if (build.character != character) build.character = character;
   if (build.weapon != weapon) build.weapon = weapon;
   if (build.artifacts != artifacts) build.artifacts = artifacts;
+  console.log(build);
 
   if (isSelected) {
     return (
@@ -55,7 +56,11 @@ export const BuildDesc: FC<{
         <Splitter layer={layer + 1} />
         <WeaponDesc layer={layer + 1} weapon={weapon} setWeapon={setWeapon} />
         <Splitter layer={layer + 1} />
-        <ArtifactsDesc layer={layer + 1} artifacts={artifacts} />
+        <ArtifactsDesc
+          layer={layer + 1}
+          build={build}
+          setArtifacts={setArtifacts}
+        />
       </Section>
     );
   } else {

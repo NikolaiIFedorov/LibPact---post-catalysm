@@ -3,7 +3,7 @@ import type { Stats } from ".";
 export type Effect = {
   target: Target;
   effect: (stats: Stats) => Stats;
-  dueration?: number;
+  duration?: number;
 };
 
 export type Target = {
