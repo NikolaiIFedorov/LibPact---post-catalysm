@@ -1,4 +1,3 @@
-import { useEffect } from "react";
 import {
   FC,
   useState,
@@ -25,7 +24,7 @@ export const SetsDesc: FC<{
 
   const [selectedSet, setSelectedSet] = useState<string | undefined>(undefined);
 
-  if (sets) {
+  if (sets && sets.length > 0) {
     return (
       <Container layer={layer} fit="content">
         {sets.map((set, index) => (

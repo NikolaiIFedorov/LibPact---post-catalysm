@@ -41,4 +41,4 @@ async function fetchImgs(type: "character" | "weapon" | "artifact") {
   console.log(results);
 }
 
-fetchImgs("artifact");
+fetchImgs("weapon");

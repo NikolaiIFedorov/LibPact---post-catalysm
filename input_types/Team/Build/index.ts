@@ -30,7 +30,7 @@ export function normalizeName(name: string): string {
   if (name.includes("Manekin")) return "";
 
   let nameNormal = name;
-  if (name.includes("Traveler")) return "Traveler";
+  if (name.startsWith("Traveler (")) return "Traveler";
 
   nameNormal = nameNormal.replaceAll(" ", "_");
   return nameNormal;

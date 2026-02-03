@@ -64,13 +64,15 @@ export const BuildDesc: FC<{
       </Section>
     );
   } else {
-    let info: any[] = [];
-    if (build.character) info.push(build.character.parameters?.img);
-    if (build.weapon) info.push(build.weapon.parameters?.img);
-    if (build.artifacts)
-      info.push(build.artifacts.sets?.map((set) => set?.parameters.img));
+    let infoList: any[] = [];
+    infoList.push(build?.character?.parameters?.img);
+    infoList.push(build?.weapon?.parameters?.img);
+    infoList.push(build?.artifacts?.sets?.map((set) => set?.parameters.img));
+    let info =
+      infoList.filter((info) => info != undefined && info.length > 0).length >
+      0;
 
-    if (info.length == 0) {
+    if (!info) {
       return (
         <Button
           onClick={() => setSelected(false)}
