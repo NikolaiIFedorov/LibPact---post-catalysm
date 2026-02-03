@@ -35,9 +35,15 @@ export const CharacterDesc: FC<{
             </Section>
           </Container>
         </Container>
-        <Section layer={layer} weight={1}></Section>
-        <Section layer={layer} weight={1}></Section>
-        <Section layer={layer} weight={1}></Section>
+        <Section layer={layer} weight={1}>
+          test
+        </Section>
+        <Section layer={layer} weight={1}>
+          1
+        </Section>
+        <Section layer={layer} weight={1}>
+          2
+        </Section>
       </>
     );
   } else {

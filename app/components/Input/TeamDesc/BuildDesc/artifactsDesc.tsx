@@ -39,6 +39,7 @@ export const ArtifactsDesc: FC<{
     <Container layer={layer} direction="row" maxWidth="128px">
       <SetsDesc
         layer={layer}
+        build={build}
         isSelected={selected === "Set"}
         setSelected={() => setSelected("Set")}
         setSets={setSets}

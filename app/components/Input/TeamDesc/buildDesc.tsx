@@ -1,4 +1,3 @@
-import { Artifacts } from "@/input_types/Team/index";
 import {
   FC,
   Icon,
@@ -14,6 +13,7 @@ import {
   CharacterDesc,
   colorFromElement,
   Weapon,
+  Artifacts,
 } from "./index";
 
 export const BuildDesc: FC<{
@@ -29,10 +29,10 @@ export const BuildDesc: FC<{
   const [artifacts, setArtifacts] = useState<Artifacts | undefined>(
     build.artifacts,
   );
+
   if (build.character != character) build.character = character;
   if (build.weapon != weapon) build.weapon = weapon;
   if (build.artifacts != artifacts) build.artifacts = artifacts;
-  console.log(build);
 
   if (isSelected) {
     return (
@@ -67,6 +67,8 @@ export const BuildDesc: FC<{
     let info: any[] = [];
     if (build.character) info.push(build.character.parameters?.img);
     if (build.weapon) info.push(build.weapon.parameters?.img);
+    if (build.artifacts)
+      info.push(build.artifacts.sets?.map((set) => set?.parameters.img));
 
     if (info.length == 0) {
       return (
@@ -108,6 +110,16 @@ export const BuildDesc: FC<{
               color={true}
             />
           )}
+          {build.artifacts?.sets &&
+            build.artifacts.sets.map((set) => (
+              <Icon
+                layer={layer + 1}
+                key={set?.parameters.name}
+                img={set?.parameters.img}
+                size="big"
+                color={true}
+              />
+            ))}
         </Button>
       );
     }

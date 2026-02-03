@@ -1,6 +1,4 @@
-import { Weapon } from "@/input_types/Team/Build/index";
-
-export { useState } from "react";
+export { useState, useEffect } from "react";
 
 export { Container } from "../../Structure/container";
 export { Section } from "../../Structure/section";
@@ -15,13 +13,8 @@ export { CharacterDesc } from "./BuildDesc/characterDesc";
 export { WeaponDesc } from "./BuildDesc/weaponDesc";
 
 export { type Build, getBuild } from "../../../../input_types/Team/build";
-export {
-  type CharacterParameters,
-  type Character,
-} from "../../../../input_types/Team/Build/character";
-export {
-  type Weapon,
-  type WeaponParameters,
-} from "../../../../input_types/Team/Build/weapon";
+export { type Character } from "../../../../input_types/Team/Build/character";
+export { type Weapon } from "../../../../input_types/Team/Build/weapon";
+export { type Artifacts } from "../../../../input_types/Team/Build/artifacts";
 
 export { colorFromElement } from "./BuildDesc/Character";
